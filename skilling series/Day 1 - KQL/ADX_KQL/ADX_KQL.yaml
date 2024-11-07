@@ -12,7 +12,7 @@ SkillGroups:
        Settings:
         Target: Kusto
         Cluster:
-          https://adxrandom001.westeurope.kusto.windows.net
-        Database: MyDatabase
+          <YOUR ADX CLUSTER ENDPOINT>
+        Database: <YOUR ADX DATATABASE NAME>
         Template: 
           SigninLogs
