@@ -1,4 +1,5 @@
 # Skilling Series - Automations
 
-TBD
+**COMING SOON** 29/11/2024
+
 
