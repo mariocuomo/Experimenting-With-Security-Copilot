@@ -4,7 +4,7 @@ This repository contains some experiments I have done with Security Copilot in c
 
 - [Custom Plugins](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/custom%20plugins)
 - [Logic App Connector](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/automations)
-+ [Promptbooks](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/promptbooks)
+- [Promptbooks](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/promptbooks)
 
 
 > [!NOTE]  
