@@ -1,5 +1,10 @@
 # Experimenting with Microsoft Security Copilot
 
+<div align="center">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/Security%20Copilot.png" width="200"> </img>
+</div>
+
+
 This repository contains some experiments I have done with Security Copilot in creating custom plugins, automations and promptbooks.
 
 - [Custom Plugins](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/custom%20plugins)
