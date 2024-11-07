@@ -5,5 +5,11 @@ This repository contains some experiments I have done with Security Copilot in c
 ---
 
 **Mario Cuomo**, Security Cloud Solution Architect at Microsoft.<br>
-![medium-filled-github](img/github.svg)
-![medium-filled-linkedin](img/linkedin.svg)
+
+
+[github]: https://www.buymeacoffee.com/tobse
+[![Buy me a Donut](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/github.svg)][github] 
+
+[linkedin]: https://www.buymeacoffee.com/tobse
+[![Buy me a Donut](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/linkedin.svg)][linkedin] 
+
