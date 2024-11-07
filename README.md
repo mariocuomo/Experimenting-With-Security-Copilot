@@ -1,4 +1,4 @@
-# Experimenting With Security Copilot
+# Experimenting with Microsoft Security Copilot
 
 This repository contains some experiments I have done with Security Copilot in creating custom plugins, automations and promptbooks.
 
