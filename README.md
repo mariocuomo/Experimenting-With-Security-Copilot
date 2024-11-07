@@ -7,9 +7,9 @@ This repository contains some experiments I have done with Security Copilot in c
 **Mario Cuomo**, Security Cloud Solution Architect at Microsoft.<br>
 
 
-[github]: https://www.buymeacoffee.com/tobse
+[github]: https://www.linkedin.com/in/mariocuomo/
 [![Buy me a Donut](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/github.svg)][github] 
 
-[linkedin]: https://www.buymeacoffee.com/tobse
+[linkedin]: https://github.com/mariocuomo
 [![Buy me a Donut](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/linkedin.svg)][linkedin] 
 
