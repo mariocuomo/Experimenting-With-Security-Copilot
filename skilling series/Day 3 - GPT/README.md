@@ -1,4 +1,3 @@
 # Skilling Series - GPT plugins
 
-TBD
-
+**COMING SOON** 22/11/2024
