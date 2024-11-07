@@ -11,7 +11,7 @@ Learn how to integrate GPT knowledge into Security Copilot to augment its capabi
 - [Day 4 - Automations](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/skilling%20series/Day%204%20-%20Automations) <br>
 Learn how to use Logic Apps to interact with Security Copilot and create automation workflow enhancement with Generative AI power.
 
-
+---
 
 > [!NOTE]  
 > This Repository is as-is. <br> It is **not the official Security Copilot repository** and is **not officially maintained by Microsoft**. It is my own experiments with it and the goal is to **evangelize the adoption** and capabilities of the product.
