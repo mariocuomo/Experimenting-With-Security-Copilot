@@ -1,4 +1,4 @@
 # Skilling Series - API plugins
 
-TBD
+**COMING SOON** 15/11/2024
 
