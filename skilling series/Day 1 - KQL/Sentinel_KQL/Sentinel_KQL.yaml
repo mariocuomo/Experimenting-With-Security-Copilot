@@ -10,10 +10,10 @@ SkillGroups:
         Description: Fetches all the Sentinel Cost details for each table in the last 7 days from Sentinel.
         Settings:
           Target: Sentinel
-          TenantId: 0527ecb7-06fb-4769-b324-fd4a3bb865eb
-          SubscriptionId: 99005f96-e572-4035-b476-836fd9d83d64
-          ResourceGroupName: cybersoc
-          WorkspaceName: CyberSOC
+          TenantId: <YOUR-TENANT-ID>
+          SubscriptionId: <YOUR-SUBSCRIPTION-ID>
+          ResourceGroupName: <YOUR-RESOURCE-GROUP-NAME>
+          WorkspaceName: <YOUR-WORKSPACE-NAME>
           Template: |-
             let fromDateTime=ago(7d);
             let toDateTime=now();
