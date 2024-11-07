@@ -1,0 +1,5 @@
+DeviceInfo
+| where ExposureLevel == 'High'
+| where Timestamp > ago(8h)
+| project  DeviceName,DeviceCategory,OnboardingStatus,SensorHealthState, LoggedOnUsers, ExposureLevel, JoinType,Timestamp
+| top 10 by Timestamp desc

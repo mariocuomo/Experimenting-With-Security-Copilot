@@ -1,0 +1,18 @@
+Descriptor:
+  Name: InteractWithADX
+  DisplayName: Plugin to interact with ADX corporate
+  Description: Skills to interact with ADX corporate
+
+SkillGroups:
+  - Format: KQL
+    Skills:
+     - Name: HuntIPColdData
+       DisplayName: Hunting IP historical data
+       Description:  Skill to search on cold storage on Azure data explorer
+       Settings:
+        Target: Kusto
+        Cluster:
+          https://adxrandom001.westeurope.kusto.windows.net
+        Database: MyDatabase
+        Template: 
+          SigninLogs

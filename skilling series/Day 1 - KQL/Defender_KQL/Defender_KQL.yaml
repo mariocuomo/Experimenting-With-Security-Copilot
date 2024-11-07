@@ -1,0 +1,28 @@
+Descriptor:
+  Name: DefenderDailyOperations
+  DisplayName: Defender Daily Operations
+  Description:  XDR Scenarios we use repeatedly for daily operations.
+SkillGroups:
+  - Format: KQL
+    Skills:
+      - Name: GetDefenderDevices
+        DisplayName: Get Defender Devices  
+        Description: Get the top 10 devices from defender based on device state, exposure etc for the last 8 hours
+        Settings:
+          Target: Defender
+          Template: |-
+            DeviceInfo
+            | where ExposureLevel == 'High'
+            | where Timestamp > ago(8h)
+            | project  DeviceName,DeviceCategory,OnboardingStatus,SensorHealthState, LoggedOnUsers, ExposureLevel, JoinType,Timestamp
+            | top 10 by Timestamp desc
+      - Name: GetAlertsCountByCategory
+        DisplayName: Get count of Defender alerts by category  
+        Description: Get how many Defender alerts by category for the last 24 hours
+        Settings:
+          Target: Defender
+          Template: |-
+            AlertInfo
+            | where Timestamp > ago(7d)
+            | summarize count() by Category
+    

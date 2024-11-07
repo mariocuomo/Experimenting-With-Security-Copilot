@@ -1,0 +1,13 @@
+Descriptor:
+  Name: DefenderDailyOperationsViaTemplate
+  DisplayName: Defender Daily Operations Via Template
+  Description:  XDR Scenarios we use repeatedly for daily operations Via Template.
+SkillGroups:
+  - Format: KQL
+    Skills:
+      - Name: GetDefenderDevices
+        DisplayName: Get Defender Devices
+        Description: Get the top 10 devices from defender based on device state, exposure etc for the last 8 hours
+        Settings:
+          Target: Defender
+          TemplateUrl: https://gist.githubusercontent.com/mariocuomo/2d348a9f84c1b59be5bfc088ad0894d7/raw/c0c9ea248c4ace822f4b9b98c823017964e4e0e8/query.txt

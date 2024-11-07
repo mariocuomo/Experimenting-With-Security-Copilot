@@ -1,0 +1,27 @@
+Descriptor:
+  Name: Summarize Sentinel Cost details for the last 7 days.
+  DisplayName: "Sentinel KQL: Sentinel Cost Details"
+  Description: Skills that lookup recent Sentinel Cost Details from Sentinel workspace.
+SkillGroups:
+  - Format: KQL
+    Skills:
+      - Name: GetSentinelCost
+        DisplayName: Get Sentinel Cost
+        Description: Fetches all the Sentinel Cost details for each table in the last 7 days from Sentinel.
+        Settings:
+          Target: Sentinel
+          TenantId: 0527ecb7-06fb-4769-b324-fd4a3bb865eb
+          SubscriptionId: 99005f96-e572-4035-b476-836fd9d83d64
+          ResourceGroupName: cybersoc
+          WorkspaceName: CyberSOC
+          Template: |-
+            let fromDateTime=ago(7d);
+            let toDateTime=now();
+            Usage
+            | where IsBillable == true 
+            | where TimeGenerated between ( fromDateTime .. toDateTime )
+            | where DataType <> "AzureDiagnostics"
+            | summarize size = sum(Quantity)/1024, sizeOther = sumif(Quantity,(DataType !contains "_CL" and TimeGenerated between ( fromDateTime .. toDateTime )))/1024 by DataType
+            | project ['Table Name'] = DataType, ['Table Size'] = size, ['Estimated cost'] = size*4.3
+            | order by ['Estimated cost'] desc
+            | take 20
