@@ -20,7 +20,7 @@ The investigation can continue later with MDTI and Entra plugins.
 |     :---         |     :---      |
 | GenerativeAIAppsAccessedByRisk | Skill used to retrieve the list of generative AI apps accessed in the last week     |
 | HowManyBytesForEachGenerativeAIApp | Skill used to retrieve calculate how many bytes are exchanged with Generative AI Apps in the last week |
-| StatisticsGenerativeAIApp | kill used to retrieve statistics regarding a specific Generative AI App in the last week |
+| StatisticsGenerativeAIApp | Skill used to retrieve statistics regarding a specific Generative AI App in the last week |
 
 ---
 
