@@ -22,8 +22,8 @@ SkillGroups:
           ResourceGroupName: <YOUR-RESOURCE-GROUP-NAME>
           WorkspaceName: <YOUR-WORKSPACE-NAME>
           Template: |-
-            let fromDateTime=datetime('{{fromDateTime}}');
-            let toDateTime=datetime('{{toDateTime}}');
+            let fromDateTime=todatetime('{{fromDateTime}}');
+            let toDateTime=todatetime('{{toDateTime}}');
             Usage
             | where IsBillable == true 
             | where TimeGenerated between ( fromDateTime .. toDateTime )
