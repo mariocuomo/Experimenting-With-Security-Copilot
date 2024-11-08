@@ -1,0 +1,76 @@
+Descriptor:
+  Name: GenerativeAIAppsAnalysis
+  DisplayName: Generative AI Apps Analysis
+  Description: Analyze interaction data with Generative AI Apps collected by Defender for Cloud Apps
+
+SkillGroups:
+  - Format: KQL
+    Skills:
+     - Name: GenerativeAIAppsAccessedByRisk
+       DisplayName: Generative AI Apps Accessed
+       Description:  Skill used to retrieve the list of generative AI apps accessed in the last week
+       DescriptionForModel : This skill is used to retrieve the list of generative AI apps accessed in the last week. It accepts one parameter that is the risk level (High, Medium, Low).
+       Inputs:
+          - Name: riskLevel
+            Description: App risk level (High, Medium, Low)
+            Required: true
+       Settings:
+              Target: Sentinel
+              TenantId: <YOUR-TENANT-ID>
+              SubscriptionId: <YOUR-SUBSCRIPTION-ID>
+              ResourceGroupName: <YOUR-RESOURCE-GROUP-NAME>
+              WorkspaceName: <YOUR-WORKSPACE-NAME>
+              Template: |-
+                let severityValue = (severity: string) {
+                case(severity == "High", "1-5",
+                    severity == "Medium", "6-8",
+                    severity == "Low", "9-10",
+                    "10")
+                };
+                let severity ='{{riskLevel}}';
+                McasShadowItReporting
+                | where TimeGenerated > ago(7d)
+                | where AppCategory == "Generative AI"
+                | where AppScore >= toint(extract(@"(\d+)", 1, severityValue(severity)))
+                | where AppScore <= toint(extract(@"-(\d+)", 1, severityValue(severity)))
+                | distinct AppName
+     - Name: HowManyBytesForEachGenerativeAIApp
+       DisplayName: Bytes Exchanged with Generative AI Apps
+       Description:  Skill used to retrieve calculate how many bytes are exchanged with Generative AI Apps in the last week.
+       DescriptionForModel : This skill is used to retrieve calculate how many bytes are exchanged with Generative AI Apps in the last week.
+                             It doesn't accept any parameter.
+       Settings:
+          Target: Sentinel
+          TenantId: <YOUR-TENANT-ID>
+          SubscriptionId: <YOUR-SUBSCRIPTION-ID>
+          ResourceGroupName: <YOUR-RESOURCE-GROUP-NAME>
+          WorkspaceName: <YOUR-WORKSPACE-NAME>
+          Template: |-
+            McasShadowItReporting
+            | where TimeGenerated > ago(7d)
+            | where AppCategory == "Generative AI"
+            | summarize sum(TotalBytes) by AppName
+     - Name: StatisticsGenerativeAIApp
+       DisplayName: Statistics regarding a Generative AI App
+       Description:  Skill used to retrieve statistics regarding a specific Generative AI App in the last week.
+       DescriptionForModel : This skill is used to retrieve statistics regarding a specific Generative AI App passed as parameter.
+                             It accept one parameter that is the app name.
+       Inputs:
+        - Name: appName
+          Description: Name of the app to investigate
+          Required: true
+       Settings:
+          Target: Sentinel
+          TenantId: <YOUR-TENANT-ID>
+          SubscriptionId: <YOUR-SUBSCRIPTION-ID>
+          ResourceGroupName: <YOUR-RESOURCE-GROUP-NAME>
+          WorkspaceName: <YOUR-WORKSPACE-NAME>
+          Template: |-
+            let appname = '{{appName}}';
+            let temp = McasShadowItReporting
+            | where TimeGenerated > ago(7d)
+            | where AppCategory == "Generative AI"
+            | where AppName == AppName
+            | summarize sum(UploadedBytes), sum(DownloadedBytes), sum(TotalEvents), make_set(UserName), make_set(IpAddress);
+            temp
+            | extend AppName = appname
