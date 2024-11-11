@@ -23,3 +23,5 @@ flowchart TD
     style D fill:#f9f,stroke:#333,stroke-width:4px
     D-->G(«Tell me how to optimize the following KQL query»)
 ```
+
+Inspired by [Rod Trent](https://github.com/rod-trent/Copilot-for-Security/blob/main/Prompts/Plugins/NL2KQL.md)
