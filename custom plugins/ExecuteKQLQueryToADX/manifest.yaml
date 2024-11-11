@@ -1,0 +1,23 @@
+Descriptor:
+  Name: CustomKQLQueryADX
+  DisplayName: Custom KQL Query in ADX
+  Description: Execute Custom KQL Queries in ADX
+
+SkillGroups:
+  - Format: KQL
+    Skills:
+     - Name: ExecuteADXQuery
+       DisplayName: Execute an ADX Query
+       Description:  Skill used to execute a custom KQL query against ADX
+       DescriptionForModel : This skill is used to execute a KQL query against ADX. It accepts one parameter that is the KQL query to execute.
+       Inputs:
+          - Name: kqlquery
+            Description: kql query to be executed
+            Required: true
+       Settings:
+        Target: Kusto
+        Cluster:
+          <YOUR ADX CLUSTER ENDPOINT>
+        Database: <YOUR ADX DATATABASE NAME>
+        Template: 
+          '{{kqlquery}}'
