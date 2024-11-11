@@ -31,5 +31,5 @@ Even though the KQL query can be executed directly in ADX, creating a plugin to 
 
 ## SCREENSHOTS
 <div align="center">
-  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/GenerativeAIAppsAnalysis/result.png" width="700"> </img>
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/ExecuteKQLQueryToADX/result.png" width="700"> </img>
 </div>
