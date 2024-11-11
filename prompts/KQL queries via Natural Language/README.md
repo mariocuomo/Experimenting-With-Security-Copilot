@@ -1,5 +1,5 @@
 # KQL queries via Natural Language 
-Generative AI and Security Copilot can help tremendously in **developing**, **analyzing**, and **optimizing** KQL queries.
+Generative AI and Security Copilot can help in **developing**, **analyzing**, and **optimizing** KQL queries.
 
 ### Devlopment
 Security Copilot offers the **Natural language to KQL for Microsoft Defender XDR** and **Natural language to KQL for Microsoft Sentinel** plugins to generate KQL queries from natural language. <br>
