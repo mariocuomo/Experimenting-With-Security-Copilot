@@ -10,7 +10,7 @@ API calls are performed to achieve different uses cases:
 - Execute external workflow
 
 <div align="center">
-  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/KQL%20plugins.png" width="200"> </img>
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/API%20plugins.png" width="900"> </img>
 </div>
 
 
