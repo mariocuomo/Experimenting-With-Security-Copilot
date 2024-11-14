@@ -6,6 +6,12 @@ This is an example of a plugin that performs a **GraphAPI** API call with AADDel
 ## PREREQUISITES
 AADDelegated scheme is User + Application only access. <br>
 This means that the final permission set is the intersection of Security Copilot's application permissions and the user's own permissions. <br>
+
+<div align="center">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/api_AADDelegated.png" width="500"> </img>
+</div>
+
+
 But what are application permissions? Check out this interesting [blog post](https://www.bluevoyant.com/blog/building-graph-api-custom-plugins-for-copilot-for-security) from BlueVoyant.
 Security Copilot is using its own **Entra ID Enterprise Application** (Medeina Service, Client ID: bb3d68c2-d09e-4455-94a0-e323996dbaa3) to make the call to the GraphAPI on behalf of the user. <br>
 These are the permissions it has
@@ -50,7 +56,6 @@ UserAuthenticationMethod.Read.All |
 
 
 ## SKILLS
-
 TBD
 
 ---
