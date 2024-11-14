@@ -24,7 +24,7 @@ This is an example of a plugin that performs a **GraphAPI** API call with OAuthC
 > **clientId** is you Enterprise App clientId <br>
 > **clientSecret** is the secret generated <br>
 > **Scopes** is offline_access User.Read.All <br>
-The offline_access scope gives your app access to resources on behalf of the user for an extended time. On the consent page, this scope appears as the Maintain access to data you have given it access to permission.
+The **offline_access** scope gives your app access to resources on behalf of the user for an extended time. On the consent page, this scope appears as the Maintain access to data you have given it access to permission.
 
 > [!WARNING]  
 > Remember to change the **TokenEndpoint** and **AuthorizationEndpoint** value with your TenantID
