@@ -5,7 +5,6 @@ The **OAuth 2.0 authorization framework** enables a third-party application to o
   <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/oauth.png" width="1000"> </img>
 </div>
 
-
 Microsoft Security Copilot offers two distinct authentication and authorization schemes for OAuth 2 that are **OAuthAuthorizationCodeFlow** and **OAuthClientCredentialsFlow**.
 
 **User Involvement** <br>
