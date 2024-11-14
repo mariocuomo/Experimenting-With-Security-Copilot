@@ -21,10 +21,10 @@ This is an example of a plugin that performs a **GraphAPI** API call with OAuthC
 </div>
 
 > [!WARNING]  
-> **clientId** is you Enterprise APP clientId <br>
+> **clientId** is you Enterprise App clientId <br>
 > **clientSecret** is the secret generated <br>
 > **Scopes** is https://graph.microsoft.com/.default <br>
 
 > [!WARNING]  
-> remember to change the **TokenEndpoint** value with your TenantID
+> Remember to change the **TokenEndpoint** value with your TenantID
 
