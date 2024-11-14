@@ -14,12 +14,7 @@ _ip_ is the IP to lookup. <br>
 
 ---
 
-## SAMPLE PROMPTS
-
-- `«Lookup this MD5 hash <YOUR-MD5-HASH>»`
----
-
 ## SCREENSHOTS
 <div align="center">
-  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/api_noauth.png" width="700"> </img>
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/api_basic.png" width="700"> </img>
 </div>
