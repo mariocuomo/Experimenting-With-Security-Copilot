@@ -1,0 +1,50 @@
+openapi: 3.0.0
+info:
+  title: Microsoft Defender for Endpoint API
+  version: 1.0.0
+  description: API to set device value in Microsoft Defender for Endpoint.
+servers:
+  - url: https://api.securitycenter.microsoft.com
+paths:
+  /api/machines/{id}/setDeviceValue:
+    post:
+      summary: Set a device value.
+      operationId: setDeviceValue
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the device passed as a path parameter
+          example: 
+      requestBody:
+        description: Device value object that needs to be set
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                DeviceValue:
+                  type: string
+                  description: The value to set for the device
+      responses:
+        '200':
+          description: Device value set successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Status of the operation
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal 

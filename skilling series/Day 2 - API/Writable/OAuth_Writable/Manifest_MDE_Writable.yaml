@@ -1,0 +1,12 @@
+Descriptor:
+  Name: WritablePlugin
+  DisplayName: WritablePlugin
+  Description: Plugin to set Device Value in MDE
+  Authorization:
+    Type: OAuthClientCredentialsFlow
+    TokenEndpoint: https://login.microsoftonline.com/<TENANT-ID>/oauth2/v2.0/token
+    AuthorizationContentType: application/x-www-form-urlencoded
+SkillGroups:
+- Format: API
+  Settings:
+    OpenApiSpecUrl: https://raw.githubusercontent.com/mariocuomo/TestCFS/refs/heads/main/writable
