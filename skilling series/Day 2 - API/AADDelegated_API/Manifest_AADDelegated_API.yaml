@@ -11,4 +11,4 @@ Descriptor:
 SkillGroups:
   - Format: API
     Settings:
-        OpenApiSpecUrl: https://raw.githubusercontent.com/mariocuomo/TestCFS/refs/heads/main/openapiAADDelegated
+        OpenApiSpecUrl: https://raw.githubusercontent.com/mariocuomo/Experimenting-With-Security-Copilot/refs/heads/main/skilling%20series/Day%202%20-%20API/AADDelegated_API/AADDelegated_API.yaml
