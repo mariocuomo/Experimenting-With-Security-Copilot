@@ -1,0 +1,58 @@
+openapi: 3.0.0
+info:
+    title: Skills for getting users info
+    description: Skills for getting users info
+    version: "v1"
+servers:
+    - url: https://graph.microsoft.com/v1.0
+paths:
+    /users:
+        get:
+            operationId: GetUsers
+            description: List all Users in Entra
+responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        businessPhones:
+                          type: array
+                          items:
+                            type: string
+                        displayName:
+                          type: string
+                        givenName:
+                          type: string
+                        jobTitle:
+                          type: string
+                          nullable: true
+                        mail:
+                          type: string
+                          nullable: true
+                        mobilePhone:
+                          type: string
+                          nullable: true
+                        officeLocation:
+                          type: string
+                          nullable: true
+                        preferredLanguage:
+                          type: string
+                          nullable: true
+                        surname:
+                          type: string
+                        userPrincipalName:
+                          type: string
+                        id:
+                          type: string
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
