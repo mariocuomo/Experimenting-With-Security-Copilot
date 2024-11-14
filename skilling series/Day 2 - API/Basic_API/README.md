@@ -10,7 +10,7 @@ _ip_ is the IP to lookup. <br>
 
 | SkillName | Description |
 |     :---         |     :---      |
-| CensysHosts | Skill used to fetche the entire host entity by IP address  |
+| CensysHosts | Skill used to fetch the entire host entity by IP address  |
 
 ---
 
