@@ -1,0 +1,10 @@
+Descriptor:
+  Name: Nitrix
+  DisplayName: Nitrix
+  Description: This is a look-up tool for typical unsalted MD5 cryptographic hashes
+  SupportedAuthTypes:
+    - None
+SkillGroups:
+  - Format: API
+    Settings:
+      OpenApiSpecUrl: https://gist.githubusercontent.com/mariocuomo/6eb5a1d8945024bf12c575d472417a82/raw/0fd600b47f1a9cedf7029a24b72b0c482eec9c61/gistfile1.txt
