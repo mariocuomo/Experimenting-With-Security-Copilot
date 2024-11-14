@@ -56,11 +56,18 @@ UserAuthenticationMethod.Read.All |
 
 
 ## SKILLS
-TBD
+| SkillName | Description |
+|     :---         |     :---      |
+| GetAlertIdsFromIncidentIdAADDelegated | List all alert id's based on a user provided incident id  |
 
 ---
 
 ## SCREENSHOTS
+Below are two screenshots: invoking the same skill has two different results based on the user's permissions. The first user is a Security Admin and has the _SecurityAlert.Read.All_ permission, the second user does not.
+
 <div align="center">
-  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/api_AADDelegated.png" width="700"> </img>
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/api_AADDelegatedSecurityAdmin.png" width="700"> </img>
+</div>
+<div align="center">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/api_AADDelegatedNoAdmin.png" width="700"> </img>
 </div>
