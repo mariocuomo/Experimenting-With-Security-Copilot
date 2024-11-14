@@ -2,7 +2,7 @@
 The **OAuth 2.0 authorization framework** enables a third-party application to obtain limited access to an HTTP service, either on behalf of a resource owner by orchestrating an approval interaction between the resource owner and the HTTP service, or by allowing the third-party application to obtain access on its own behalf.
 
 <div align="center">
-  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/oauth.png" width="200"> </img>
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/oauth.png" width="1000"> </img>
 </div>
 
 
@@ -21,5 +21,5 @@ _OAuthAuthorizationCodeFlow_: More secure as it involves user authentication and
 _OAuthClientCredentialsFlow_: Relies on the application's credentials, making it suitable for background services and daemons. <br>
 
 This folder contains two examples:
-- [OAuthAuthorizationCodeFlow](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/skilling%20series/Day%201%20-%20KQL)
-- [OAuthClientCredentialsFlow](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/skilling%20series/Day%202%20-%20API)
+- [OAuthAuthorizationCodeFlow](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/skilling%20series/Day%202%20-%20API/OAuthClient_API/OAuthAuthorizationCodeFlow)
+- [OAuthClientCredentialsFlow](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/skilling%20series/Day%202%20-%20API/OAuthClient_API/OAuthClientCredentialsFlow)
