@@ -1,27 +1,20 @@
-# API plugin - No Authentication
+# API plugin - Basic Authentication
 
-This is an example of a plugin that performs a **Nitrxgen** API call. <br>
-Nitrxgen is a look-up tool for typical unsalted MD5 cryptographic hashes.
+This is an example of a plugin that performs a **Censys** API call with Basic Authentication (username and password). <br>
+Censys is a platform that helps information security practitioners discover, monitor, and analyze devices that are accessible from the Internet.
 
-**API GET https://www.nitrxgen.net/md5db/{md5hash}.json** <br>
-_md5hash_ is the MD5hash to lookup. <br>
+**API GET https://search.censys.io/api/v2/hosts/{ip}** <br>
+_ip_ is the IP to lookup. <br>
 
 ## SKILLS
 
 | SkillName | Description |
 |     :---         |     :---      |
-| LookupMD5Hash | Skill used to look-up tool an unsalted MD5 cryptographic hashes   |
+| CensysHosts | Skill used to fetche the entire host entity by IP address  |
 
----
-
-## SAMPLE PROMPTS
-
-- `«Lookup this MD5 hash <YOUR-MD5-HASH>»`
 ---
 
 ## SCREENSHOTS
 <div align="center">
-  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/api_noauth.png" width="700"> </img>
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/api_basic.png" width="700"> </img>
 </div>
-
-Inspired by  [Nikolay Salnikov](https://www.linkedin.com/pulse/how-i-added-custom-skill-microsoft-copilot-security-nikolay-salnikov-6whce/)
