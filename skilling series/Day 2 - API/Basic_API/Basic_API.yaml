@@ -1,0 +1,21 @@
+openapi: 3.0.0
+info:
+    title: Censys
+    description: Censys is a platform that helps information security practitioners discover, monitor, and analyze devices that are accessible from the Internet.
+    version: "1.0"
+servers:
+    - url: https://search.censys.io/api/
+paths:
+    /v2/hosts/{ip}:
+        get: 
+            operationId: CensysHosts
+            summary: Fetches the entire host entity by IP address and returns the most recent Censys view of the host and its services.
+            parameters:
+                - in: path
+                  name: ip 
+                  schema:
+                    type: string
+                  required: true
+            responses:
+                200:
+                    description: Successful authentication.
