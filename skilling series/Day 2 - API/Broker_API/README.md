@@ -17,3 +17,5 @@ Since Security Copilot can only do GET and POST, you can integrate other HTTP me
 
 The broker can be implemented in different ways through an Azure Logic App, Azure Function, App Service, etc. <br>
 In the [NoAuth example](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/skilling%20series/Day%202%20-%20API/NoAuth_API), the Nitrxgen service was used. An interesting example of a broker architecture is given by Nikolay Salnikov in this [blog post](https://www.linkedin.com/pulse/how-i-added-custom-skill-microsoft-copilot-security-nikolay-salnikov-6whce/) using a Flask Application.
+
+This [folder](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/skilling%20series/Day%202%20-%20API/Broker_API\LogicApp) contains the same example but with an Azure Logic App. 
