@@ -4,8 +4,18 @@ This is an example of a plugin that performs a **GraphAPI** API call with OAuthC
 **API GET https://graph.microsoft.com/v1.0/users**
 
 ## REQUIREMENTS
-- It necessary to **register an Enterprise Application** in Entra.
+- It is necessary to **register an Enterprise Application** in Entra.
 - Add the following **callback uri** https://securitycopilot.microsoft.com/auth/v1/callback.
 - Add the following **Application Permissions**: _Microsoft Graph -> User.Read and User.Read.All_ permissions to the application.
 - Create an **Application Secret**
 
+## SKILLS
+| SkillName | Description |
+|     :---         |     :---      |
+| GetUsers | List all Users in Entra  |
+
+---
+## SCREENSHOTS
+<div align="center">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/oauthcredentials.png" width="700"> </img>
+</div>
