@@ -20,10 +20,10 @@ This is an example of a plugin that performs a **GraphAPI** API call with OAuthC
   <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/oauthcredentials.png" width="600"> </img>
 </div>
 
-> [!INFO]  
-> **clientId** is you Enterprise APP clientId
-> **clientSecret** is the secret generated
-> **Scopes** is https://graph.microsoft.com/.default
+> [!WARNING]  
+> **clientId** is you Enterprise APP clientId <br>
+> **clientSecret** is the secret generated <br>
+> **Scopes** is https://graph.microsoft.com/.default <br>
 
 > [!WARNING]  
 > remember to change the **TokenEndpoint** value with your TenantID
