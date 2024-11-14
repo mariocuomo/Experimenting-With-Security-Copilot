@@ -71,3 +71,5 @@ Below are two screenshots: invoking the same skill has two different results bas
 <div align="center">
   <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/api_AADDelegatedNoAdmin.png" width="700"> </img>
 </div>
+
+Inspired by [Chaitanya Belwal](https://techcommunity.microsoft.com/blog/securitycopilotblog/using-microsoft-graph-as-a-microsoft-copilot-for-security-plugin-with-delegated-/4198148)

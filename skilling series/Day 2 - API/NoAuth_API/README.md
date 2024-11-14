@@ -23,3 +23,6 @@ _md5hash_ is the MD5hash to lookup. <br>
 <div align="center">
   <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/api_noauth.png" width="700"> </img>
 </div>
+
+
+Inspired by [Nikolay Salnikov](https://www.linkedin.com/pulse/how-i-added-custom-skill-microsoft-copilot-security-nikolay-salnikov-6whce/)
