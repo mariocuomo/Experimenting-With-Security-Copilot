@@ -17,5 +17,14 @@ This is an example of a plugin that performs a **GraphAPI** API call with OAuthC
 ---
 ## SCREENSHOTS
 <div align="center">
-  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/oauthcredentials.png" width="700"> </img>
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/oauthcredentials.png" width="600"> </img>
 </div>
+
+> [!INFO]  
+> **clientId** is you Enterprise APP clientId
+> **clientSecret** is the secret generated
+> **Scopes** is https://graph.microsoft.com/.default
+
+> [!WARNING]  
+> remember to change the **TokenEndpoint** value with your TenantID
+
