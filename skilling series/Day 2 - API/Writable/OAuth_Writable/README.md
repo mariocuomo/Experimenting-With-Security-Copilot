@@ -20,5 +20,7 @@ This is an example of a plugin that performs a **GraphAPI** API call with OAuthC
 </div>
 
 > [!WARNING]  
-> Remember to change the **TokenEndpoint** value with your TenantID
+> Remember to change the **TokenEndpoint** value with your TenantID <br>
+> **Scopes** is https://api.securitycenter.microsoft.com/.default
+
 
