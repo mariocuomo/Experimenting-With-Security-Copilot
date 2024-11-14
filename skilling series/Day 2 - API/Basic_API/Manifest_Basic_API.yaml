@@ -7,4 +7,4 @@ Descriptor:
 SkillGroups:
   - Format: API
     Settings:
-      OpenApiSpecUrl: https://gist.githubusercontent.com/jmf321/bf733a52bde8da632924ec39f6fa9d1c/raw/5e86c492ee5f18ae10717cf5f531017fd5a68a81/censys.yaml
+      OpenApiSpecUrl: https://raw.githubusercontent.com/mariocuomo/Experimenting-With-Security-Copilot/refs/heads/main/skilling%20series/Day%202%20-%20API/Basic_API/Basic_API.yaml
