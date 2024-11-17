@@ -16,6 +16,11 @@ The GPT response can be used by subsequent prompts.
 - **Easy to integrate** <br>
 The integration is ready, there is no need to create your own Azure OpenAI instance, define access, do auditing, etc.
 
+This folder contains 2 example of GPT plugin:
+- [Custom Incident Report](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/skilling%20series/Day%203%20-%20GPT%20and%20LogicApp/CustomIncidentReport_GPT) <br>
+  Manifest and OpenAPI specification files to perform an API call without authentication
+- [DefangUrls](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/skilling%20series/Day%203%20-%20GPT%20and%20LogicApp/SecuritySkill_GPT) <br>
+  Manifest and OpenAPI specification files to perform an API call with basic authentication (username and password)
 
 ## Logic App
 TBD
