@@ -9,11 +9,11 @@
 </div>
 
 There are at least 3 good reasons to interact with Azure Open AI with a custom plugin:
-- **Context (PAST)** <br>
+- **Context (Past)** <br>
 In the natural language prompt, you can reference past information and reference session context. See the custom incident report custom plugin.
 - **Context (Future)** <br>
 The GPT response can be used by subsequent prompts.
-- **Easy to do** <br>
+- **Easy to integrate** <br>
 The integration is ready, there is no need to create your own Azure OpenAI instance, define access, do auditing, etc.
 
 
