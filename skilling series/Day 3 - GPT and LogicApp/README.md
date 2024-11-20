@@ -30,7 +30,7 @@ This folder contains 2 example of GPT plugins:
 </div>
 
 This folder contains 2 example of GPT plugins:
-- [Send Email](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/skilling%20series/Day%203%20-%20GPT%20and%20LogicApp/CustomIncidentReport_GPT) <br>
+- [Send Email](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/skilling%20series/Day%203%20-%20GPT%20and%20LogicApp/EmailStandard_LogicApp) <br>
   This plugin is illustrative to show how you can trigger a Logic App via Security Copilot. The Logic App simply sends an email to an email address.
-- [Lookup data](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/skilling%20series/Day%203%20-%20GPT%20and%20LogicApp/CustomIncidentReport_GPT) <br>
+- [Lookup data](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/skilling%20series/Day%203%20-%20GPT%20and%20LogicApp/Nitrxgen%20_LogicApp) <br>
   This plugin demonstrates how to use Logic Apps to lookup data in an external service and return it to Security Copilot. This plugin is equivalent to the custom API plugin shown [here](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/skilling%20series/Day%202%20-%20API/NoAuth_API).
