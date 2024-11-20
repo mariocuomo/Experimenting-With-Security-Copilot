@@ -1,0 +1,16 @@
+Descriptor:
+  Name: Nitrix
+  DisplayName: Nitrix
+  Description: This is a look-up tool for typical unsalted MD5 cryptographic hashes
+
+SkillGroups:
+  - Format: LogicApp
+    Skills:
+      - Name: LookupMD5Hash
+        DisplayName: LookupMD5Hash
+        Description: Retrieves the original value of a given MD5 hash
+        Settings:
+          SubscriptionId: <YOUR SUBSCRIPTION ID>
+          ResourceGroup: <YOUR RESOURCE GROUP>
+          WorkflowName: <WORKFLOW NAME>
+          TriggerName: <TRIGGER NAME>

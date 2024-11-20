@@ -1,0 +1,16 @@
+Descriptor:
+  Name: SendEmailStandard
+  DisplayName: SendEmailStandard
+  Description: This is a plugin to send an Heartbeat email via Logic App
+
+SkillGroups:
+  - Format: LogicApp
+    Skills:
+      - Name: SendEmailViaLogicAppStandard
+        DisplayName: Send Email Via LogicApp Standard
+        Description: Send a defined standard email to a defined email address
+        Settings:
+          SubscriptionId: <YOUR SUBSCRIPTION ID>
+          ResourceGroup: <YOUR RESOURCE GROUP>
+          WorkflowName: <WORKFLOW NAME>
+          TriggerName: <TRIGGER NAME>
