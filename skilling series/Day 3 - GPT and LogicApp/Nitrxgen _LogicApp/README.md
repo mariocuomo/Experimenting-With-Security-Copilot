@@ -10,6 +10,12 @@ Simply what you do is define the following information in the plugin manifest:
 - **WorkflowName**
 - **TriggerName**
 
+<div align="center">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/logicapp_nitrixgen.png" width="800"> </img>
+</div>
+
+---
+
 To test this plugin you need to deploy the Logic App. <br>
 After the deployment you shoul see a new Logic App named **PluginLogicApp_Nitrixgen**.
 
