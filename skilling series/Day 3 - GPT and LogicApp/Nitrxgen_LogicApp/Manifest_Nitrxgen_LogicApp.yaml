@@ -1,6 +1,6 @@
 Descriptor:
-  Name: NitrixLogicApp
-  DisplayName: NitrixLogicApp
+  Name: NitrxLogicApp
+  DisplayName: NitrxLogicApp
   Description: This is a look-up tool for typical unsalted MD5 cryptographic hashes
 
 SkillGroups:
@@ -16,5 +16,5 @@ SkillGroups:
         Settings:
           SubscriptionId: <YOUR-SUBSCRIPTION-ID>
           ResourceGroup: <YOUR-RESOURCE-GROUP>
-          WorkflowName: PluginLogicApp_Nitrixgen
+          WorkflowName: PluginLogicApp_Nitrxgen
           TriggerName: manual

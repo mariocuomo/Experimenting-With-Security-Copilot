@@ -8,7 +8,7 @@
         {
             "type": "Microsoft.Logic/workflows",
             "apiVersion": "2017-07-01",
-            "name": "PluginLogicApp_Nitrixgen",
+            "name": "PluginLogicApp_Nitrxgen",
             "location": "[resourceGroup().location]",
             "properties": {
                 "state": "Enabled",
