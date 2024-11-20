@@ -1,6 +1,6 @@
 # Lookup external data with Logic App plugin
 
-This plugin example shows how to pass parameters to a Logic App. The Logic App looks up an MD5Hash on Nitrixgen. The same example but with a plugin API is shown [here](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/skilling%20series/Day%202%20-%20API/NoAuth_API).
+This plugin example shows how to pass parameters to a Logic App. The Logic App looks up an MD5Hash on Nitrxgen. The same example but with a plugin API is shown [here](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/skilling%20series/Day%202%20-%20API/NoAuth_API).
 
 Simply what you do is define the following information in the plugin manifest:
 
@@ -18,7 +18,7 @@ Note how the *md5hash* parameter is passed in the request body.
 
 
 <div align="center">
-  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/logicapp_nitrixgenskill.png" width="800"> </img>
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/logicapp_nitrixgenskill.png" width="1000"> </img>
 </div>
 
 ---
