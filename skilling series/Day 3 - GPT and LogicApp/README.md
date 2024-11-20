@@ -26,7 +26,7 @@ This folder contains 2 example of GPT plugins:
 ## Logic App
 **Security Copilot** custom plugins allow you to trigger a Logic App to execute advanced workflows.
 <div align="center">
-  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/GPT%20plugins.png" width="800"> </img>
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/logicapp%20plugins.png" width="800"> </img>
 </div>
 
 This folder contains 2 example of GPT plugins:
