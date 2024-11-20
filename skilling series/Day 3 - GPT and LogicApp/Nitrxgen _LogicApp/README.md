@@ -13,7 +13,9 @@ Simply what you do is define the following information in the plugin manifest:
 <div align="center">
   <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/logicapp_nitrixgen.png" width="800"> </img>
 </div>
+
 Note how the *md5hash* parameter is passed in the request body.
+
 
 <div align="center">
   <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/logicapp_nitrixgenskill.png" width="800"> </img>
