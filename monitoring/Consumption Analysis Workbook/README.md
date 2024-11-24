@@ -18,7 +18,7 @@ Convert the _.xlsx_ file to _.csv._ <br>
 You can use [Microsoft 365 apps for free on the web](https://www.microsoft.com/en-us/microsoft-365/free-office-online-for-the-web?msockid=3bacf9dd7b706ea223c0eb007a476fc6)
 
 # STEP 3
-Run the [_formatUsageData.ps1_](TBD) PowerShell Script. <br>
+Run the [_formatUsageData.ps1_](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/monitoring/Consumption%20Analysis%20Workbook/formatUsageData.ps1) PowerShell Script. <br>
 
 
 
