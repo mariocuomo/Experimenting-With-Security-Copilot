@@ -4,11 +4,10 @@ It uses data from the **Usage Monitoring Dashboard** and performs analysis based
 
 version: _1.0_
 
-[click here to jump to my anchor](#PREREQUISITES) <br>
-[click here to jump to my anchor](#DEPLOYMENT) <br>
-[click here to jump to my anchor](#USE) <br>
-
-
+Sections in this page
+- [Prerequisites](#PREREQUISITES) <br>
+- [Deployment](#DEPLOYMENT) <br>
+- [Use it](#USE) <br>
 
 
 <a name="PREREQUISITES"></a>
