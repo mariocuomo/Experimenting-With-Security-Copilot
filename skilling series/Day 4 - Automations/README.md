@@ -14,6 +14,8 @@ The connector offers two actions:
 
 As for the action _submit a prompt to Security Copilot_ it offers interesting parameters to contextualize and optimize the interaction. <br>
 
+<div align="center">
+  
 | Name	| Description |
 | ------------- | ------------- |
 | **Prompt Content**	| Prompt to be evaluated by security copilot |
@@ -22,6 +24,11 @@ As for the action _submit a prompt to Security Copilot_ it offers interesting pa
 | **Direct Skill** | Skill to invoke |
 | **Direct Skill Inputs**	| Skill required inputs |
 
+</div>
+
+<div align="center">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/logic%20app%20connector.png" width="500"> </img>
+</div>
 
 **COMING SOON** 29/11/2024
 
