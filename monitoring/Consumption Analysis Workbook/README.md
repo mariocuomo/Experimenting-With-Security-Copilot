@@ -22,6 +22,10 @@ You can use [Microsoft 365 apps for free on the web](https://www.microsoft.com/e
 # Step #2
 Run the [_formatUsageData.ps1_](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/monitoring/Consumption%20Analysis%20Workbook/formatUsageData.ps1) PowerShell Script. <br>
 
+```PowerShell
+.\formatUsageData.ps1
+```
+
 # Step #3
 The PowerShell Script creates a new file (_rawContent.txt_)<br>
 Copy the contents of the file and past it into the _rawContent_ property in the _deployment.json_ file.
