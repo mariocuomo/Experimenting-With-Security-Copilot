@@ -4,7 +4,7 @@ It is possible to interact with Security Copilot via Azure Logic App using the [
 This unlocks the ability to create automations that leverage the Security Copilot integration. <br>
 
 <div align="center">
-  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/automations.png" width="800"> </img>
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/automation.png" width="800"> </img>
 </div>
 
 
