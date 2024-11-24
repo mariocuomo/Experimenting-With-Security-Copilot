@@ -25,6 +25,9 @@ Run the [_formatUsageData.ps1_](https://github.com/mariocuomo/Experimenting-With
 # Step #3
 The PowerShell Script creates a new file (_rawContent.txt_)<br>
 Copy the contents of the file and past it into the _rawContent_ property in the _deployment.json_ file.
+<div align="center">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/rawContent.png" width="800">
+</div>
 
 # Step #4
 Deploy the _deployment.json_ file to Azure. <br>
