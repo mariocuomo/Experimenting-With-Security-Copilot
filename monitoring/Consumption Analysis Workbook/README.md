@@ -38,11 +38,15 @@ Copy the contents of the file and past it into the _rawContent_ property in the 
 </div>
 
 # Step #4
-Deploy the _deployment.json_ file to Azure. <br>
+Deploy the _deployment.json_ file to Azure (in the same Resourge Group where Sentinel is deployed). <br>
+
 The deployment creates two Azure Resources:
 - the **Security Copiloty SCUs Consumption Analysis Workbook**
 - the **_SecurityCopilotUsageData_ Watchlist**
 
+<div align="center">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/Deployment" width="1000">
+</div>
 
 
 
