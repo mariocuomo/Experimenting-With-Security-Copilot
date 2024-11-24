@@ -59,23 +59,52 @@ The deployment creates two Azure Resources:
 
 <a name="USE"></a>
 # USE
+Once you deploy the ARM template you will find the **Security Copilot SCUs Consumption Analysis Workbook** in Sentinel. 
+
+<br>
+<br>
 
 <div align="center">
-  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/Showcase1.png" width="700">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/Showcase2.png" width="1000">
 </div>
+
+<br>
+<br>
+
+The workbook contains three sections: **User Analysis**, **Plugin Analysis**, and **Session Analysis**. <br>
+The user experience is the same, so let's analyze the _User Analysis_ tab.
+First you find two bar charts one showing the **number of interactions (count)** per user, and the other **showing the SCUs consumed (sum)** per user - only the TOP 10.
+there is a table showing for each user the count of interactions and the SUM of SCUs used.
+
+<br>
+<br>
+
 <div align="center">
-  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/Showcase2.png" width="700">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/Showcase3.png" width="1000">
 </div>
+
+<br>
+<br>
+
+Once the general is analyzed, it is possible to analyze in more detail a single user. <br>
+Several **pie charts** are shown:
+- the first line shows the **count** of interactions (per plugin, per experience, per category, per session)
+- the second line the **sum** of SCUs (per plugin, per experience, per category, per session)
+
+<br>
+<br>
+
 <div align="center">
-  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/Showcase3.png" width="700">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/Showcase4.png" width="1000">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/Showcase5.png" width="1000">
 </div>
+
+Finally, a list of **every interactions the user has had with Security Copilot** is displayed.
+
+<br>
+<br>
+
 <div align="center">
-  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/Showcase4.png" width="700">
-</div>
-<div align="center">
-  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/Showcase5.png" width="700">
-</div>
-<div align="center">
-  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/Showcase6.png" width="700">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/Showcase6.png" width="1000">
 </div>
 
