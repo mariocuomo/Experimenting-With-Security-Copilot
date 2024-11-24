@@ -7,7 +7,7 @@ version: _1.0_
 Sections in this page
 - [Prerequisites](#PREREQUISITES) <br>
 - [Deployment](#DEPLOYMENT) <br>
-- [Use it](#USE) <br>
+- [Use](#USE) <br>
 
 
 <a name="PREREQUISITES"></a>
@@ -60,5 +60,22 @@ The deployment creates two Azure Resources:
 <a name="USE"></a>
 # USE
 
-> [!IMPORTANT]
-> Under Construction 🧰
+<div align="center">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/Showcase1.png" width="700">
+</div>
+<div align="center">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/Showcase2.png" width="700">
+</div>
+<div align="center">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/Showcase3.png" width="700">
+</div>
+<div align="center">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/Showcase4.png" width="700">
+</div>
+<div align="center">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/Showcase5.png" width="700">
+</div>
+<div align="center">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/Showcase6.png" width="700">
+</div>
+
