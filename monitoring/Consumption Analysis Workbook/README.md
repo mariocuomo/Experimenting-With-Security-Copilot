@@ -45,7 +45,7 @@ The deployment creates two Azure Resources:
 - the **_SecurityCopilotUsageData_ Watchlist**
 
 <div align="center">
-  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/Deployment" width="1000">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/Deployment.png" width="1000">
 </div>
 
 
