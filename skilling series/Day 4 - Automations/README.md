@@ -1,5 +1,9 @@
 # Skilling Series - Automations
 
+> [!IMPORTANT]  
+> Under Construction **COMING SOON** 29/11/2024 🧰
+
+
 It is possible to interact with Security Copilot via Azure Logic App using the [Security Copilot Connector](https://learn.microsoft.com/en-us/connectors/securitycopilot/). <br>
 This unlocks the ability to create automations that leverage the Security Copilot integration. <br>
 
@@ -29,7 +33,5 @@ As for the action _submit a prompt to Security Copilot_ it offers interesting pa
 <div align="center">
   <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/logic%20app%20connector.png" width="500"> </img>
 </div>
-
-**COMING SOON** 29/11/2024
 
 
