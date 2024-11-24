@@ -4,6 +4,14 @@ It uses data from the **Usage Monitoring Dashboard** and performs analysis based
 
 version: _1.0_
 
+[click here to jump to my anchor](#PREREQUISITES) <br>
+[click here to jump to my anchor](#DEPLOYMENT) <br>
+[click here to jump to my anchor](#USE) <br>
+
+
+
+
+<a name="PREREQUISITES"></a>
 # PREREQUISITES
 _Version 1.0_ uses a Sentinel workbook. <br>
 The _CapacityUsage.xlsx_ file is uploaded as a **Sentinel Watchlist** and is the database for the visualization created with the workbook. <br>
@@ -14,6 +22,7 @@ _Version 1.0_ is designed to provide a quick **Proof Of Concept for analyzing Us
   <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/schema.png" width="800">
 </div>
 
+<a name="DEPLOYMENT"></a>
 # DEPLOYMENT
 ## Step #1
 [Download](https://learn.microsoft.com/en-us/copilot/security/manage-usage#export-data) the _CapacityUsage.xlsx_ report from the Security Copilot Standalone portal. <br>
@@ -49,7 +58,8 @@ The deployment creates two Azure Resources:
   <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotUsageDataWorkbook/Deployment.png" width="1000">
 </div>
 
-# USE IT
+<a name="USE"></a>
+# USE
 
 > [!IMPORTANT]
 > Under Construction 🧰
