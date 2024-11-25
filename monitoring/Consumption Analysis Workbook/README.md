@@ -1,4 +1,4 @@
-# Security Copiloty SCUs Consumption Analysis Workbook
+# Security Copilot SCUs Consumption Analysis Workbook
 The **Security Copiloty SCUs Consumption Analysis Workbook** is designed to help you understand Secure Compute Unit consumption. <br>
 It uses data from the **Usage Monitoring Dashboard** and performs analysis based on users, plugins and sessions. <br>
 
