@@ -42,6 +42,9 @@ _Confirm-SkillGroups_ and _Confirm-Descriptor_ functions use the _Test-ExtraKeys
 
 # Understand the output
 <a name="OUTPUT"></a>
+The script prints
+- **errors (missing keys) in red.**
+- **warnings (missing optional keys, no-necessary keys) in blue**
 
 <div align="center">
   <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/ScriptAnaliser/explain.png" width="700">
