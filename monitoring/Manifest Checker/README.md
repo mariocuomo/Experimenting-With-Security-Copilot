@@ -40,4 +40,14 @@ _Confirm-SkillGroups_ and _Confirm-Descriptor_ functions use the _Test-ExtraKeys
   <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/ScriptAnaliser/functionschema.png" width="800">
 </div>
 
+# Understand the output
+<a name="OUTPUT"></a>
+
+<div align="center">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/ScriptAnaliser/explain.png" width="700">
+</div>
+
+
+
+
 
