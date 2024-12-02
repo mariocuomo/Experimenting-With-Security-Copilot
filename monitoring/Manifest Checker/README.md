@@ -37,7 +37,7 @@ The function _Main_ has the following flow:
 
 _Confirm-SkillGroups_ and _Confirm-Descriptor_ functions use the _Test-ExtraKeys_, _Test-WarningKeys_ and _Test-ErrorKeys_ functions to analyze the presence of the required, optional and unnecessary subkeys.
 <div align="center">
-  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/ScriptAnaliser/functions-schema.png" width="800">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/ScriptAnaliser/functionschema.png" width="800">
 </div>
 
 
