@@ -1,0 +1,10 @@
+Descriptor:
+  Name: BrokerNitrix
+  DisplayName: BrokerNitrix
+  Description: This is a look-up tool for typical unsalted MD5 cryptographic hashes using a broker service
+  SupportedAuthTypes:
+    - None
+SkillGroups:
+  - Format: API
+    Settings:
+      OpenApiSpecUrl: https://raw.githubusercontent.com/mariocuomo/TestCFS/refs/heads/main/Broker?token=GHSAT0AAAAAACYUBXK2WCGBE4WLKKXMNBVIZZIUEDQ
