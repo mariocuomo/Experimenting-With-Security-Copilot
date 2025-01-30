@@ -20,7 +20,7 @@ This is a simple experiment of creating an incident graph with Security Copilot.
 <a name="SCHEMA"></a>
 The solution is composed of three main parts:
 - a simple html web page
-- a Logic App waiting for an api call
+- a Logic App waiting for an API call
 - a custom plugin with a GPT skill
 
 <div align="center">
