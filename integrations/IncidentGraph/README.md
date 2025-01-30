@@ -43,7 +43,7 @@ To test this solution, perform the following steps:
 The ARM template deploys the Logic App and a new Security Copilot connection, remember to authenticate it.
 2. Edit the web page to point to your Logic App `response = await fetch('<INSERT-YOUR-ENDPOINT>'`. The web page is the file _site.html_.
 3. Upload the MermaidDiagram plugin in Security Copilot. You can find it [here](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/custom%20plugins/MermaidDiagram).
-4. Open the site.html file with your browser, insert a Defender XDR incident ID and enjoy the result.
+4. Open the _site.html_ file with your browser, insert a Defender XDR incident ID and enjoy the result.
 
 > [!IMPORTANT]  
 > Under Construction 🧰
