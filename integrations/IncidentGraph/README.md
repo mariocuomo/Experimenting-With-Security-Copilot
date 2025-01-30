@@ -4,6 +4,8 @@ version: _1.0_
 Sections in this page
 - [What is](#WHAT) <br>
 - [Schema](#SCHEMA) <br>
+- [Deploy](#DEPLOY) <br>
+
 
 # What is
 <a name="WHAT"></a>
@@ -23,6 +25,20 @@ The solution is composed of three main parts
 <div align="center">
   <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/MermaidDiagram/high-level-schema.png" width="900"> </img>
 </div>
+
+The workflow is simple:
+1. You enter the **Defender XDR incident ID** that you want to investigate
+3. The "**Generate Diagram**" button triggers a Logic App
+4. The Logic App uses the **Security Copilot connector** to investigate the incident <br>
+  <i>in this first version it is just the incident summary</i>
+5. The last step of the Logic App is the execution of the **MermaidDiagramCreation** skill
+6. The Logic App returns the graph expressed with **Mermaid's syntax**
+7. The Mermaid graph is **rendered** and displayed
+
+
+# Deploy
+<a name="DEPLOY"></a>
+Deploy the Logic App using the ARM template found in this folder. The file is deployment.json.
 
 > [!IMPORTANT]  
 > Under Construction 🧰
