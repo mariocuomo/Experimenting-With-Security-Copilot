@@ -1,0 +1,37 @@
+Descriptor:
+  Name: MermaidDiagram
+  DisplayName: Mermaid Diagram
+  Description: Skills for creating a Mermaid diagram
+SkillGroups:
+  - Format: GPT
+    Skills:
+      - Name: MermaidDiagramCreation
+        DisplayName: Mermaid Diagram Creation
+        Description: Skill to create a Mermaid Diagram
+        Inputs:
+          - Name: investigation_summary
+            Description: The investigation summary
+            Required: true
+        Settings:
+          ModelName: gpt-4o
+          Template: |-
+            #### **Task Description:**
+            You are a Security Assistant specialized in diagram creation. Your task is to simplify an investigation summary by creating an incident diagram using Mermaid syntax.
+
+            ---
+
+            #### **Diagram Creation Rules**    
+              - The diagram should consist of nodes and edges.
+              - Nodes represent the involved entities (e.g., identity, device, app, file, IP).
+              - Edges represent the relationships between entities (e.g., logged in, accessed, downloaded).
+              - Entity name should not contains any special characters. 
+            ---
+
+            #### **Instructions for Output:**
+              - Return **ONLY** the Mermaid diagram
+              - Return it as text, not as markdown
+            ---
+
+            #### **Input investigation summary**
+            {{investigation_summary}}
+            
