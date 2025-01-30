@@ -30,7 +30,7 @@ The workflow is simple:
 1. You enter the **Defender XDR incident ID** that you want to investigate
 3. The "**Generate Diagram**" button triggers a Logic App
 4. The Logic App uses the **Security Copilot connector** to investigate the incident <br>
-  <i>in this first version it is just the incident summary</i>
+  (<i>in this first version it is just the incident summary</i>)
 5. The last step of the Logic App is the execution of the **MermaidDiagramCreation** skill
 6. The Logic App returns the graph expressed with **Mermaid's syntax**
 7. The Mermaid graph is **rendered** and displayed
