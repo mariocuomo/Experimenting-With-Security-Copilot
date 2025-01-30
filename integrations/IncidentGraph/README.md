@@ -17,7 +17,7 @@ This is a simple experiment of creating an incident graph with Security Copilot.
 
 # Schema
 <a name="SCHEMA"></a>
-The solution is composed of three main parts
+The solution is composed of three main parts:
 - a simple html web page
 - a Logic App waiting for an api call
 - a custom plugin with a GPT skill
@@ -38,7 +38,7 @@ The workflow is simple:
 
 # Deploy
 <a name="DEPLOY"></a>
-Deploy the Logic App using the ARM template found in this folder. The file is deployment.json.
+Deploy the Logic App using the ARM template found in this folder. The file is _deployment.json_.
 
 > [!IMPORTANT]  
 > Under Construction 🧰
