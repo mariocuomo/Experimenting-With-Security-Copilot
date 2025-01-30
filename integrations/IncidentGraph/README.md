@@ -5,6 +5,7 @@ Sections in this page
 - [What is](#WHAT) <br>
 - [Schema](#SCHEMA) <br>
 - [Deploy](#DEPLOY) <br>
+- [Considerations](#CONSIDERATIONS) <br>
 
 
 # What is
@@ -45,5 +46,11 @@ The ARM template deploys the Logic App and a new Security Copilot connection, re
 3. Upload the MermaidDiagram plugin in Security Copilot. You can find it [here](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/custom%20plugins/MermaidDiagram).
 4. Open the _site.html_ file with your browser, insert a Defender XDR incident ID and enjoy the result.
 
-> [!IMPORTANT]  
-> Under Construction 🧰
+
+# Considerations
+<a name="CONSIDERATIONS"></a>
+This is a Proof Of Concepts and **not ready to be used in production**. <br>
+Some things to consider:
+- Secure the Logic App endpoint. Currently endpoint exposed with signature in the URL. Possible approach? Register an Enterprise App and authenticate the API with Bearer Token in the request header.
+- Modify the custom plugin manifest to better instruct GPT on how to create the Mermaid diagram
+- Experiment, as always
