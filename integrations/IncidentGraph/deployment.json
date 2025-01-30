@@ -1,0 +1,132 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Web/connections",
+            "apiVersion": "2016-06-01",
+            "name": "securitycopilot",
+            "location": "[resourceGroup().location]",
+            "properties": {
+              "displayName": "Security Copilot",
+              "customParameterValues": {},
+              "api": {
+                "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/',resourceGroup().location, '/managedApis/', 'securitycopilot')]"
+              }
+            }
+        },
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "MermaidCreation",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "When_a_HTTP_request_is_received": {
+                            "type": "Request",
+                            "kind": "Http",
+                            "inputs": {
+                                "method": "POST",
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "IncidentID": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "actions": {
+                        "Response": {
+                            "runAfter": {
+                                "Create_Mermaid_Diagram": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Response",
+                            "kind": "Http",
+                            "inputs": {
+                                "statusCode": 200,
+                                "body": "@body('Create_Mermaid_Diagram')?['EvaluationResultContent']"
+                            }
+                        },
+                        "Summarize_Defender_Incident": {
+                            "runAfter": {},
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['securitycopilot']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "body": {
+                                    "PromptContent": "Summarize Defender incident @{triggerBody()?['IncidentID']}"
+                                },
+                                "path": "/process-prompt"
+                            }
+                        },
+                        "Create_Mermaid_Diagram": {
+                            "runAfter": {
+                                "Summarize_Defender_Incident": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['securitycopilot']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "body": {
+                                    "PromptContent": "@body('Summarize_Defender_Incident')?['EvaluationResultContent']",
+                                    "SessionId": "@body('Summarize_Defender_Incident')?['sessionId']",
+                                    "Skillsets": [
+                                        "MermaidDiagram"
+                                    ],
+                                    "SkillName": "MermaidDiagramCreation",
+                                    "SkillInputs": {
+                                        "investigation_summary": "@{body('Summarize_Defender_Incident')?['EvaluationResultContent']}"
+                                    }
+                                },
+                                "path": "/process-prompt"
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "securitycopilot": {
+                                "connectionId": "[resourceId('Microsoft.Web/connections', 'securitycopilot')]",
+                                "connectionName": "securitycopilot",
+                                "id": "[concat(subscription().id,'/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/securitycopilot')]"
+                            }
+                        }
+                    }
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/connections', 'securitycopilot')]"
+            ]
+        }
+    ]
+}
