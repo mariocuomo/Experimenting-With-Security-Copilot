@@ -15,7 +15,6 @@
         
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('apiButton').addEventListener('click', async () => {
-                await delay(1000);
                 const query = document.getElementById('apiInput').value;
                 try {
                     const response = await fetch('<INSERT-YOUR-ENDPOINT>', {
