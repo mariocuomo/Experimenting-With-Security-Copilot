@@ -39,7 +39,7 @@ The workflow is simple:
 # Deploy
 <a name="DEPLOY"></a>
 To test this solution, perform the following steps:
-1. Deploy the Logic App using the ARM template found in this folder. The file is _deployment.json_. <br>
+1. Deploy the Logic App using the ARM template found in this folder. The file is [_deployment.json_](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/integrations/IncidentGraph/deployment.json). <br>
 The ARM template deploys the Logic App and a new Security Copilot connection, remember to authenticate it.
 2. Edit the web page to point to your Logic App `response = await fetch('<INSERT-YOUR-ENDPOINT>'`. The web page is the file [_site.html_](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/integrations/IncidentGraph/site.html).
 3. Upload the MermaidDiagram plugin in Security Copilot. You can find it [here](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/custom%20plugins/MermaidDiagram).
