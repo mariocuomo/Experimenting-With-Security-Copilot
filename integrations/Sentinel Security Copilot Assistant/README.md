@@ -117,7 +117,7 @@ The SSCA solution provides flexibility in deployment, allowing you to either dep
     - [SSCA-SentinelHealthEmail]()
     - [SSCA-SOCOptimizationEmail]()
 - **Full Deployment**
-    - [Deploy All Logic Apps]()
+    - [Deploy All Logic Apps](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/integrations/Sentinel%20Security%20Copilot%20Assistant/FullDeployment)
 
 # Considerations
 <a name="CONSIDERATIONS"></a>
