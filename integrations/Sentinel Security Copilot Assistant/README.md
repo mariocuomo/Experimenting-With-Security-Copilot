@@ -116,7 +116,8 @@ The SSCA solution provides flexibility in deployment, allowing you to either dep
     - [SSCA-IncidentsSituationEmail]()
     - [SSCA-SentinelHealthEmail]()
     - [SSCA-SOCOptimizationEmail]()
-- **Full Deployment** [Deploy All Logic Apps]()
+- **Full Deployment**
+    - [Deploy All Logic Apps]()
 
 # Considerations
 <a name="CONSIDERATIONS"></a>
