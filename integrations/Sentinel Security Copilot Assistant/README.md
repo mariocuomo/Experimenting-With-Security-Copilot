@@ -7,7 +7,7 @@
 - **Customizable Playbooks**: Adapt SSCA playbooks to meet your organization’s unique security needs.
 **Seamless Integration**: Bridge Microsoft Sentinel and Security Copilot for powerful, real-time automation.
 
-### 🛠 Prerequisites**
+### 🛠 Prerequisites
 Before you begin, ensure you have: <br>
 - A valid **Microsoft Sentinel** instance.
 - Access to **Microsoft Security Copilot**.
