@@ -55,6 +55,38 @@ Provides updates on the health status of Microsoft Sentinel to ensure continued 
 - **SSCA-SOCOptimizationEmail** <br>
 Reports on SOC efficiency metrics, offering insights into workflow optimization and performance improvements.
 
+```mermaid
+graph TD
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bff,stroke:#333,stroke-width:2px
+    style D fill:#fbf,stroke:#333,stroke-width:2px
+    style E fill:#fdd,stroke:#333,stroke-width:2px
+    style F fill:#fdd,stroke:#333,stroke-width:2px
+    style G fill:#fdd,stroke:#333,stroke-width:2px
+    style H fill:#fdd,stroke:#333,stroke-width:2px
+    style I fill:#dfd,stroke:#333,stroke-width:2px
+    style J fill:#dfd,stroke:#333,stroke-width:2px
+    style K fill:#ddf,stroke:#333,stroke-width:2px
+    style L fill:#ddf,stroke:#333,stroke-width:2px
+    style M fill:#ddf,stroke:#333,stroke-width:2px
+
+    A[SSCA Solution] --> B[Entity Lookup]
+    A --> C[Incident Summary]
+    A --> D[Scheduled Updates]
+    
+    B --> E[SSCA-IPLookupComment]
+    B --> F[SSCA-DomainLookupComment]
+    B --> G[SSCA-UserLookupComment]
+    B --> H[SSCA-DeviceLookupComment]
+    
+    C --> I[SSCA-IncidentSummary-Brief]
+    C --> J[SSCA-IncidentSummary-Expanded]
+    
+    D --> K[SSCA-IncidentsSituationEmail]
+    D --> L[SSCA-SentinelHealthEmail]
+    D --> M[SSCA-SOCOptimizationEmail]
+```
 # Deploy
 <a name="DEPLOY"></a>
 
