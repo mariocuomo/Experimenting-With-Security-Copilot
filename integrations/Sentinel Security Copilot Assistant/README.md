@@ -13,10 +13,9 @@ Sections in this page
 **Sentinel Security Copilot Assistant (SSCA)** is a collection of robust playbooks designed to seamlessly integrate Microsoft Security Copilot with Microsoft Sentinel. By leveraging the power of AI-driven insights and automation, SSCA enhances security operations by enabling capabilities such as entity enrichment, incident summarization, and more.
 
 **📌 Key Features**
-- **Entity Enrichment**: Automatically enrich entities with valuable context, streamlining investigation processes.
-- **Incident Summarization**: Generate concise and actionable summaries of Sentinel incidents.
-- **Customizable Playbooks**: Adapt SSCA playbooks to meet your organization’s unique security needs.
-**Seamless Integration**: Bridge Microsoft Sentinel and Security Copilot for powerful, real-time automation.
+- **Entity Lookup**: Quickly retrieve and enrich information about IPs, domains, users, and devices, streamlining investigation workflows.
+- **Incident Summary**: Generate both brief and expanded summaries of incidents, providing clear and actionable insights for security teams.
+- **Scheduled Updates**: Deliver regular updates on incident situations, Microsoft Sentinel's health, and SOC efficiency metrics, keeping your team informed and proactive.
 
 **🛠 Prerequisites** <br>
 Before you begin, ensure you have:
