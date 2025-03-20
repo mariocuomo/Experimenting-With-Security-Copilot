@@ -12,3 +12,6 @@ Before you begin, ensure you have: <br>
 - A valid **Microsoft Sentinel** instance.
 - Access to **Microsoft Security Copilot**.
 - Necessary permissions to configure and run Sentinel playbooks.
+
+> [!IMPORTANT]  
+> Under Construction 🧰
