@@ -71,21 +71,23 @@ graph TD
     style L fill:#ddf,stroke:#333,stroke-width:2px
     style M fill:#ddf,stroke:#333,stroke-width:2px
 
-    A[SSCA Solution] --> B[Entity Lookup]
-    A --> C[Incident Summary]
-    A --> D[Scheduled Updates]
-    
-    B --> E[SSCA-IPLookupComment]
+    A[SSCA Solution] 
+    B[Entity Lookup] --> E[SSCA-IPLookupComment]
     B --> F[SSCA-DomainLookupComment]
     B --> G[SSCA-UserLookupComment]
     B --> H[SSCA-DeviceLookupComment]
-    
-    C --> I[SSCA-IncidentSummary-Brief]
+
+    C[Incident Summary] --> I[SSCA-IncidentSummary-Brief]
     C --> J[SSCA-IncidentSummary-Expanded]
-    
-    D --> K[SSCA-IncidentsSituationEmail]
+
+    D[Scheduled Updates] --> K[SSCA-IncidentsSituationEmail]
     D --> L[SSCA-SentinelHealthEmail]
     D --> M[SSCA-SOCOptimizationEmail]
+
+    A --> B
+    A --> C
+    A --> D
+
 ```
 # Deploy
 <a name="DEPLOY"></a>
