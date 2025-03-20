@@ -26,9 +26,9 @@ Before you begin, ensure you have:
 # Schema
 <a name="SCHEMA"></a>
 The SSCA solution deploys several Azure Logic Apps, categorized by their intended functionality. <br>
-Below is a description of each resource: <br>
+Below is a description of each resource. <br>
 
-**Entity Lookup** <br>
+### Entity Lookup <br>
 These Logic Apps are designed to enrich security investigations by providing detailed information about specific entities and posted them as Sentinel incident Comment.
 - **SSCA-IPLookupComment** <br>
 Enriches incident investigations with contextual information about IP addresses (e.g., geolocation, threat intelligence).
@@ -39,14 +39,14 @@ Provides insights into user activities and account-related data for faster secur
 - **SSCA-DeviceLookupComment** <br>
 Supplies detailed device-related information, including device compliance, vulnerabilities, and configuration.
 
-**Incident Summary** <br>
+### Incident Summary
 These Logic Apps generate concise and comprehensive summaries for security incidents to improve situational awareness and post the summary as Sentinel incident comment.
 - **SSCA-IncidentSummary-Brief** <br>
 Creates a quick, high-level summary of incidents for immediate insights and faster decision-making.
 - **SSCA-IncidentSummary-Expanded** <br>
 Produces a detailed, in-depth summary of incidents, including key findings and recommendations.
 
-**Scheduled Updates**
+### Scheduled Updates
 These Logic Apps deliver periodic reports and summaries to keep security teams informed about various operational metrics via email.
 - **SSCA-IncidentsSituationEmail** <br>
 Sends a scheduled overview of the current incident situation, highlighting trends and unresolved cases.
