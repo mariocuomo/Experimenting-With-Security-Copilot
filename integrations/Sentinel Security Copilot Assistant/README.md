@@ -91,6 +91,32 @@ graph TD
 ```
 # Deploy
 <a name="DEPLOY"></a>
+The SSCA solution provides flexibility in deployment, allowing you to either deploy each Logic App individually or deploy them all together as a comprehensive solution.
+
+### Deployment Options
+- **Individual Deployment**: Each Logic App can be deployed separately based on your specific needs and priorities.
+- **Complete Deployment**: Deploy the entire suite of Logic Apps at once for seamless integration and full functionality.
+
+### Deployment Instructions
+1. **Deploy Individually**
+   - Navigate to the Logic App folder of your choice (e.g., entity-lookup, incident-summary, scheduled-updates).
+   - Use the provided **Azure Resource Manager (ARM) template** to deploy the specific Logic App.
+   
+2. **Deploy All at Once**
+   - Use the main **ARM template** to deploy all Logic Apps together for complete SSCA functionality.
+
+### Deployment Links
+- **Individual Logic Apps**
+    - [SSCA-IPLookupComment]()
+    - [SSCA-DomainLookupComment]()
+    - [SSCA-UserLookupComment]()
+    - [SSCA-DeviceLookupComment]()
+    - [SSCA-IncidentSummary-Brief]()
+    - [SSCA-IncidentSummary-Expanded]()
+    - [SSCA-IncidentsSituationEmail]()
+    - [SSCA-SentinelHealthEmail]()
+    - [SSCA-SOCOptimizationEmail]()
+- **Full Deployment** [Deploy All Logic Apps]()
 
 # Considerations
 <a name="CONSIDERATIONS"></a>
