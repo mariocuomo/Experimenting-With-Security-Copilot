@@ -1,5 +1,4 @@
 # Sentinel Security Copilot Assistant
-
 version: _1.0_
 
 Sections in this page
@@ -124,3 +123,7 @@ The SSCA solution provides flexibility in deployment, allowing you to either dep
 
 > [!IMPORTANT]  
 > Under Construction 🧰
+
+--------
+> [!NOTE]  
+> This project is as-is. <br> It is **not an official Microsoft integration** and is **not officially maintained by Microsoft**. It is my own experiments with Security Copilot and Microsoft Sentinel and the goal is to **evangelize the adoption** and capabilities of the product.
