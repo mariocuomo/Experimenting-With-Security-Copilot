@@ -107,15 +107,15 @@ The SSCA solution provides flexibility in deployment, allowing you to either dep
 
 ### Deployment Links
 - **Individual Logic Apps**
-    - [SSCA-IPLookupComment]()
-    - [SSCA-DomainLookupComment]()
-    - [SSCA-UserLookupComment]()
-    - [SSCA-DeviceLookupComment]()
-    - [SSCA-IncidentSummary-Brief]()
-    - [SSCA-IncidentSummary-Expanded]()
-    - [SSCA-IncidentsSituationEmail]()
-    - [SSCA-SentinelHealthEmail]()
-    - [SSCA-SOCOptimizationEmail]()
+    - [SSCA-IPLookupComment](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/integrations/Sentinel%20Security%20Copilot%20Assistant/IndividualLogicApps/SSCA-IPLookupComment)
+    - [SSCA-DomainLookupComment](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/integrations/Sentinel%20Security%20Copilot%20Assistant/IndividualLogicApps/SSCA-DomainLookupComment)
+    - [SSCA-UserLookupComment](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/integrations/Sentinel%20Security%20Copilot%20Assistant/IndividualLogicApps/SSCA-UserLookupComment)
+    - [SSCA-DeviceLookupComment](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/integrations/Sentinel%20Security%20Copilot%20Assistant/IndividualLogicApps/SSCA-DeviceLookupComment)
+    - [SSCA-IncidentSummary-Brief](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/integrations/Sentinel%20Security%20Copilot%20Assistant/IndividualLogicApps/SSCA-IncidentSummary-Brief)
+    - [SSCA-IncidentSummary-Expanded](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/integrations/Sentinel%20Security%20Copilot%20Assistant/IndividualLogicApps/SSCA-IncidentSummary-Expanded)
+    - [SSCA-IncidentsSituationEmail](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/integrations/Sentinel%20Security%20Copilot%20Assistant/IndividualLogicApps/SSCA-IncidentsSituationEmail)
+    - [SSCA-SentinelHealthEmail](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/integrations/Sentinel%20Security%20Copilot%20Assistant/IndividualLogicApps/SSCA-SentinelHealthEmail)
+    - [SSCA-SOCOptimizationEmail](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/integrations/Sentinel%20Security%20Copilot%20Assistant/IndividualLogicApps/SSCA-SOCOptimizationEmail)
 - **Full Deployment**
     - [Deploy All Logic Apps](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/integrations/Sentinel%20Security%20Copilot%20Assistant/FullDeployment)
 
