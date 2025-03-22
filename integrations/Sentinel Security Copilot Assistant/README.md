@@ -2,7 +2,7 @@
 version: _1.0_
 
 <div align="center">
-  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SSCA/logocircle.png" width="400">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SSCA/logocircle.png" width="300">
 </div>
 
 Sections in this page
