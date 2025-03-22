@@ -1,6 +1,10 @@
 # Sentinel Security Copilot Assistant
 version: _1.0_
 
+<div align="center">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SSCA/logocircle.png" width="400">
+</div>
+
 Sections in this page
 - [What is](#WHAT) <br>
 - [Schema](#SCHEMA) <br>
