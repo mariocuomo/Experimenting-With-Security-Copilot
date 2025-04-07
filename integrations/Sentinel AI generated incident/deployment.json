@@ -1,0 +1,233 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Web/connections",
+            "apiVersion": "2016-06-01",
+            "name": "securitycopilot",
+            "location": "[resourceGroup().location]",
+            "properties": {
+              "displayName": "Security Copilot",
+              "customParameterValues": {},
+              "api": {
+                "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/',resourceGroup().location, '/managedApis/', 'securitycopilot')]"
+              }
+            }
+        },
+        {
+            "type": "Microsoft.Web/connections",
+            "apiVersion": "2016-06-01",
+            "name": "azuresentinel",
+            "location": "[resourceGroup().location]",
+            "properties": {
+              "displayName": "Microsoft Sentinel",
+              "customParameterValues": {},
+              "api": {
+                "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/',resourceGroup().location, '/managedApis/', 'azuresentinel')]"
+              }
+            }
+        },
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "SecurityCopilotSentinelIncidentGeneration",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "state": "Disabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "Recurrence": {
+                            "recurrence": {
+                                "interval": 1,
+                                "frequency": "Week"
+                            },
+                            "evaluatedRecurrence": {
+                                "interval": 1,
+                                "frequency": "Week"
+                            },
+                            "type": "Recurrence"
+                        }
+                    },
+                    "actions": {
+                        "Initialize_variable_KQL": {
+                            "runAfter": {},
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "KQL",
+                                        "type": "string",
+                                        "value": "AADUserRiskEvents | where TimeGenerated > ago(7d) | project UserPrincipalName, TimeGenerated, Location, IpAddress, RiskState, Id, RiskEventType; riskyusers | join kind=inner ( riskyusers | extend TimeGenerated1 = TimeGenerated, LocationDetails1 = Location ) on UserPrincipalName | where TimeGenerated < TimeGenerated1 and datetime_diff('hour', TimeGenerated1, TimeGenerated) <= 3 | extend latyy = Location.geoCoordinates.latitude | extend longy= Location.geoCoordinates.longitude | extend latyy1 = LocationDetails1.geoCoordinates.latitude | extend longy1 = LocationDetails1.geoCoordinates.longitude | extend distance = geo_distance_2points(todouble(Location.geoCoordinates.latitude), todouble(Location.geoCoordinates.longitude), todouble(LocationDetails1.geoCoordinates.latitude), todouble(LocationDetails1.geoCoordinates.longitude)) | where distance >= 50000 | summarize arg_max(TimeGenerated, *) by Id | where RiskState != \"dismissed\" | project UserPrincipalName, TimeGenerated, IpAddress, Location, TimeGenerated1, IpAddress1, LocationDetails1, RiskEventType, distance"
+                                    }
+                                ]
+                            }
+                        },
+                        "Terminate": {
+                            "runAfter": {
+                                "Comment_with_KQL_query_to_Execute": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Terminate",
+                            "inputs": {
+                                "runStatus": "Succeeded"
+                            }
+                        },
+                        "Retrieve_Data": {
+                            "runAfter": {
+                                "Initialize_variable_KQL": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['securitycopilot']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "body": {
+                                    "PromptContent": "Run the KQL query",
+                                    "Skillsets": [
+                                        "ExecuteKQLQueryPlugin"
+                                    ],
+                                    "SkillName": "ExecuteKQLQuerySkill",
+                                    "SkillInputs": {
+                                        "query": "@{variables('KQL')}"
+                                    }
+                                },
+                                "path": "/process-prompt"
+                            }
+                        },
+                        "Retrieve_insights": {
+                            "runAfter": {
+                                "Retrieve_Data": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['securitycopilot']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "body": {
+                                    "PromptContent": "Provide your insights as Security Analyst about what anomalies or similarity patterns you identify in the data retrieved from the KQL query. Create the response in four sections **ANOMALIES** It is a description in natural language about the identified anomalies with evidences. **USERS** Provide the list of the involved users as string. UserPrincipalName separated by comma. **IPs** Provide the list of the involved IPs as string. IPs separated by comma. **RECOMMENDATIONS** list of recommendations to investigate. Create it in html format and not use header tags .",
+                                    "SessionId": "@body('Retrieve_Data')?['sessionId']"
+                                },
+                                "path": "/process-prompt"
+                            }
+                        },
+                        "Create_incident": {
+                            "runAfter": {
+                                "Retrieve_insights": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['azuresentinel']['connectionId']"
+                                    }
+                                },
+                                "method": "put",
+                                "body": {
+                                    "title": "Security Copilot Generated - SignIn Anomalies",
+                                    "severity": "Informational",
+                                    "status": "Active",
+                                    "description": "Security Copilot analysed AADUserRiskEvents data in the last 7 days and found some anomalies",
+                                    "tagsToAdd": {
+                                        "TagsToAdd": [
+                                            {
+                                                "Tag": "AIGENERATED"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "path": "/Incidents/subscriptions/@{encodeURIComponent('4f4475d8-fd3a-4f14-94b7-861e34f0d7f4')}/resourceGroups/@{encodeURIComponent('SentinelRG')}/workspaces/@{encodeURIComponent('LAWSentinel')}"
+                            }
+                        },
+                        "Comment_with_KQL_query_to_Execute": {
+                            "runAfter": {
+                                "Comment_with_insights": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['azuresentinel']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "body": {
+                                    "incidentArmId": "@body('Create_incident')?['id']",
+                                    "message": "<p class=\"editor-paragraph\"><b><strong class=\"editor-text-bold\">KQL query used</strong></b> <br>@{variables('KQL')}<br><br><b><strong class=\"editor-text-bold\">Time</strong></b></p><p class=\"editor-paragraph\">@{utcNow()}</p><br>"
+                                },
+                                "path": "/Incidents/Comment"
+                            }
+                        },
+                        "Comment_with_insights": {
+                            "runAfter": {
+                                "Create_incident": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['azuresentinel']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "body": {
+                                    "incidentArmId": "@body('Create_incident')?['id']",
+                                    "message": "<p class=\"editor-paragraph\">Data Analised by Security Copilot:<br><br>@{body('Retrieve_Data')?['EvaluationResultContent']}</p>"
+                                },
+                                "path": "/Incidents/Comment"
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "azuresentinel": {
+                                "connectionId": "[resourceId('Microsoft.Web/connections', 'azuresentinel')]",
+                                "connectionName": "azuresentinel",
+                                "id": "[concat(subscription().id,'/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/azuresentinel')]"                            },
+                            "securitycopilot": {
+                                "connectionId": "[resourceId('Microsoft.Web/connections', 'securitycopilot')]",
+                                "connectionName": "securitycopilot",
+                                "id": "[concat(subscription().id,'/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/securitycopilot')]"
+                            }
+                        }
+                    }
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/connections', 'securitycopilot')]",
+                "[resourceId('Microsoft.Web/connections', 'azuresentinel')]"
+            ]
+        }
+    ]
+}
