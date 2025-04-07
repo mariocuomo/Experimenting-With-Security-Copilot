@@ -8,7 +8,6 @@ This folder contains a custom plugin to perform a KQL query against Defender Adv
 
 ## TYPE AND REQUIREMENTS
 **TYPE**: KQL (Defender) <br>
-**REQUIREMENTS**: Defender with Sentinel (Unified Security Operations Platform)
 
 ---
 
