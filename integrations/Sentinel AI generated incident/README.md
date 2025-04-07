@@ -13,7 +13,7 @@ Sections in this page
 This is a simple experiment of creating a Sentinel Incident after Security Copilot investigation and analysis. The idea is to create an _informational_ incident based insights detected by Security Copilot.
 
 <div align="center">
-  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/MermaidDiagram/webpage.png" width="1000"> </img>
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/SecurityCopilotIncidentGeneration/result.png" width="1000"> </img>
 </div>
 
 
