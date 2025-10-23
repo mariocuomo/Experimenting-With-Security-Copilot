@@ -6,6 +6,10 @@ A comprehensive web-based tool for creating custom plugins for Microsoft Securit
 
 The Security Copilot Plugin Builder is a standalone HTML application that enables security professionals, developers, and analysts to create custom plugins for Microsoft Security Copilot without deep knowledge of YAML syntax or plugin architecture. The tool provides a user-friendly interface that generates properly formatted plugin manifests compatible with Security Copilot's requirements.
 
+<div align="center">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/custom%20plugins/Custom%20Plugin%20Builder/image.png" width="1000">
+</div>
+
 ### Key Features
 
 - **Interactive Form Builder**: Simple form-based interface for defining plugin metadata and capabilities
@@ -115,3 +119,4 @@ Start building your custom Security Copilot plugins today and unlock the full po
 ---
 
 *Built with ❤️ for the Security Community*
+
