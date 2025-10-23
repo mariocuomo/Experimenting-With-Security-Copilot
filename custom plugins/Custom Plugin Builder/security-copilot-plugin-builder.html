@@ -1,0 +1,3082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Copilot Custom Plugin Builder</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡</text></svg>">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-actions {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .action-btn:active {
+            transform: translateY(0);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .shield-icon {
+            width: 32px;
+            height: 32px;
+            background: #3182ce;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-actions {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .footer p {
+            font-size: 14px;
+            opacity: 0.8;
+            margin: 0;
+        }
+
+        .footer .credits {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .footer .credits a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .footer .credits a:hover {
+            text-decoration: underline;
+        }
+
+        .main-content {
+            display: flex;
+            min-height: 600px;
+        }
+
+        .form-section {
+            flex: 1;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .yaml-section {
+            flex: 1;
+            background: #1a202c;
+            color: white;
+            padding: 30px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .yaml-section .section-title {
+            color: white;
+        }
+
+        .yaml-section .section-header h3 {
+            color: #f7fafc;
+        }
+
+        .yaml-section .section-header .section-subtitle {
+            color: #e2e8f0;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .required {
+            color: #e53e3e;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+            color: #a0aec0;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: inherit;
+            color: #a0aec0;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3182ce;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 4px;
+        }
+
+        .yaml-preview {
+            background: #2d3748;
+            border-radius: 6px;
+            padding: 20px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            overflow-x: auto;
+            min-height: 400px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .yaml-key {
+            color: #63b3ed;
+        }
+
+        .yaml-value {
+            color: #68d391;
+        }
+
+        .yaml-string {
+            color: #fbb6ce;
+        }
+
+        .warning-box {
+            background: #fef5e7;
+            border: 1px solid #f6ad55;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+
+        .success-box {
+            background: #f0fff4;
+            border: 1px solid #68d391;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+
+        .warning-title {
+            color: #c05621;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .success-title {
+            color: #22543d;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .warning-text {
+            color: #744210;
+            font-size: 14px;
+        }
+
+        .success-text {
+            color: #22543d;
+            font-size: 14px;
+        }
+
+        .skill-groups-section {
+            background: white;
+            margin: 0 -30px -30px -30px;
+            padding: 30px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .section-header {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .section-header h3 {
+            font-size: 20px;
+            color: #2d3748;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-subtitle {
+            color: #718096;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .skill-groups-container {
+            margin-top: 20px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            background: #f7fafc;
+            border-radius: 12px;
+            border: 2px dashed #cbd5e0;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h4 {
+            color: #2d3748;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .empty-state p {
+            color: #718096;
+            margin-bottom: 24px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f7fafc;
+            color: #3182ce;
+            border: 2px solid #3182ce;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: #3182ce;
+            color: white;
+        }
+
+        .skill-groups-list {
+            margin-bottom: 16px;
+        }
+
+        .skill-group-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .skill-group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .skill-group-title {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .format-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .format-selector label {
+            font-size: 14px;
+            color: #4a5568;
+            margin: 0;
+        }
+
+        .format-selector select {
+            padding: 6px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .skills-container {
+            margin-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
+        }
+
+        .skills-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .skills-header h4 {
+            margin: 0;
+            color: #2d3748;
+        }
+
+        .skills-count {
+            background: #edf2f7;
+            color: #4a5568;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .skills-footer {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .btn-add-skill {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-add-skill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-add-skill:active {
+            transform: translateY(0);
+        }
+
+        .add-icon {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .skills-list {
+            margin-top: 12px;
+        }
+
+        .empty-skills-state {
+            text-align: center;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 6px;
+            color: #718096;
+        }
+
+        .skill-card {
+            background: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .skill-header:hover {
+            background-color: #f1f5f9;
+        }
+
+        .skill-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .skill-title {
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .skill-status {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .skill-status.configured {
+            background-color: #c6f6d5;
+            color: #22543d;
+        }
+
+        .skill-status.not-configured {
+            background-color: #fed7d7;
+            color: #c53030;
+        }
+
+        .expand-icon {
+            font-size: 12px;
+            color: #718096;
+            transition: transform 0.2s;
+            width: 16px;
+            text-align: center;
+        }
+
+        .expand-icon.expanded {
+            transform: rotate(90deg);
+        }
+
+        .skill-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .form-group.half {
+            flex: 1;
+        }
+
+        .inputs-section, .settings-section {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 12px;
+            margin-top: 12px;
+        }
+
+        .section-header-small {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .section-header-small label {
+            font-weight: 600;
+            color: #2d3748;
+            margin: 0;
+        }
+
+        .input-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+
+        .input-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #718096;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            font-size: 13px;
+            height: 40px;
+            padding: 8px 0;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 24px;
+            background: #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .toggle-switch.required {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+        }
+
+        .toggle-switch.optional {
+            background: #cbd5e0;
+            border-color: #a0aec0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-switch.required .toggle-slider {
+            transform: translateX(20px);
+        }
+
+        .toggle-switch.optional .toggle-slider {
+            transform: translateX(0px);
+        }
+
+        .toggle-label {
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-label.required {
+            color: #667eea;
+        }
+
+        .toggle-label.optional {
+            color: #718096;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.required {
+            background: linear-gradient(135deg, #fed7ed 0%, #fbb6ce 100%);
+            color: #b83280;
+        }
+
+        .status-badge.optional {
+            background: #e6fffa;
+            color: #319795;
+        }
+
+        .template-textarea {
+            min-height: 120px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 12px;
+        }
+
+        .btn-secondary.small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .remove-btn.small {
+            padding: 4px 8px;
+            font-size: 11px;
+        }
+
+        .remove-btn.tiny {
+            padding: 2px 6px;
+            font-size: 10px;
+            min-width: 20px;
+        }
+
+        .remove-btn {
+            background: #fed7d7;
+            color: #c53030;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .expandable-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: #3182ce;
+            font-weight: 600;
+        }
+
+        .expand-icon {
+            transition: transform 0.2s;
+        }
+
+        .expand-icon.expanded {
+            transform: rotate(90deg);
+        }
+
+        .format-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 8px;
+        }
+
+        .format-badge.kql {
+            background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
+            color: #234e52;
+        }
+
+        .format-badge.api {
+            background: linear-gradient(135deg, #fef5e7 0%, #fbd38d 100%);
+            color: #744210;
+        }
+
+        .format-badge.gpt {
+            background: linear-gradient(135deg, #e6fffa 0%, #9ae6b4 100%);
+            color: #22543d;
+        }
+
+        .format-badge.logicapp {
+            background: linear-gradient(135deg, #fed7ed 0%, #fbb6ce 100%);
+            color: #b83280;
+        }
+
+        .settings-section {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 12px;
+            margin-top: 12px;
+            position: relative;
+        }
+
+        .settings-section > label {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .format-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .format-icon.kql {
+            background: #319795;
+        }
+
+        .format-icon.api {
+            background: #d69e2e;
+        }
+
+        .format-icon.gpt {
+            background: #38a169;
+        }
+
+        .format-icon.logicapp {
+            background: #d53f8c;
+        }
+
+        .kql-target-fields {
+            margin: 12px 0;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .kql-target-fields .form-row {
+            margin-bottom: 8px;
+        }
+
+        .kql-target-fields .form-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .auth-section {
+            background: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .auth-section .section-header {
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .auth-section .section-header h4 {
+            margin: 0;
+            color: #2d3748;
+            font-size: 16px;
+        }
+
+        .auth-section .section-subtitle {
+            color: #718096;
+            font-size: 14px;
+            margin: 4px 0 0 0;
+        }
+
+        .auth-config-group {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 12px;
+        }
+
+        .auth-config-group h5 {
+            margin: 0 0 12px 0;
+            color: #2d3748;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .yaml-section {
+                order: -1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                <div class="shield-icon">🛡</div>
+                Security Copilot Custom Plugin Builder
+            </h1>
+            <p>Create custom plugins for Microsoft Security Copilot with an interactive YAML generator</p>
+        </div>
+
+        <div class="main-content">
+            <div class="form-section">
+                <div class="section-header">
+                    <h3>📝 Descriptor</h3>
+                    <p class="section-subtitle">Define the basic information and metadata for your plugin</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Name <span class="required">*</span></label>
+                    <input type="text" id="name" placeholder="Enter plugin name">
+                    <div class="help-text">A unique identifier for your plugin (e.g., "DeviceAnalysis")</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="displayName">Display Name <span class="required">*</span></label>
+                    <input type="text" id="displayName" placeholder="Enter display name">
+                    <div class="help-text">Human-readable name shown in the UI (e.g., "Device Analysis")</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description <span class="required">*</span></label>
+                    <textarea id="description" placeholder="Enter a brief, user-friendly description of what your plugin does"></textarea>
+                    <div class="help-text">Brief description shown to users in the plugin catalog</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="descriptionForModel">Description For Model <span class="required">*</span></label>
+                    <textarea id="descriptionForModel" placeholder="Enter detailed technical description for the AI model"></textarea>
+                    <div class="help-text">Detailed description that helps the AI understand when and how to use your plugin</div>
+                </div>
+
+                <div class="skill-groups-section">
+                    <div class="section-header">
+                        <h3>🎯 Skill Groups</h3>
+                        <p class="section-subtitle">Define the capabilities and skills your plugin provides</p>
+                    </div>
+                    
+                    <div class="skill-groups-container">
+                        <div class="empty-state" id="emptyState">
+                            <div class="empty-icon">🛠️</div>
+                            <h4>No Skills Yet</h4>
+                            <p>Start by adding your first skill to define what your plugin can do.</p>
+                            <button type="button" class="btn-primary" onclick="initializeSkillGroup()">
+                                <span>+ Add First Skill</span>
+                            </button>
+                        </div>
+                        
+                        <div id="skillGroupContainer" class="skill-group-container" style="display: none;">
+                            <div class="skill-group-card" id="mainSkillGroup">
+                                <div class="skill-group-header">
+                                    <span class="skill-group-title">Skills</span>
+                                    <div class="format-selector">
+                                        <label>Format:</label>
+                                        <select id="formatSelect" onchange="updateSkillGroupFormat('mainSkillGroup', this.value)">
+                                            <option value="KQL" selected>KQL</option>
+                                            <option value="API">API</option>
+                                            <option value="GPT">GPT</option>
+                                            <option value="LogicApp">Logic App</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="skills-container">
+                                    <!-- API Authentication Configuration Section -->
+                                    <div id="apiAuthSection" class="auth-section" style="display: none;">
+                                        <div class="section-header">
+                                            <h4>🔐 API Authentication</h4>
+                                            <p class="section-subtitle">Configure authentication settings for API calls</p>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="supportedAuthTypes">Supported Auth Types <span class="required">*</span></label>
+                                            <select id="supportedAuthTypes" onchange="updateAuthType(this.value)">
+                                                <option value="None" selected>None</option>
+                                                <option value="Basic">Basic</option>
+                                                <option value="ApiKey">API Key</option>
+                                                <option value="AADDelegated">Entra ID Delegated</option>
+                                                <option value="OAuthClientCredentialsFlow">OAuth Client Credentials Flow</option>
+                                                <option value="OAuthAuthorizationCodeFlow">OAuth Authorization Code Flow</option>
+                                            </select>
+                                            <div class="help-text">Select the authentication method required by your API</div>
+                                        </div>
+                                        
+                                        <div id="authConfigContainer">
+                                            <!-- Authentication-specific configuration will be inserted here -->
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- OpenAPI Specification Section (for API format) -->
+                                    <div id="openApiSection" class="openapi-section" style="display: none;">
+                                        <div class="section-header">
+                                            <h4>📋 OpenAPI Specification</h4>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>OpenAPI Spec URL *</label>
+                                            <input type="text" id="openApiSpecUrl" placeholder="https://raw.githubusercontent.com/mariocuomo/Experimenting-With-Security-Copilot/refs/heads/main/skillling%20series/Day%202%20-%20API/NoAuth_API/NoAuth_API.json" onchange="updateOpenApiSpecUrl(this.value)">
+                                            <div class="help-text">URL to your OpenAPI specification file (JSON or YAML format)</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Skills Section (for non-API formats) -->
+                                    <div id="skillsSection" class="skills-section">
+                                        <div class="skills-header">
+                                            <h4>Skills List</h4>
+                                            <span class="skills-count" id="skillsCount">0 skills</span>
+                                        </div>
+                                        <div class="skills-list" id="skillsList_mainSkillGroup">
+                                            <!-- Skills will be added here -->
+                                        </div>
+                                        <div class="skills-footer">
+                                            <button type="button" class="btn-add-skill" onclick="addSkill('mainSkillGroup')">
+                                                <span class="add-icon">+</span>
+                                                Add New Skill
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="yaml-section">
+                <div class="section-header">
+                    <h3>📄 YAML Preview</h3>
+                    <p class="section-subtitle">Real-time preview of your generated plugin configuration</p>
+                </div>
+
+                <div class="yaml-preview" id="yamlPreview">
+                </div>
+
+                <div style="margin-top: 20px; display: flex; justify-content: center; align-items: center; gap: 12px;">
+                    <button class="action-btn" onclick="copyYamlToClipboard()" title="Copy YAML to clipboard">
+                        <span id="copyIcon">📋</span>
+                        <span id="copyText">Copy</span>
+                    </button>
+                    <button class="action-btn" onclick="downloadYaml()" title="Download YAML file">
+                        <span>⬇️</span>
+                        Download YAML
+                    </button>
+                </div>
+
+                <div class="status-box warning-box" id="statusBox">
+                    <div class="status-title" id="statusTitle">Warnings:</div>
+                    <div class="status-text" id="statusText">No skill groups defined. Add at least one skill group with skills.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="credits">Created by <a href="https://github.com/mariocuomo">Mario Cuomo</a></div>
+            <p>Security Copilot Custom Plugin Builder - Build powerful plugins for Microsoft Security Copilot</p>
+        </div>
+    </div>
+
+    <script>
+        let mainSkillGroup = {
+            id: 'mainSkillGroup',
+            format: 'KQL',
+            skills: []
+        };
+        let isSkillGroupInitialized = false;
+        
+        let apiAuthConfig = {
+            supportedAuthTypes: 'None',
+            authorization: {}
+        };
+
+        // Helper function to format multi-line text for YAML
+        function formatMultilineYaml(text, indent = '    ') {
+            if (!text) return '';
+            
+            // Check if text contains line breaks
+            if (text.includes('\n')) {
+                // Use YAML literal block scalar (|-) for multi-line text
+                const lines = text.split('\n');
+                let result = '|-\n';
+                lines.forEach(line => {
+                    result += indent + line + '\n';
+                });
+                return result.slice(0, -1); // Remove the last newline
+            } else {
+                // Single line text can be handled normally
+                return text;
+            }
+        }
+
+        // Helper function to format multi-line text for preview display
+        function formatMultilinePreview(text, yamlKey, indent = '  ') {
+            if (!text) return '';
+            
+            if (text.includes('\n')) {
+                const lines = text.split('\n');
+                let result = `${indent}<span class="yaml-key">${yamlKey}:</span> <span class="yaml-value">|-</span>\n`;
+                lines.forEach(line => {
+                    // Escape HTML characters for display
+                    const escapedLine = line.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    result += `${indent}  <span class="yaml-string">${escapedLine}</span>\n`;
+                });
+                return result.slice(0, -1); // Remove the last newline
+            } else {
+                // Escape HTML characters for single line display too
+                const escapedText = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                return `${indent}<span class="yaml-key">${yamlKey}:</span> <span class="yaml-value">${escapedText}</span>`;
+            }
+        }
+
+        function updateYamlPreview() {
+            const name = document.getElementById('name').value || '';
+            const displayName = document.getElementById('displayName').value || '';
+            const description = document.getElementById('description').value || '';
+            const descriptionForModel = document.getElementById('descriptionForModel').value || '';
+
+            let yamlLines = [];
+            
+            // Only show Descriptor section if at least one field has content
+            const hasDescriptorContent = name || displayName || description || descriptionForModel || (mainSkillGroup.format === 'API' && isSkillGroupInitialized);
+            
+            if (hasDescriptorContent) {
+                yamlLines.push('<span class="yaml-key">Descriptor:</span>');
+                if (name) yamlLines.push('  <span class="yaml-key">Name:</span> <span class="yaml-value">' + name + '</span>');
+                if (displayName) yamlLines.push('  <span class="yaml-key">DisplayName:</span> <span class="yaml-value">' + displayName + '</span>');
+                if (description) {
+                    const descriptionPreview = formatMultilinePreview(description, 'Description', '  ');
+                    yamlLines.push(descriptionPreview);
+                }
+                if (descriptionForModel) {
+                    const descriptionForModelPreview = formatMultilinePreview(descriptionForModel, 'DescriptionForModel', '  ');
+                    yamlLines.push(descriptionForModelPreview);
+                }
+                
+                // Add authentication configuration for API format
+                if (mainSkillGroup.format === 'API' && isSkillGroupInitialized) {
+                    if (apiAuthConfig.supportedAuthTypes) {
+                        yamlLines.push('  <span class="yaml-key">SupportedAuthTypes:</span>');
+                        yamlLines.push('    <span class="yaml-value">- ' + apiAuthConfig.supportedAuthTypes + '</span>');
+                    }
+                    
+                    // Add Authorization section if needed
+                    if (apiAuthConfig.supportedAuthTypes !== 'None' && Object.keys(apiAuthConfig.authorization).length > 0) {
+                        yamlLines.push('  <span class="yaml-key">Authorization:</span>');
+                        Object.entries(apiAuthConfig.authorization).forEach(([key, value]) => {
+                            if (value) {
+                                // Map internal property names to correct YAML property names
+                                let yamlKey = key;
+                                switch (key) {
+                                    case 'keyName':
+                                        yamlKey = 'Key';
+                                        break;
+                                    case 'location':
+                                        yamlKey = 'Location';
+                                        break;
+                                    case 'authScheme':
+                                        yamlKey = 'AuthScheme';
+                                        break;
+                                    case 'apiKey':
+                                        yamlKey = 'ApiKey';
+                                        break;
+                                    case 'username':
+                                        yamlKey = 'Username';
+                                        break;
+                                    case 'password':
+                                        yamlKey = 'Password';
+                                        break;
+                                    case 'clientId':
+                                        yamlKey = 'ClientId';
+                                        break;
+                                    case 'clientSecret':
+                                        yamlKey = 'ClientSecret';
+                                        break;
+                                    case 'tokenUrl':
+                                        yamlKey = 'TokenUrl';
+                                        break;
+                                    case 'authorizationUrl':
+                                        yamlKey = 'AuthorizationUrl';
+                                        break;
+                                    case 'redirectUri':
+                                        yamlKey = 'RedirectUri';
+                                        break;
+                                    case 'resource':
+                                        yamlKey = 'Resource';
+                                        break;
+                                    case 'scope':
+                                        yamlKey = 'Scope';
+                                        break;
+                                    // Keep other properties as-is (like Type)
+                                    default:
+                                        yamlKey = key;
+                                        break;
+                                }
+                                yamlLines.push('    <span class="yaml-key">' + yamlKey + ':</span> <span class="yaml-value">' + value + '</span>');
+                            }
+                        });
+                    }
+                }
+            }
+
+            if (isSkillGroupInitialized && (mainSkillGroup.skills.length > 0 || (mainSkillGroup.format === 'API' && mainSkillGroup.openApiSpecUrl))) {
+                yamlLines.push('<span class="yaml-key">SkillGroups:</span>');
+                yamlLines.push('  <span class="yaml-value">- Format:</span> <span class="yaml-value">' + mainSkillGroup.format + '</span>');
+                
+                if (mainSkillGroup.format === 'API' && mainSkillGroup.openApiSpecUrl) {
+                    // For API format, show OpenApiSpecUrl instead of Skills
+                    yamlLines.push('    <span class="yaml-key">OpenApiSpecUrl:</span> <span class="yaml-string">' + mainSkillGroup.openApiSpecUrl + '</span>');
+                } else if (mainSkillGroup.skills.length > 0) {
+                    // For other formats, show Skills
+                    yamlLines.push('    <span class="yaml-key">Skills:</span>');
+                    
+                    mainSkillGroup.skills.forEach(skill => {
+                        yamlLines.push('      <span class="yaml-value">- Name:</span> <span class="yaml-string">' + skill.name + '</span>');
+                        if (skill.displayName) yamlLines.push('        <span class="yaml-key">DisplayName:</span> <span class="yaml-string">' + skill.displayName + '</span>');
+                        if (skill.description) {
+                            const skillDescriptionPreview = formatMultilinePreview(skill.description, 'Description', '        ');
+                            yamlLines.push(skillDescriptionPreview);
+                        }
+                        if (skill.descriptionForModel) {
+                            const skillDescriptionForModelPreview = formatMultilinePreview(skill.descriptionForModel, 'DescriptionForModel', '        ');
+                            yamlLines.push(skillDescriptionForModelPreview);
+                        }
+                        
+                        if (skill.inputs && skill.inputs.length > 0) {
+                            yamlLines.push('        <span class="yaml-key">Inputs:</span>');
+                            skill.inputs.forEach(input => {
+                                yamlLines.push('          <span class="yaml-value">- Name:</span> <span class="yaml-string">' + input.name + '</span>');
+                                if (input.description) {
+                                    const inputDescriptionPreview = formatMultilinePreview(input.description, 'Description', '            ');
+                                    yamlLines.push(inputDescriptionPreview);
+                                }
+                                yamlLines.push('            <span class="yaml-key">Required:</span> <span class="yaml-value">' + input.required + '</span>');
+                            });
+                        }
+                        
+                        if (skill.settings) {
+                            yamlLines.push('        <span class="yaml-key">Settings:</span>');
+                            
+                            // Handle different format types
+                            switch (mainSkillGroup.format) {
+                                case 'KQL':
+                                    if (skill.settings.target) yamlLines.push('          <span class="yaml-key">Target:</span> <span class="yaml-value">' + skill.settings.target + '</span>');
+                                    
+                                    // Add target-specific properties
+                                    if (skill.settings.target === 'Sentinel' || skill.settings.target === 'LAW') {
+                                        if (skill.settings.tenantId) yamlLines.push('          <span class="yaml-key">TenantId:</span> <span class="yaml-value">' + skill.settings.tenantId + '</span>');
+                                        if (skill.settings.subscriptionId) yamlLines.push('          <span class="yaml-key">SubscriptionId:</span> <span class="yaml-value">' + skill.settings.subscriptionId + '</span>');
+                                        if (skill.settings.resourceGroupName) yamlLines.push('          <span class="yaml-key">ResourceGroupName:</span> <span class="yaml-value">' + skill.settings.resourceGroupName + '</span>');
+                                        if (skill.settings.workspaceName) yamlLines.push('          <span class="yaml-key">WorkspaceName:</span> <span class="yaml-value">' + skill.settings.workspaceName + '</span>');
+                                    } else if (skill.settings.target === 'ADX') {
+                                        if (skill.settings.cluster) yamlLines.push('          <span class="yaml-key">Cluster:</span> <span class="yaml-value">' + skill.settings.cluster + '</span>');
+                                        if (skill.settings.database) yamlLines.push('          <span class="yaml-key">Database:</span> <span class="yaml-value">' + skill.settings.database + '</span>');
+                                    }
+                                    
+                                    if (skill.settings.template) {
+                                        yamlLines.push('          <span class="yaml-key">Template:</span> <span class="yaml-value">|-</span>');
+                                        const templateLines = skill.settings.template.split('\n');
+                                        templateLines.forEach(line => {
+                                            yamlLines.push('            <span class="yaml-string">' + line + '</span>');
+                                        });
+                                    }
+                                    break;
+                                case 'API':
+                                    if (skill.settings.url) yamlLines.push('          <span class="yaml-key">Url:</span> <span class="yaml-value">' + skill.settings.url + '</span>');
+                                    if (skill.settings.method) yamlLines.push('          <span class="yaml-key">Method:</span> <span class="yaml-value">' + skill.settings.method + '</span>');
+                                    if (skill.settings.contentType) yamlLines.push('          <span class="yaml-key">ContentType:</span> <span class="yaml-value">' + skill.settings.contentType + '</span>');
+                                    if (skill.settings.headers) {
+                                        yamlLines.push('          <span class="yaml-key">Headers:</span>');
+                                        if (typeof skill.settings.headers === 'string') {
+                                            try {
+                                                const headers = JSON.parse(skill.settings.headers);
+                                                Object.entries(headers).forEach(([key, value]) => {
+                                                    yamlLines.push('            <span class="yaml-key">' + key + ':</span> <span class="yaml-string">' + value + '</span>');
+                                                });
+                                            } catch (e) {
+                                                yamlLines.push('            <span class="yaml-string">' + skill.settings.headers + '</span>');
+                                            }
+                                        }
+                                    }
+                                    if (skill.settings.body) {
+                                        yamlLines.push('          <span class="yaml-key">Body:</span> <span class="yaml-value">|-</span>');
+                                        yamlLines.push('            <span class="yaml-string">' + skill.settings.body + '</span>');
+                                    }
+                                    break;
+                                case 'GPT':
+                                    yamlLines.push('          <span class="yaml-key">ModelName:</span> <span class="yaml-value">' + (skill.settings.model || 'gpt-4o') + '</span>');
+                                    if (skill.settings.template) {
+                                        yamlLines.push('          <span class="yaml-key">Template:</span> <span class="yaml-value">|-</span>');
+                                        const templateLines = skill.settings.template.split('\n');
+                                        templateLines.forEach(line => {
+                                            yamlLines.push('            <span class="yaml-string">' + line + '</span>');
+                                        });
+                                    }
+                                    break;
+                                case 'LogicApp':
+                                    if (skill.settings.subscriptionId) yamlLines.push('          <span class="yaml-key">SubscriptionId:</span> <span class="yaml-value">' + skill.settings.subscriptionId + '</span>');
+                                    if (skill.settings.resourceGroup) yamlLines.push('          <span class="yaml-key">ResourceGroup:</span> <span class="yaml-value">' + skill.settings.resourceGroup + '</span>');
+                                    if (skill.settings.workflowName) yamlLines.push('          <span class="yaml-key">WorkflowName:</span> <span class="yaml-value">' + skill.settings.workflowName + '</span>');
+                                    if (skill.settings.triggerName) yamlLines.push('          <span class="yaml-key">TriggerName:</span> <span class="yaml-value">' + skill.settings.triggerName + '</span>');
+                                    break;
+                            }
+                        }
+                    });
+                }
+            }
+
+            document.getElementById('yamlPreview').innerHTML = yamlLines.join('\n');
+            updateWarnings();
+        }
+
+        function updateWarnings() {
+            const statusBox = document.getElementById('statusBox');
+            const statusTitle = document.getElementById('statusTitle');
+            const statusText = document.getElementById('statusText');
+            const warnings = [];
+
+            if (!isSkillGroupInitialized || mainSkillGroup.skills.length === 0) {
+                warnings.push('No skills defined. Add at least one skill.');
+            }
+
+            const name = document.getElementById('name').value;
+            const displayName = document.getElementById('displayName').value;
+            const description = document.getElementById('description').value;
+            const descriptionForModel = document.getElementById('descriptionForModel').value;
+
+            if (!name || !displayName || !description || !descriptionForModel) {
+                warnings.push('Required fields are missing. Please fill in all required fields.');
+            }
+
+            // Check if any skills are missing required information
+            let hasIncompleteSkills = false;
+            if (mainSkillGroup.skills && mainSkillGroup.skills.length > 0) {
+                mainSkillGroup.skills.forEach(skill => {
+                    if (!skill.name || (skill.inputs && skill.inputs.some(input => !input.name))) {
+                        hasIncompleteSkills = true;
+                    }
+                });
+            }
+
+            if (hasIncompleteSkills) {
+                warnings.push('Some skills have missing required information.');
+            }
+
+            // Check API authentication configuration
+            if (mainSkillGroup.format === 'API' && isSkillGroupInitialized) {
+                if (apiAuthConfig.supportedAuthTypes !== 'None') {
+                    const authConfig = apiAuthConfig.authorization;
+                    const authType = apiAuthConfig.supportedAuthTypes;
+                    
+                    let missingAuthFields = false;
+                    switch (authType) {
+                        case 'Basic':
+                            if (!authConfig.username || !authConfig.password) missingAuthFields = true;
+                            break;
+                        case 'ApiKey':
+                            if (!authConfig.keyName || !authConfig.apiKey) missingAuthFields = true;
+                            break;
+                        case 'AADDelegated':
+                            if (!authConfig.resource) missingAuthFields = true;
+                            break;
+                        case 'OAuthClientCredentialsFlow':
+                            if (!authConfig.clientId || !authConfig.clientSecret || !authConfig.tokenUrl || !authConfig.scope) missingAuthFields = true;
+                            break;
+                        case 'OAuthAuthorizationCodeFlow':
+                            if (!authConfig.clientId || !authConfig.clientSecret || !authConfig.authorizationUrl || !authConfig.tokenUrl || !authConfig.scope || !authConfig.redirectUri) missingAuthFields = true;
+                            break;
+                    }
+                    
+                    if (missingAuthFields) {
+                        warnings.push('API authentication configuration is incomplete.');
+                    }
+                }
+            }
+
+            if (warnings.length > 0) {
+                // Show warnings
+                statusBox.className = 'status-box warning-box';
+                statusTitle.className = 'warning-title';
+                statusText.className = 'warning-text';
+                statusTitle.textContent = 'Warnings:';
+                statusText.textContent = warnings.join(' ');
+            } else {
+                // Show success message
+                statusBox.className = 'status-box success-box';
+                statusTitle.className = 'success-title';
+                statusText.className = 'success-text';
+                statusTitle.textContent = '✅ All Good!';
+                statusText.textContent = 'Your plugin configuration looks complete and ready to use.';
+            }
+        }
+
+        function initializeSkillGroup() {
+            isSkillGroupInitialized = true;
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('skillGroupContainer').style.display = 'block';
+            
+            // Show API authentication section if API format is selected
+            const currentFormat = document.getElementById('formatSelect').value;
+            const apiAuthSection = document.getElementById('apiAuthSection');
+            if (apiAuthSection) {
+                apiAuthSection.style.display = currentFormat === 'API' ? 'block' : 'none';
+                if (currentFormat === 'API') {
+                    updateAuthType('None');
+                }
+            }
+            
+            // Show/hide appropriate sections based on format
+            const openApiSection = document.getElementById('openApiSection');
+            const skillsSection = document.getElementById('skillsSection');
+            
+            if (currentFormat === 'API') {
+                // Show OpenAPI section, hide skills section
+                if (openApiSection) openApiSection.style.display = 'block';
+                if (skillsSection) skillsSection.style.display = 'none';
+            } else {
+                // Hide OpenAPI section, show skills section
+                if (openApiSection) openApiSection.style.display = 'none';
+                if (skillsSection) skillsSection.style.display = 'block';
+                
+                // Only add a skill for non-API formats
+                updateSkillsCounter();
+                addSkill('mainSkillGroup');
+            }
+        }
+
+        function updateSkillGroupFormat(groupId, format) {
+            const oldFormat = mainSkillGroup.format;
+            mainSkillGroup.format = format;
+            
+            // Show/hide API authentication section
+            const apiAuthSection = document.getElementById('apiAuthSection');
+            if (apiAuthSection) {
+                apiAuthSection.style.display = format === 'API' ? 'block' : 'none';
+            }
+            
+            // Show/hide OpenAPI section vs Skills section
+            const openApiSection = document.getElementById('openApiSection');
+            const skillsSection = document.getElementById('skillsSection');
+            
+            if (format === 'API') {
+                // Show OpenAPI section, hide skills section
+                if (openApiSection) openApiSection.style.display = 'block';
+                if (skillsSection) skillsSection.style.display = 'none';
+            } else {
+                // Hide OpenAPI section, show skills section
+                if (openApiSection) openApiSection.style.display = 'none';
+                if (skillsSection) skillsSection.style.display = 'block';
+            }
+            
+            // If format changed, reset all skills
+            if (oldFormat !== format) {
+                // Clear all existing skills
+                mainSkillGroup.skills = [];
+                
+                // Clear the skills list HTML
+                const skillsList = document.getElementById(`skillsList_${groupId}`);
+                if (skillsList) {
+                    skillsList.innerHTML = '';
+                }
+                
+                // Reset API auth config when switching away from API
+                if (format !== 'API') {
+                    apiAuthConfig = {
+                        supportedAuthTypes: 'None',
+                        authorization: {}
+                    };
+                    // Clear OpenAPI spec URL
+                    if (mainSkillGroup.openApiSpecUrl) {
+                        delete mainSkillGroup.openApiSpecUrl;
+                    }
+                } else {
+                    // Initialize auth config for API format
+                    updateAuthType('None');
+                }
+                
+                // Update skills counter
+                updateSkillsCounter();
+            }
+            
+            updateYamlPreview();
+        }
+
+        function updateOpenApiSpecUrl(url) {
+            mainSkillGroup.openApiSpecUrl = url;
+            updateYamlPreview();
+        }
+
+        function restoreSkillValues(skill) {
+            // Restore basic skill properties
+            const skillElement = document.getElementById(skill.id);
+            if (!skillElement) return;
+            
+            const nameInput = skillElement.querySelector('input[placeholder*="GetDefenderDevices"]');
+            const displayNameInput = skillElement.querySelector('input[placeholder*="Get Defender Devices"]');
+            const descriptionTextarea = skillElement.querySelector('textarea[placeholder*="Describe what this skill does"]');
+            const descriptionForModelTextarea = skillElement.querySelector('textarea[placeholder*="Enter detailed technical description"]');
+            
+            if (nameInput) nameInput.value = skill.name || '';
+            if (displayNameInput) displayNameInput.value = skill.displayName || '';
+            if (descriptionTextarea) descriptionTextarea.value = skill.description || '';
+            if (descriptionForModelTextarea) descriptionForModelTextarea.value = skill.descriptionForModel || '';
+            
+            // Update skill title and status based on restored values
+            updateSkillTitle(skill.id);
+            updateSkillStatus(skill.id);
+            
+            // Restore KQL target selection and generate appropriate fields
+            if (mainSkillGroup.format === 'KQL' && skill.settings && skill.settings.target) {
+                const targetSelect = skillElement.querySelector('select');
+                if (targetSelect) {
+                    targetSelect.value = skill.settings.target;
+                    generateKqlTargetFields(skill.id, skill.settings.target);
+                    
+                    // Restore target-specific field values
+                    setTimeout(() => {
+                        if (skill.settings.target === 'Sentinel' || skill.settings.target === 'LAW') {
+                            const tenantIdInput = skillElement.querySelector('input[placeholder*="Tenant ID"]');
+                            const subscriptionIdInput = skillElement.querySelector('input[placeholder*="Subscription ID"]');
+                            const resourceGroupInput = skillElement.querySelector('input[placeholder*="Resource Group"]');
+                            const workspaceInput = skillElement.querySelector('input[placeholder*="Workspace Name"]');
+                            
+                            if (tenantIdInput && skill.settings.tenantId) tenantIdInput.value = skill.settings.tenantId;
+                            if (subscriptionIdInput && skill.settings.subscriptionId) subscriptionIdInput.value = skill.settings.subscriptionId;
+                            if (resourceGroupInput && skill.settings.resourceGroupName) resourceGroupInput.value = skill.settings.resourceGroupName;
+                            if (workspaceInput && skill.settings.workspaceName) workspaceInput.value = skill.settings.workspaceName;
+                        } else if (skill.settings.target === 'ADX') {
+                            const clusterInput = skillElement.querySelector('input[placeholder*="ADX Cluster"]');
+                            const databaseInput = skillElement.querySelector('input[placeholder*="Database Name"]');
+                            
+                            if (clusterInput && skill.settings.cluster) clusterInput.value = skill.settings.cluster;
+                            if (databaseInput && skill.settings.database) databaseInput.value = skill.settings.database;
+                        }
+                    }, 50);
+                }
+            }
+            
+            // Restore template value for KQL
+            if (mainSkillGroup.format === 'KQL' && skill.settings && skill.settings.template) {
+                const templateTextarea = skillElement.querySelector('.template-textarea');
+                if (templateTextarea) templateTextarea.value = skill.settings.template;
+            }
+            
+            // Restore template value for GPT and ensure model is always gpt-4o
+            if (mainSkillGroup.format === 'GPT' && skill.settings) {
+                // Ensure model is always gpt-4o
+                skill.settings.model = 'gpt-4o';
+                
+                // Restore template
+                if (skill.settings.template) {
+                    const templateTextarea = skillElement.querySelector('.template-textarea');
+                    if (templateTextarea) templateTextarea.value = skill.settings.template;
+                }
+            }
+            
+            // Restore settings for API skills
+            if (mainSkillGroup.format === 'API' && skill.settings) {
+                if (skill.settings.url) {
+                    const urlInput = skillElement.querySelector('input[placeholder*="https://api.example.com/endpoint"]');
+                    if (urlInput) urlInput.value = skill.settings.url;
+                }
+            }
+            
+            // Restore settings for LogicApp skills
+            if (mainSkillGroup.format === 'LogicApp' && skill.settings) {
+                if (skill.settings.subscriptionId) {
+                    const subscriptionIdInput = skillElement.querySelector('input[placeholder*="<YOUR-SUBSCRIPTION-ID>"]');
+                    if (subscriptionIdInput) subscriptionIdInput.value = skill.settings.subscriptionId;
+                }
+                if (skill.settings.resourceGroup) {
+                    const resourceGroupInput = skillElement.querySelector('input[placeholder*="<YOUR-RESOURCE-GROUP>"]');
+                    if (resourceGroupInput) resourceGroupInput.value = skill.settings.resourceGroup;
+                }
+                if (skill.settings.workflowName) {
+                    const workflowNameInput = skillElement.querySelector('input[placeholder*="PluginLogicApp_EmailStandard"]');
+                    if (workflowNameInput) workflowNameInput.value = skill.settings.workflowName;
+                }
+                if (skill.settings.triggerName) {
+                    const triggerNameInput = skillElement.querySelector('input[placeholder*="manual"]');
+                    if (triggerNameInput) triggerNameInput.value = skill.settings.triggerName;
+                }
+            }
+            
+            // Restore inputs
+            if (skill.inputs && skill.inputs.length > 0) {
+                skill.inputs.forEach(input => {
+                    addInput(skill.id);
+                    // The input will be added with default values, we'll need to update them
+                    setTimeout(() => {
+                        const inputElement = document.getElementById(input.id);
+                        if (inputElement) {
+                            const nameInput = inputElement.querySelector('input[placeholder="Input name"]');
+                            const descInput = inputElement.querySelector('textarea[placeholder="Input description"]');
+                            if (nameInput) nameInput.value = input.name || '';
+                            if (descInput) descInput.value = input.description || '';
+                            
+                            // Update required toggle
+                            if (!input.required) {
+                                toggleRequired(skill.id, input.id);
+                            }
+                        }
+                    }, 10);
+                });
+            }
+        }
+
+        function addSkill(groupId) {
+            const skillNumber = mainSkillGroup.skills.length + 1;
+            const skillId = `skill_${groupId}_${Date.now()}`;
+            const skill = {
+                id: skillId,
+                name: '',
+                displayName: '',
+                description: '',
+                descriptionForModel: '',
+                inputs: [],
+                settings: getDefaultSettingsForFormat(mainSkillGroup.format)
+            };
+
+            mainSkillGroup.skills.push(skill);
+
+            const skillHtml = generateSkillHtml(skillId, skillNumber, mainSkillGroup.format);
+
+            // Create a temporary div to hold the new HTML
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = skillHtml;
+            
+            // Append the new skill card to the skills list
+            const skillsList = document.getElementById(`skillsList_${groupId}`);
+            skillsList.appendChild(tempDiv.firstElementChild);
+            
+            updateSkillsCounter();
+            updateYamlPreview();
+        }
+
+        function getDefaultSettingsForFormat(format) {
+            switch (format) {
+                case 'KQL':
+                    return {
+                        target: 'Defender',
+                        template: ''
+                    };
+                case 'API':
+                    return {
+                        url: '',
+                        method: 'GET',
+                        headers: {},
+                        body: ''
+                    };
+                case 'GPT':
+                    return {
+                        template: '',
+                        model: 'gpt-4o'
+                    };
+                case 'LogicApp':
+                    return {
+                        subscriptionId: '',
+                        resourceGroup: '',
+                        workflowName: '',
+                        triggerName: ''
+                    };
+                default:
+                    return {};
+            }
+        }
+
+        function generateSkillHtml(skillId, skillNumber, format) {
+            const commonFields = `
+                <div class="skill-card" id="${skillId}">
+                    <div class="skill-header" onclick="toggleSkillExpansion('${skillId}')">
+                        <div class="skill-header-left">
+                            <span class="expand-icon" id="expandIcon_${skillId}">▶</span>
+                            <span class="skill-title" id="skillTitle_${skillId}">Skill ${skillNumber}</span>
+                            <span class="skill-status" id="skillStatus_${skillId}">Not configured</span>
+                        </div>
+                        <button type="button" class="remove-btn small" onclick="event.stopPropagation(); removeSkill('${skillId}')">Remove</button>
+                    </div>
+                    <div class="skill-form" id="skillForm_${skillId}" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label>Name *</label>
+                                <input type="text" placeholder="e.g. GetDefenderDevices" onchange="updateSkillProperty('${skillId}', 'name', this.value); updateSkillTitle('${skillId}'); updateSkillStatus('${skillId}')">
+                            </div>
+                            <div class="form-group half">
+                                <label>Display Name</label>
+                                <input type="text" placeholder="e.g. Get Defender Devices" onchange="updateSkillProperty('${skillId}', 'displayName', this.value)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea placeholder="Describe what this skill does" onchange="updateSkillProperty('${skillId}', 'description', this.value); updateSkillStatus('${skillId}')"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Description For Model</label>
+                            <textarea placeholder="Enter detailed technical description for the AI model" onchange="updateSkillProperty('${skillId}', 'descriptionForModel', this.value); updateSkillStatus('${skillId}')"></textarea>
+                        </div>
+                        <div class="inputs-section">
+                            <div class="section-header-small">
+                                <label>Inputs</label>
+                                <button type="button" class="btn-secondary small" onclick="addInput('${skillId}')">+ Add Input</button>
+                            </div>
+                            <div class="inputs-list" id="inputsList_${skillId}"></div>
+                        </div>
+            `;
+
+            const settingsSection = generateSettingsSection(skillId, format);
+            
+            return commonFields + settingsSection + `
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateSettingsSection(skillId, format) {
+            switch (format) {
+                case 'KQL':
+                    return `
+                        <div class="settings-section">
+                            <label>
+                                Skill Settings
+                            </label>
+                            <div class="form-row">
+                                <div class="form-group half">
+                                    <label>Target</label>
+                                    <select onchange="updateKqlTarget('${skillId}', this.value)">
+                                        <option value="Defender" selected>Defender</option>
+                                        <option value="Sentinel">Sentinel</option>
+                                        <option value="LAW">Log Analytics Workspace</option>
+                                        <option value="ADX">Azure Data Explorer</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="kql-target-fields" id="kqlTargetFields_${skillId}" style="display: none;">
+                                <!-- Target-specific fields will be inserted here -->
+                            </div>
+                            <div class="form-group">
+                                <label>KQL Template *</label>
+                                <textarea class="template-textarea" placeholder="Enter your KQL query here...
+Example:
+DeviceInfo
+| where DeviceName contains '{{deviceName}}'
+| project DeviceName, OSPlatform, DeviceId" onchange="updateSkillSetting('${skillId}', 'template', this.value); updateSkillStatus('${skillId}')"></textarea>
+                                <div class="help-text">Use {{inputName}} to reference input parameters in your query</div>
+                            </div>
+                        </div>
+                    `;
+                case 'API':
+                    return `
+                        <div class="settings-section">
+                            <label>
+                                Skill Settings
+                            </label>
+                            <div class="form-row">
+                                <div class="form-group half">
+                                    <label>HTTP Method</label>
+                                    <select onchange="updateSkillSetting('${skillId}', 'method', this.value)">
+                                        <option value="GET" selected>GET</option>
+                                        <option value="POST">POST</option>
+                                        <option value="PUT">PUT</option>
+                                        <option value="DELETE">DELETE</option>
+                                        <option value="PATCH">PATCH</option>
+                                    </select>
+                                </div>
+                                <div class="form-group half">
+                                    <label>Content Type</label>
+                                    <select onchange="updateSkillSetting('${skillId}', 'contentType', this.value)">
+                                        <option value="application/json" selected>application/json</option>
+                                        <option value="application/xml">application/xml</option>
+                                        <option value="application/x-www-form-urlencoded">application/x-www-form-urlencoded</option>
+                                        <option value="text/plain">text/plain</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>API URL *</label>
+                                <input type="text" placeholder="https://api.example.com/endpoint" onchange="updateSkillSetting('${skillId}', 'url', this.value); updateSkillStatus('${skillId}')">
+                                <div class="help-text">Use {{inputName}} to reference input parameters in the URL</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Request Headers (JSON)</label>
+                                <textarea placeholder='{"Authorization": "Bearer {{token}}", "Content-Type": "application/json"}' onchange="updateSkillSetting('${skillId}', 'headers', this.value)"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Request Body</label>
+                                <textarea placeholder='{"param": "{{inputValue}}"}' onchange="updateSkillSetting('${skillId}', 'body', this.value)"></textarea>
+                                <div class="help-text">Request body template (for POST/PUT requests)</div>
+                            </div>
+                        </div>
+                    `;
+                case 'GPT':
+                    return `
+                        <div class="settings-section">
+                            <label>
+                                Skill Settings
+                            </label>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Model</label>
+                                    <input type="text" value="gpt-4o" readonly style="background-color: #f5f5f5; cursor: not-allowed;">
+                                    <div class="help-text">Model is fixed to gpt-4o for GPT skills</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>System Prompt *</label>
+                                <textarea class="template-textarea" placeholder="You are a security analyst. Analyze the following information and provide insights about {{topic}}..." onchange="updateSkillSetting('${skillId}', 'template', this.value); updateSkillStatus('${skillId}')"></textarea>
+                                <div class="help-text">Use {{inputName}} to reference input parameters in your prompt</div>
+                            </div>
+                        </div>
+                    `;
+                case 'LogicApp':
+                    return `
+                        <div class="settings-section">
+                            <label>
+                                Skill Settings
+                            </label>
+                            <div class="form-row">
+                                <div class="form-group half">
+                                    <label>Subscription ID *</label>
+                                    <input type="text" placeholder="<YOUR-SUBSCRIPTION-ID>" onchange="updateSkillSetting('${skillId}', 'subscriptionId', this.value); updateSkillStatus('${skillId}')">
+                                    <div class="help-text">Azure subscription ID where the Logic App is deployed</div>
+                                </div>
+                                <div class="form-group half">
+                                    <label>Resource Group *</label>
+                                    <input type="text" placeholder="<YOUR-RESOURCE-GROUP>" onchange="updateSkillSetting('${skillId}', 'resourceGroup', this.value); updateSkillStatus('${skillId}')">
+                                    <div class="help-text">Resource group containing the Logic App</div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group half">
+                                    <label>Workflow Name *</label>
+                                    <input type="text" placeholder="PluginLogicApp_EmailStandard" onchange="updateSkillSetting('${skillId}', 'workflowName', this.value); updateSkillStatus('${skillId}')">
+                                    <div class="help-text">Name of the Logic App workflow</div>
+                                </div>
+                                <div class="form-group half">
+                                    <label>Trigger Name *</label>
+                                    <input type="text" placeholder="manual" onchange="updateSkillSetting('${skillId}', 'triggerName', this.value); updateSkillStatus('${skillId}')">
+                                    <div class="help-text">Name of the Logic App trigger</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                default:
+                    return '';
+            }
+        }
+
+        function addInput(skillId) {
+            const skill = mainSkillGroup.skills.find(s => s.id === skillId);
+            if (!skill) return;
+
+            const inputId = `input_${skillId}_${Date.now()}`;
+            const input = {
+                id: inputId,
+                name: '',
+                description: '',
+                required: true
+            };
+
+            skill.inputs.push(input);
+
+            const inputHtml = `
+                <div class="input-card" id="${inputId}">
+                    <div class="input-header">
+                        <span>Input ${skill.inputs.length}</span>
+                        <button type="button" class="remove-btn tiny" onclick="removeInput('${skillId}', '${inputId}')">×</button>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <input type="text" placeholder="Input name" onchange="updateInputProperty('${skillId}', '${inputId}', 'name', this.value)">
+                        </div>
+                        <div class="form-group half">
+                            <div class="toggle-container">
+                                <span class="toggle-label required" id="toggleLabel_${inputId}">Required</span>
+                                <div class="toggle-switch required" id="toggleSwitch_${inputId}" onclick="toggleRequired('${skillId}', '${inputId}')">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Input description" onchange="updateInputProperty('${skillId}', '${inputId}', 'description', this.value)"></textarea>
+                    </div>
+                </div>
+            `;
+
+            // Create a temporary div to hold the new HTML
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = inputHtml;
+            
+            // Append the new input card to the inputs list
+            const inputsList = document.getElementById(`inputsList_${skillId}`);
+            inputsList.appendChild(tempDiv.firstElementChild);
+            
+            updateSkillStatus(skillId);
+            updateYamlPreview();
+        }
+
+        function removeSkill(skillId) {
+            mainSkillGroup.skills = mainSkillGroup.skills.filter(s => s.id !== skillId);
+            document.getElementById(skillId).remove();
+            updateSkillTitles();
+            updateSkillsCounter();
+            updateYamlPreview();
+        }
+
+        function updateSkillTitles() {
+            // Update all skill titles to reflect the correct numbering and names
+            mainSkillGroup.skills.forEach((skill, index) => {
+                updateSkillTitle(skill.id);
+            });
+        }
+
+        function updateSkillsCounter() {
+            const counter = document.getElementById('skillsCount');
+            if (counter) {
+                const count = mainSkillGroup.skills.length;
+                counter.textContent = `${count} skill${count !== 1 ? 's' : ''}`;
+            }
+        }
+
+        function removeInput(skillId, inputId) {
+            const skill = mainSkillGroup.skills.find(s => s.id === skillId);
+            if (skill) {
+                skill.inputs = skill.inputs.filter(i => i.id !== inputId);
+                document.getElementById(inputId).remove();
+            }
+            updateSkillStatus(skillId);
+            updateYamlPreview();
+        }
+
+        function updateSkillProperty(skillId, property, value) {
+            const skill = mainSkillGroup.skills.find(s => s.id === skillId);
+            if (skill) {
+                skill[property] = value;
+                updateYamlPreview();
+            }
+        }
+
+        function updateAuthType(authType) {
+            apiAuthConfig.supportedAuthTypes = authType;
+            apiAuthConfig.authorization = {};
+            
+            // Set the Type property in authorization to match the selected auth type
+            if (authType !== 'None') {
+                apiAuthConfig.authorization.Type = authType;
+            }
+            
+            const container = document.getElementById('authConfigContainer');
+            if (!container) return;
+            
+            // Clear existing configuration
+            container.innerHTML = '';
+            
+            // Generate configuration based on auth type
+            let configHtml = '';
+            
+            switch (authType) {
+                case 'None':
+                    // No additional configuration needed
+                    break;
+                    
+                case 'Basic':
+                    configHtml = `
+                        <div class="auth-config-group">
+                            <h5>Basic Authentication Configuration</h5>
+                            <div class="form-group">
+                                <div class="form-row" style="align-items: center; margin-bottom: 8px;">
+                                    <label style="margin: 0;">Username Field Name</label>
+                                    <div class="toggle-container" style="margin-left: auto;">
+                                        <span class="toggle-label optional" id="toggleLabel_username">Optional</span>
+                                        <div class="toggle-switch optional" id="toggleSwitch_username" onclick="toggleAuthProperty('username')">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" placeholder="username" onchange="updateAuthProperty('username', this.value)" id="input_username" style="display: none;">
+                                <div class="help-text">Name of the username field parameter</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-row" style="align-items: center; margin-bottom: 8px;">
+                                    <label style="margin: 0;">Password Field Name</label>
+                                    <div class="toggle-container" style="margin-left: auto;">
+                                        <span class="toggle-label optional" id="toggleLabel_password">Optional</span>
+                                        <div class="toggle-switch optional" id="toggleSwitch_password" onclick="toggleAuthProperty('password')">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" placeholder="password" onchange="updateAuthProperty('password', this.value)" id="input_password" style="display: none;">
+                                <div class="help-text">Name of the password field parameter</div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'ApiKey':
+                    configHtml = `
+                        <div class="auth-config-group">
+                            <h5>API Key Configuration</h5>
+                            <div class="form-group">
+                                <div class="form-row" style="align-items: center; margin-bottom: 8px;">
+                                    <label style="margin: 0;">API Key Location</label>
+                                    <div class="toggle-container" style="margin-left: auto;">
+                                        <span class="toggle-label optional" id="toggleLabel_location">Optional</span>
+                                        <div class="toggle-switch optional" id="toggleSwitch_location" onclick="toggleAuthProperty('location')">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <select onchange="updateAuthProperty('location', this.value); toggleAuthSchemeVisibility(this.value)" id="input_location" style="display: none;">
+                                    <option value="Header" selected>Header</option>
+                                    <option value="QueryParams">Query Parameter</option>
+                                </select>
+                                <div class="help-text">Where the API key should be sent</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-row" style="align-items: center; margin-bottom: 8px;">
+                                    <label style="margin: 0;">Key Name</label>
+                                    <div class="toggle-container" style="margin-left: auto;">
+                                        <span class="toggle-label optional" id="toggleLabel_keyName">Optional</span>
+                                        <div class="toggle-switch optional" id="toggleSwitch_keyName" onclick="toggleAuthProperty('keyName')">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" placeholder="X-API-Key" onchange="updateAuthProperty('keyName', this.value)" id="input_keyName" style="display: none;">
+                                <div class="help-text">Name of the header or query parameter</div>
+                            </div>
+                            <div class="form-group" id="authSchemeGroup">
+                                <div class="form-row" style="align-items: center; margin-bottom: 8px;">
+                                    <label style="margin: 0;">Auth Scheme</label>
+                                    <div class="toggle-container" style="margin-left: auto;">
+                                        <span class="toggle-label optional" id="toggleLabel_authScheme">Optional</span>
+                                        <div class="toggle-switch optional" id="toggleSwitch_authScheme" onclick="toggleAuthProperty('authScheme')">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" placeholder="Bearer" onchange="updateAuthProperty('authScheme', this.value)" id="input_authScheme" style="display: none;">
+                                <div class="help-text">Authentication scheme prepended to the value when used in a header</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-row" style="align-items: center; margin-bottom: 8px;">
+                                    <label style="margin: 0;">API Key Field Name</label>
+                                    <div class="toggle-container" style="margin-left: auto;">
+                                        <span class="toggle-label optional" id="toggleLabel_apiKey">Optional</span>
+                                        <div class="toggle-switch optional" id="toggleSwitch_apiKey" onclick="toggleAuthProperty('apiKey')">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" placeholder="apiKey" onchange="updateAuthProperty('apiKey', this.value)" id="input_apiKey" style="display: none;">
+                                <div class="help-text">Name of the API key field parameter</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-row" style="align-items: center; margin-bottom: 8px;">
+                                    <label style="margin: 0;">Value</label>
+                                    <div class="toggle-container" style="margin-left: auto;">
+                                        <span class="toggle-label optional" id="toggleLabel_value">Optional</span>
+                                        <div class="toggle-switch optional" id="toggleSwitch_value" onclick="toggleAuthProperty('value')">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" placeholder="your-api-key-value" onchange="updateAuthProperty('value', this.value)" id="input_value" style="display: none;">
+                                <div class="help-text">The API key secret value</div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'AADDelegated':
+                    configHtml = `
+                        <div class="auth-config-group">
+                            <h5>Entra ID Delegated Authentication</h5>
+                            <div class="form-group">
+                                <label>EntraScopes *</label>
+                                <input type="text" placeholder="https://graph.microsoft.com/.default" onchange="updateAuthProperty('EntraScopes', this.value)" required>
+                                <div class="help-text">The Entra ID scopes required for authentication</div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'OAuthClientCredentialsFlow':
+                    configHtml = `
+                        <div class="auth-config-group">
+                            <h5>OAuth Client Credentials Flow</h5>
+                            <div class="form-group">
+                                <div class="form-row" style="align-items: center; margin-bottom: 8px;">
+                                    <label style="margin: 0;">TokenEndpoint</label>
+                                    <div class="toggle-container" style="margin-left: auto;">
+                                        <span class="toggle-label optional" id="toggleLabel_TokenEndpoint">Optional</span>
+                                        <div class="toggle-switch optional" id="toggleSwitch_TokenEndpoint" onclick="toggleAuthProperty('TokenEndpoint')">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" placeholder="https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token" onchange="updateAuthProperty('TokenEndpoint', this.value)" id="input_TokenEndpoint" style="display: none;">
+                                <div class="help-text">The endpoint to request the token from</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-row" style="align-items: center; margin-bottom: 8px;">
+                                    <label style="margin: 0;">Scopes</label>
+                                    <div class="toggle-container" style="margin-left: auto;">
+                                        <span class="toggle-label optional" id="toggleLabel_Scopes">Optional</span>
+                                        <div class="toggle-switch optional" id="toggleSwitch_Scopes" onclick="toggleAuthProperty('Scopes')">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" placeholder="https://graph.microsoft.com/.default" onchange="updateAuthProperty('Scopes', this.value)" id="input_Scopes" style="display: none;">
+                                <div class="help-text">A comma separated list of scopes to request</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-row" style="align-items: center; margin-bottom: 8px;">
+                                    <label style="margin: 0;">ClientId</label>
+                                    <div class="toggle-container" style="margin-left: auto;">
+                                        <span class="toggle-label optional" id="toggleLabel_ClientId">Optional</span>
+                                        <div class="toggle-switch optional" id="toggleSwitch_ClientId" onclick="toggleAuthProperty('ClientId')">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" placeholder="your-client-id" onchange="updateAuthProperty('ClientId', this.value)" id="input_ClientId" style="display: none;">
+                                <div class="help-text">The client ID to use when requesting the token</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-row" style="align-items: center; margin-bottom: 8px;">
+                                    <label style="margin: 0;">ClientSecret</label>
+                                    <div class="toggle-container" style="margin-left: auto;">
+                                        <span class="toggle-label optional" id="toggleLabel_ClientSecret">Optional</span>
+                                        <div class="toggle-switch optional" id="toggleSwitch_ClientSecret" onclick="toggleAuthProperty('ClientSecret')">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" placeholder="your-client-secret" onchange="updateAuthProperty('ClientSecret', this.value)" id="input_ClientSecret" style="display: none;">
+                                <div class="help-text">The client secret to use when requesting the token</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-row" style="align-items: center; margin-bottom: 8px;">
+                                    <label style="margin: 0;">AuthorizationContentType</label>
+                                    <div class="toggle-container" style="margin-left: auto;">
+                                        <span class="toggle-label optional" id="toggleLabel_AuthorizationContentType">Optional</span>
+                                        <div class="toggle-switch optional" id="toggleSwitch_AuthorizationContentType" onclick="toggleAuthProperty('AuthorizationContentType')">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" placeholder="application/x-www-form-urlencoded" onchange="updateAuthProperty('AuthorizationContentType', this.value)" id="input_AuthorizationContentType" style="display: none;">
+                                <div class="help-text">The content type used when sending the token request</div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'OAuthAuthorizationCodeFlow':
+                    configHtml = `
+                        <div class="auth-config-group">
+                            <h5>OAuth Authorization Code Flow</h5>
+                            <div class="form-group">
+                                <div class="form-row" style="align-items: center; margin-bottom: 8px;">
+                                    <label style="margin: 0;">TokenEndpoint</label>
+                                    <div class="toggle-container" style="margin-left: auto;">
+                                        <span class="toggle-label optional" id="toggleLabel_TokenEndpoint">Optional</span>
+                                        <div class="toggle-switch optional" id="toggleSwitch_TokenEndpoint" onclick="toggleAuthProperty('TokenEndpoint')">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" placeholder="https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token" onchange="updateAuthProperty('TokenEndpoint', this.value)" id="input_TokenEndpoint" style="display: none;">
+                                <div class="help-text">The endpoint to request the token from</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-row" style="align-items: center; margin-bottom: 8px;">
+                                    <label style="margin: 0;">Scopes</label>
+                                    <div class="toggle-container" style="margin-left: auto;">
+                                        <span class="toggle-label optional" id="toggleLabel_Scopes">Optional</span>
+                                        <div class="toggle-switch optional" id="toggleSwitch_Scopes" onclick="toggleAuthProperty('Scopes')">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" placeholder="https://graph.microsoft.com/.default" onchange="updateAuthProperty('Scopes', this.value)" id="input_Scopes" style="display: none;">
+                                <div class="help-text">A comma separated list of scopes to request</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-row" style="align-items: center; margin-bottom: 8px;">
+                                    <label style="margin: 0;">ClientId</label>
+                                    <div class="toggle-container" style="margin-left: auto;">
+                                        <span class="toggle-label optional" id="toggleLabel_ClientId">Optional</span>
+                                        <div class="toggle-switch optional" id="toggleSwitch_ClientId" onclick="toggleAuthProperty('ClientId')">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" placeholder="your-client-id" onchange="updateAuthProperty('ClientId', this.value)" id="input_ClientId" style="display: none;">
+                                <div class="help-text">The client ID to use when requesting the token</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-row" style="align-items: center; margin-bottom: 8px;">
+                                    <label style="margin: 0;">ClientSecret</label>
+                                    <div class="toggle-container" style="margin-left: auto;">
+                                        <span class="toggle-label optional" id="toggleLabel_ClientSecret">Optional</span>
+                                        <div class="toggle-switch optional" id="toggleSwitch_ClientSecret" onclick="toggleAuthProperty('ClientSecret')">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" placeholder="your-client-secret" onchange="updateAuthProperty('ClientSecret', this.value)" id="input_ClientSecret" style="display: none;">
+                                <div class="help-text">The client secret to use when requesting the token</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-row" style="align-items: center; margin-bottom: 8px;">
+                                    <label style="margin: 0;">AuthorizationContentType</label>
+                                    <div class="toggle-container" style="margin-left: auto;">
+                                        <span class="toggle-label optional" id="toggleLabel_AuthorizationContentType">Optional</span>
+                                        <div class="toggle-switch optional" id="toggleSwitch_AuthorizationContentType" onclick="toggleAuthProperty('AuthorizationContentType')">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" placeholder="application/x-www-form-urlencoded" onchange="updateAuthProperty('AuthorizationContentType', this.value)" id="input_AuthorizationContentType" style="display: none;">
+                                <div class="help-text">The content type used when sending the token request</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-row" style="align-items: center; margin-bottom: 8px;">
+                                    <label style="margin: 0;">AuthorizationEndpoint</label>
+                                    <div class="toggle-container" style="margin-left: auto;">
+                                        <span class="toggle-label optional" id="toggleLabel_AuthorizationEndpoint">Optional</span>
+                                        <div class="toggle-switch optional" id="toggleSwitch_AuthorizationEndpoint" onclick="toggleAuthProperty('AuthorizationEndpoint')">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" placeholder="https://login.microsoftonline.com/{tenant}/oauth2/v2.0/authorize" onchange="updateAuthProperty('AuthorizationEndpoint', this.value)" id="input_AuthorizationEndpoint" style="display: none;">
+                                <div class="help-text">The endpoint to request the authorization code from (OAuthAuthorizationCodeFlow only)</div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+            }
+            
+            container.innerHTML = configHtml;
+            updateYamlPreview();
+        }
+
+        function updateAuthProperty(property, value) {
+            apiAuthConfig.authorization[property] = value;
+            updateYamlPreview();
+        }
+
+        function toggleAuthSchemeVisibility(location) {
+            const authSchemeGroup = document.getElementById('authSchemeGroup');
+            if (authSchemeGroup) {
+                if (location === 'Header') {
+                    authSchemeGroup.style.display = 'block';
+                } else {
+                    authSchemeGroup.style.display = 'none';
+                    // Clear the authScheme value when hiding
+                    delete apiAuthConfig.authorization.authScheme;
+                    updateYamlPreview();
+                }
+            }
+        }
+
+        function toggleAuthProperty(property) {
+            const toggleSwitch = document.getElementById(`toggleSwitch_${property}`);
+            const toggleLabel = document.getElementById(`toggleLabel_${property}`);
+            const inputElement = document.getElementById(`input_${property}`);
+            
+            if (!toggleSwitch || !toggleLabel || !inputElement) return;
+            
+            // Check current state
+            const isCurrentlyOptional = toggleSwitch.classList.contains('optional');
+            
+            if (isCurrentlyOptional) {
+                // Switch to required/visible
+                toggleSwitch.className = 'toggle-switch required';
+                toggleLabel.className = 'toggle-label required';
+                toggleLabel.textContent = 'Include in manifest';
+                inputElement.style.display = 'block';
+                
+                // Initialize with default value if empty
+                if (!inputElement.value) {
+                    let defaultValue = '';
+                    switch (property) {
+                        case 'location':
+                            defaultValue = 'Header';
+                            break;
+                        case 'keyName':
+                            defaultValue = 'X-API-Key';
+                            break;
+                        case 'authScheme':
+                            defaultValue = 'Bearer';
+                            break;
+                        case 'username':
+                            defaultValue = 'username';
+                            break;
+                        case 'password':
+                            defaultValue = 'password';
+                            break;
+                        case 'apiKey':
+                            defaultValue = 'apiKey';
+                            break;
+                        case 'value':
+                            defaultValue = 'your-api-key-value';
+                            break;
+                        case 'TokenEndpoint':
+                            defaultValue = 'https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token';
+                            break;
+                        case 'Scopes':
+                            defaultValue = 'https://graph.microsoft.com/.default';
+                            break;
+                        case 'ClientId':
+                            defaultValue = 'your-client-id';
+                            break;
+                        case 'ClientSecret':
+                            defaultValue = 'your-client-secret';
+                            break;
+                        case 'AuthorizationContentType':
+                            defaultValue = 'application/x-www-form-urlencoded';
+                            break;
+                        case 'AuthorizationEndpoint':
+                            defaultValue = 'https://login.microsoftonline.com/{tenant}/oauth2/v2.0/authorize';
+                            break;
+                    }
+                    inputElement.value = defaultValue;
+                    updateAuthProperty(property, defaultValue);
+                }
+            } else {
+                // Switch to optional/hidden
+                toggleSwitch.className = 'toggle-switch optional';
+                toggleLabel.className = 'toggle-label optional';
+                toggleLabel.textContent = 'Optional';
+                inputElement.style.display = 'none';
+                
+                // Remove from configuration
+                delete apiAuthConfig.authorization[property];
+                updateYamlPreview();
+            }
+            
+            // Handle special case for auth scheme visibility
+            if (property === 'location') {
+                toggleAuthSchemeVisibility(inputElement.value);
+            }
+        }
+
+        function updateSkillSetting(skillId, property, value) {
+            const skill = mainSkillGroup.skills.find(s => s.id === skillId);
+            if (skill) {
+                skill.settings[property] = value;
+                updateYamlPreview();
+            }
+        }
+
+        function updateKqlTarget(skillId, target) {
+            const skill = mainSkillGroup.skills.find(s => s.id === skillId);
+            if (skill) {
+                // Update the target
+                skill.settings.target = target;
+                
+                // Clear existing target-specific properties
+                delete skill.settings.tenantId;
+                delete skill.settings.subscriptionId;
+                delete skill.settings.resourceGroupName;
+                delete skill.settings.workspaceName;
+                delete skill.settings.cluster;
+                delete skill.settings.database;
+                
+                // Generate target-specific fields
+                generateKqlTargetFields(skillId, target);
+                updateYamlPreview();
+            }
+        }
+
+        function generateKqlTargetFields(skillId, target) {
+            const targetFieldsContainer = document.getElementById(`kqlTargetFields_${skillId}`);
+            if (!targetFieldsContainer) return;
+
+            let fieldsHtml = '';
+
+            switch (target) {
+                case 'Sentinel':
+                case 'LAW':
+                    fieldsHtml = `
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label>Tenant ID</label>
+                                <input type="text" placeholder="Enter Tenant ID" onchange="updateSkillSetting('${skillId}', 'tenantId', this.value)">
+                                <div class="help-text">Azure AD Tenant ID</div>
+                            </div>
+                            <div class="form-group half">
+                                <label>Subscription ID</label>
+                                <input type="text" placeholder="Enter Subscription ID" onchange="updateSkillSetting('${skillId}', 'subscriptionId', this.value)">
+                                <div class="help-text">Azure Subscription ID</div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label>Resource Group Name</label>
+                                <input type="text" placeholder="Enter Resource Group Name" onchange="updateSkillSetting('${skillId}', 'resourceGroupName', this.value)">
+                                <div class="help-text">Azure Resource Group name</div>
+                            </div>
+                            <div class="form-group half">
+                                <label>Workspace Name</label>
+                                <input type="text" placeholder="Enter Workspace Name" onchange="updateSkillSetting('${skillId}', 'workspaceName', this.value)">
+                                <div class="help-text">${target === 'Sentinel' ? 'Sentinel workspace name' : 'Log Analytics workspace name'}</div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'ADX':
+                    fieldsHtml = `
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label>Cluster</label>
+                                <input type="text" placeholder="Enter ADX Cluster URL" onchange="updateSkillSetting('${skillId}', 'cluster', this.value)">
+                                <div class="help-text">Azure Data Explorer cluster URL</div>
+                            </div>
+                            <div class="form-group half">
+                                <label>Database</label>
+                                <input type="text" placeholder="Enter Database Name" onchange="updateSkillSetting('${skillId}', 'database', this.value)">
+                                <div class="help-text">ADX database name</div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'Defender':
+                default:
+                    fieldsHtml = ''; // No additional fields for Defender
+                    break;
+            }
+
+            targetFieldsContainer.innerHTML = fieldsHtml;
+            
+            // Hide the container if there are no fields to show
+            if (fieldsHtml.trim() === '') {
+                targetFieldsContainer.style.display = 'none';
+            } else {
+                targetFieldsContainer.style.display = 'block';
+            }
+        }
+
+        function toggleSkillExpansion(skillId) {
+            const skillForm = document.getElementById(`skillForm_${skillId}`);
+            const expandIcon = document.getElementById(`expandIcon_${skillId}`);
+            
+            if (skillForm.style.display === 'none') {
+                skillForm.style.display = 'block';
+                expandIcon.textContent = '▼';
+                expandIcon.classList.add('expanded');
+            } else {
+                skillForm.style.display = 'none';
+                expandIcon.textContent = '▶';
+                expandIcon.classList.remove('expanded');
+            }
+        }
+
+        function updateSkillTitle(skillId) {
+            const skill = mainSkillGroup.skills.find(s => s.id === skillId);
+            const titleElement = document.getElementById(`skillTitle_${skillId}`);
+            
+            if (!skill || !titleElement) return;
+            
+            if (skill.name && skill.name.trim() !== '') {
+                titleElement.textContent = skill.name;
+            } else {
+                // Find the skill number
+                const skillIndex = mainSkillGroup.skills.findIndex(s => s.id === skillId);
+                titleElement.textContent = `Skill ${skillIndex + 1}`;
+            }
+        }
+
+        function updateSkillStatus(skillId) {
+            const skill = mainSkillGroup.skills.find(s => s.id === skillId);
+            const statusElement = document.getElementById(`skillStatus_${skillId}`);
+            
+            if (!skill || !statusElement) return;
+            
+            // Check if all required fields are filled
+            let isConfigured = true;
+            
+            // Check basic required fields
+            if (!skill.name || skill.name.trim() === '') isConfigured = false;
+            if (!skill.description || skill.description.trim() === '') isConfigured = false;
+            if (!skill.descriptionForModel || skill.descriptionForModel.trim() === '') isConfigured = false;
+            
+            // Check inputs - if inputs exist, they must have name and description
+            if (skill.inputs && skill.inputs.length > 0) {
+                skill.inputs.forEach(input => {
+                    if (!input.name || input.name.trim() === '') isConfigured = false;
+                    if (!input.description || input.description.trim() === '') isConfigured = false;
+                });
+            }
+            
+            // Check format-specific required fields
+            if (skill.settings) {
+                switch (mainSkillGroup.format) {
+                    case 'KQL':
+                        if (!skill.settings.template || skill.settings.template.trim() === '') isConfigured = false;
+                        break;
+                    case 'API':
+                        if (!skill.settings.url || skill.settings.url.trim() === '') isConfigured = false;
+                        break;
+                    case 'GPT':
+                        if (!skill.settings.template || skill.settings.template.trim() === '') isConfigured = false;
+                        break;
+                    case 'LogicApp':
+                        if (!skill.settings.subscriptionId || skill.settings.subscriptionId.trim() === '') isConfigured = false;
+                        if (!skill.settings.resourceGroup || skill.settings.resourceGroup.trim() === '') isConfigured = false;
+                        if (!skill.settings.workflowName || skill.settings.workflowName.trim() === '') isConfigured = false;
+                        if (!skill.settings.triggerName || skill.settings.triggerName.trim() === '') isConfigured = false;
+                        break;
+                }
+            }
+            
+            // Update status display
+            if (isConfigured) {
+                statusElement.textContent = 'Configured';
+                statusElement.className = 'skill-status configured';
+            } else {
+                statusElement.textContent = 'Not configured';
+                statusElement.className = 'skill-status not-configured';
+            }
+        }
+
+        function updateInputProperty(skillId, inputId, property, value) {
+            const skill = mainSkillGroup.skills.find(s => s.id === skillId);
+            const input = skill?.inputs.find(i => i.id === inputId);
+            if (input) {
+                input[property] = value;
+                updateSkillStatus(skillId);
+                updateYamlPreview();
+            }
+        }
+
+        function toggleRequired(skillId, inputId) {
+            const skill = mainSkillGroup.skills.find(s => s.id === skillId);
+            const input = skill?.inputs.find(i => i.id === inputId);
+            if (input) {
+                input.required = !input.required;
+                
+                // Update UI elements
+                const toggleSwitch = document.getElementById(`toggleSwitch_${inputId}`);
+                const toggleLabel = document.getElementById(`toggleLabel_${inputId}`);
+                
+                if (input.required) {
+                    toggleSwitch.className = 'toggle-switch required';
+                    toggleLabel.className = 'toggle-label required';
+                    toggleLabel.textContent = 'Required';
+                } else {
+                    toggleSwitch.className = 'toggle-switch optional';
+                    toggleLabel.className = 'toggle-label optional';
+                    toggleLabel.textContent = 'Optional';
+                }
+                
+                updateYamlPreview();
+            }
+        }
+
+        function downloadYaml() {
+            const name = document.getElementById('name').value || 'SecurityCopilotPlugin';
+            const displayName = document.getElementById('displayName').value || 'Security Copilot Plugin';
+            const description = document.getElementById('description').value || 'A custom Security Copilot plugin';
+            const descriptionForModel = document.getElementById('descriptionForModel').value || 'Custom plugin for Security Copilot';
+
+            // Generate clean YAML without HTML tags
+            let yamlContent = 'Descriptor:\n';
+            if (name) yamlContent += `  Name: ${name}\n`;
+            if (displayName) yamlContent += `  DisplayName: ${displayName}\n`;
+            if (description) {
+                const formattedDescription = formatMultilineYaml(description, '    ');
+                if (formattedDescription.includes('|-')) {
+                    yamlContent += `  Description: ${formattedDescription}\n`;
+                } else {
+                    yamlContent += `  Description: ${formattedDescription}\n`;
+                }
+            }
+            if (descriptionForModel) {
+                const formattedDescriptionForModel = formatMultilineYaml(descriptionForModel, '    ');
+                if (formattedDescriptionForModel.includes('|-')) {
+                    yamlContent += `  DescriptionForModel: ${formattedDescriptionForModel}\n`;
+                } else {
+                    yamlContent += `  DescriptionForModel: |-\n    ${formattedDescriptionForModel}\n`;
+                }
+            }
+
+            if (isSkillGroupInitialized && (mainSkillGroup.skills.length > 0 || (mainSkillGroup.format === 'API' && mainSkillGroup.openApiSpecUrl))) {
+                yamlContent += '\nSkillGroups:\n';
+                yamlContent += `  - Format: ${mainSkillGroup.format}\n`;
+                
+                if (mainSkillGroup.format === 'API' && mainSkillGroup.openApiSpecUrl) {
+                    // For API format, show OpenApiSpecUrl instead of Skills
+                    yamlContent += `    OpenApiSpecUrl: ${mainSkillGroup.openApiSpecUrl}\n`;
+                } else if (mainSkillGroup.skills.length > 0) {
+                    // For other formats, show Skills
+                    yamlContent += '    Skills:\n';
+                    
+                    mainSkillGroup.skills.forEach(skill => {
+                    yamlContent += `      - Name: ${skill.name}\n`;
+                    if (skill.displayName) yamlContent += `        DisplayName: ${skill.displayName}\n`;
+                    if (skill.description) {
+                        const formattedSkillDescription = formatMultilineYaml(skill.description, '          ');
+                        if (formattedSkillDescription.includes('|-')) {
+                            yamlContent += `        Description: ${formattedSkillDescription}\n`;
+                        } else {
+                            yamlContent += `        Description: ${formattedSkillDescription}\n`;
+                        }
+                    }
+                    if (skill.descriptionForModel) {
+                        const formattedSkillDescriptionForModel = formatMultilineYaml(skill.descriptionForModel, '          ');
+                        if (formattedSkillDescriptionForModel.includes('|-')) {
+                            yamlContent += `        DescriptionForModel: ${formattedSkillDescriptionForModel}\n`;
+                        } else {
+                            yamlContent += `        DescriptionForModel: |-\n          ${formattedSkillDescriptionForModel}\n`;
+                        }
+                    }
+                    
+                    if (skill.inputs && skill.inputs.length > 0) {
+                        yamlContent += '        Inputs:\n';
+                        skill.inputs.forEach(input => {
+                            yamlContent += `          - Name: ${input.name}\n`;
+                            if (input.description) {
+                                const formattedInputDescription = formatMultilineYaml(input.description, '              ');
+                                if (formattedInputDescription.includes('|-')) {
+                                    yamlContent += `            Description: ${formattedInputDescription}\n`;
+                                } else {
+                                    yamlContent += `            Description: ${formattedInputDescription}\n`;
+                                }
+                            }
+                            yamlContent += `            Required: ${input.required}\n`;
+                        });
+                    }
+                    
+                    if (skill.settings) {
+                        yamlContent += '        Settings:\n';
+                        
+                        // Handle different format types
+                        switch (mainSkillGroup.format) {
+                            case 'KQL':
+                                if (skill.settings.target) yamlContent += `          Target: ${skill.settings.target}\n`;
+                                
+                                // Add target-specific properties
+                                if (skill.settings.target === 'Sentinel' || skill.settings.target === 'LAW') {
+                                    if (skill.settings.tenantId) yamlContent += `          TenantId: ${skill.settings.tenantId}\n`;
+                                    if (skill.settings.subscriptionId) yamlContent += `          SubscriptionId: ${skill.settings.subscriptionId}\n`;
+                                    if (skill.settings.resourceGroupName) yamlContent += `          ResourceGroupName: ${skill.settings.resourceGroupName}\n`;
+                                    if (skill.settings.workspaceName) yamlContent += `          WorkspaceName: ${skill.settings.workspaceName}\n`;
+                                } else if (skill.settings.target === 'ADX') {
+                                    if (skill.settings.cluster) yamlContent += `          Cluster: ${skill.settings.cluster}\n`;
+                                    if (skill.settings.database) yamlContent += `          Database: ${skill.settings.database}\n`;
+                                }
+                                
+                                if (skill.settings.template) {
+                                    yamlContent += '          Template: |-\n';
+                                    const templateLines = skill.settings.template.split('\n');
+                                    templateLines.forEach(line => {
+                                        yamlContent += `            ${line}\n`;
+                                    });
+                                }
+                                break;
+                            case 'API':
+                                if (skill.settings.url) yamlContent += `          Url: ${skill.settings.url}\n`;
+                                if (skill.settings.method) yamlContent += `          Method: ${skill.settings.method}\n`;
+                                if (skill.settings.contentType) yamlContent += `          ContentType: ${skill.settings.contentType}\n`;
+                                if (skill.settings.headers) {
+                                    yamlContent += '          Headers:\n';
+                                    if (typeof skill.settings.headers === 'string') {
+                                        try {
+                                            const headers = JSON.parse(skill.settings.headers);
+                                            Object.entries(headers).forEach(([key, value]) => {
+                                                yamlContent += `            ${key}: ${value}\n`;
+                                            });
+                                        } catch (e) {
+                                            yamlContent += `            ${skill.settings.headers}\n`;
+                                        }
+                                    }
+                                }
+                                if (skill.settings.body) {
+                                    yamlContent += '          Body: |-\n';
+                                    yamlContent += `            ${skill.settings.body}\n`;
+                                }
+                                break;
+                            case 'GPT':
+                                yamlContent += `          ModelName: ${skill.settings.model || 'gpt-4o'}\n`;
+                                if (skill.settings.template) {
+                                    yamlContent += '          Template: |-\n';
+                                    const templateLines = skill.settings.template.split('\n');
+                                    templateLines.forEach(line => {
+                                        yamlContent += `            ${line}\n`;
+                                    });
+                                }
+                                break;
+                            case 'LogicApp':
+                                if (skill.settings.subscriptionId) yamlContent += `          SubscriptionId: ${skill.settings.subscriptionId}\n`;
+                                if (skill.settings.resourceGroup) yamlContent += `          ResourceGroup: ${skill.settings.resourceGroup}\n`;
+                                if (skill.settings.workflowName) yamlContent += `          WorkflowName: ${skill.settings.workflowName}\n`;
+                                if (skill.settings.triggerName) yamlContent += `          TriggerName: ${skill.settings.triggerName}\n`;
+                                break;
+                        }
+                    }
+                });
+                
+                // Add Authentication section for API format
+                if (mainSkillGroup.format === 'API' && apiAuthConfig.supportedAuthTypes !== 'None') {
+                    yamlContent += `    SupportedAuthTypes:\n`;
+                    yamlContent += `      - ${apiAuthConfig.supportedAuthTypes}\n`;
+                    
+                    if (Object.keys(apiAuthConfig.authorization).length > 0) {
+                        yamlContent += `    Authorization:\n`;
+                        Object.entries(apiAuthConfig.authorization).forEach(([key, value]) => {
+                            if (value) {
+                                // Map internal property names to correct YAML property names
+                                let yamlKey = key;
+                                switch (key) {
+                                    case 'keyName':
+                                        yamlKey = 'Key';
+                                        break;
+                                    case 'location':
+                                        yamlKey = 'Location';
+                                        break;
+                                    case 'authScheme':
+                                        yamlKey = 'AuthScheme';
+                                        break;
+                                    case 'apiKey':
+                                        yamlKey = 'ApiKey';
+                                        break;
+                                    case 'username':
+                                        yamlKey = 'Username';
+                                        break;
+                                    case 'password':
+                                        yamlKey = 'Password';
+                                        break;
+                                    case 'clientId':
+                                        yamlKey = 'ClientId';
+                                        break;
+                                    case 'clientSecret':
+                                        yamlKey = 'ClientSecret';
+                                        break;
+                                    case 'tokenUrl':
+                                        yamlKey = 'TokenUrl';
+                                        break;
+                                    case 'authorizationUrl':
+                                        yamlKey = 'AuthorizationUrl';
+                                        break;
+                                    case 'redirectUri':
+                                        yamlKey = 'RedirectUri';
+                                        break;
+                                    case 'resource':
+                                        yamlKey = 'Resource';
+                                        break;
+                                    case 'scope':
+                                        yamlKey = 'Scope';
+                                        break;
+                                    // Keep other properties as-is (like Type)
+                                    default:
+                                        yamlKey = key;
+                                        break;
+                                }
+                                yamlContent += `      ${yamlKey}: ${value}\n`;
+                            }
+                        });
+                    }
+                }
+            }
+        }
+
+            // Create and download the file
+            const blob = new Blob([yamlContent], { type: 'text/yaml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${name || 'plugin'}.yaml`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function copyYamlToClipboard() {
+            const name = document.getElementById('name').value || 'SecurityCopilotPlugin';
+            const displayName = document.getElementById('displayName').value || 'Security Copilot Plugin';
+            const description = document.getElementById('description').value || 'A custom Security Copilot plugin';
+            const descriptionForModel = document.getElementById('descriptionForModel').value || 'Custom plugin for Security Copilot';
+
+            // Generate clean YAML without HTML tags
+            let yamlContent = '';
+            
+            // Only add Descriptor section if at least one field has content
+            const hasDescriptorContent = document.getElementById('name').value || 
+                                       document.getElementById('displayName').value || 
+                                       document.getElementById('description').value || 
+                                       document.getElementById('descriptionForModel').value;
+            
+            if (hasDescriptorContent) {
+                yamlContent += 'Descriptor:\n';
+                if (document.getElementById('name').value) yamlContent += `  Name: ${document.getElementById('name').value}\n`;
+                if (document.getElementById('displayName').value) yamlContent += `  DisplayName: ${document.getElementById('displayName').value}\n`;
+                if (document.getElementById('description').value) {
+                    const formattedDescription = formatMultilineYaml(document.getElementById('description').value, '    ');
+                    if (formattedDescription.includes('|-')) {
+                        yamlContent += `  Description: ${formattedDescription}\n`;
+                    } else {
+                        yamlContent += `  Description: ${formattedDescription}\n`;
+                    }
+                }
+                if (document.getElementById('descriptionForModel').value) {
+                    const formattedDescriptionForModel = formatMultilineYaml(document.getElementById('descriptionForModel').value, '    ');
+                    if (formattedDescriptionForModel.includes('|-')) {
+                        yamlContent += `  DescriptionForModel: ${formattedDescriptionForModel}\n`;
+                    } else {
+                        yamlContent += `  DescriptionForModel: |-\n    ${formattedDescriptionForModel}\n`;
+                    }
+                }
+            }
+
+            if (isSkillGroupInitialized && mainSkillGroup.skills.length > 0) {
+                if (yamlContent) yamlContent += '\n';
+                yamlContent += 'SkillGroups:\n';
+                yamlContent += `  - Format: ${mainSkillGroup.format}\n`;
+                yamlContent += '    Skills:\n';
+                
+                mainSkillGroup.skills.forEach(skill => {
+                    yamlContent += `      - Name: ${skill.name}\n`;
+                    if (skill.displayName) yamlContent += `        DisplayName: ${skill.displayName}\n`;
+                    if (skill.description) {
+                        const formattedSkillDescription = formatMultilineYaml(skill.description, '          ');
+                        if (formattedSkillDescription.includes('|-')) {
+                            yamlContent += `        Description: ${formattedSkillDescription}\n`;
+                        } else {
+                            yamlContent += `        Description: ${formattedSkillDescription}\n`;
+                        }
+                    }
+                    if (skill.descriptionForModel) {
+                        const formattedSkillDescriptionForModel = formatMultilineYaml(skill.descriptionForModel, '          ');
+                        if (formattedSkillDescriptionForModel.includes('|-')) {
+                            yamlContent += `        DescriptionForModel: ${formattedSkillDescriptionForModel}\n`;
+                        } else {
+                            yamlContent += `        DescriptionForModel: |-\n          ${formattedSkillDescriptionForModel}\n`;
+                        }
+                    }
+                    
+                    if (skill.inputs && skill.inputs.length > 0) {
+                        yamlContent += '        Inputs:\n';
+                        skill.inputs.forEach(input => {
+                            yamlContent += `          - Name: ${input.name}\n`;
+                            if (input.description) {
+                                const formattedInputDescription = formatMultilineYaml(input.description, '              ');
+                                if (formattedInputDescription.includes('|-')) {
+                                    yamlContent += `            Description: ${formattedInputDescription}\n`;
+                                } else {
+                                    yamlContent += `            Description: ${formattedInputDescription}\n`;
+                                }
+                            }
+                            yamlContent += `            Required: ${input.required}\n`;
+                        });
+                    }
+                    
+                    if (skill.settings) {
+                        yamlContent += '        Settings:\n';
+                        
+                        // Handle different format types
+                        switch (mainSkillGroup.format) {
+                            case 'KQL':
+                                if (skill.settings.target) yamlContent += `          Target: ${skill.settings.target}\n`;
+                                
+                                // Add target-specific properties
+                                if (skill.settings.target === 'Sentinel' || skill.settings.target === 'LAW') {
+                                    if (skill.settings.tenantId) yamlContent += `          TenantId: ${skill.settings.tenantId}\n`;
+                                    if (skill.settings.subscriptionId) yamlContent += `          SubscriptionId: ${skill.settings.subscriptionId}\n`;
+                                    if (skill.settings.resourceGroupName) yamlContent += `          ResourceGroupName: ${skill.settings.resourceGroupName}\n`;
+                                    if (skill.settings.workspaceName) yamlContent += `          WorkspaceName: ${skill.settings.workspaceName}\n`;
+                                } else if (skill.settings.target === 'ADX') {
+                                    if (skill.settings.cluster) yamlContent += `          Cluster: ${skill.settings.cluster}\n`;
+                                    if (skill.settings.database) yamlContent += `          Database: ${skill.settings.database}\n`;
+                                }
+                                
+                                if (skill.settings.template) {
+                                    yamlContent += '          Template: |-\n';
+                                    const templateLines = skill.settings.template.split('\n');
+                                    templateLines.forEach(line => {
+                                        yamlContent += `            ${line}\n`;
+                                    });
+                                }
+                                break;
+                            case 'API':
+                                if (skill.settings.url) yamlContent += `          Url: ${skill.settings.url}\n`;
+                                if (skill.settings.method) yamlContent += `          Method: ${skill.settings.method}\n`;
+                                if (skill.settings.contentType) yamlContent += `          ContentType: ${skill.settings.contentType}\n`;
+                                if (skill.settings.headers) {
+                                    yamlContent += '          Headers:\n';
+                                    if (typeof skill.settings.headers === 'string') {
+                                        try {
+                                            const headers = JSON.parse(skill.settings.headers);
+                                            Object.entries(headers).forEach(([key, value]) => {
+                                                yamlContent += `            ${key}: ${value}\n`;
+                                            });
+                                        } catch (e) {
+                                            yamlContent += `            ${skill.settings.headers}\n`;
+                                        }
+                                    }
+                                }
+                                if (skill.settings.body) {
+                                    yamlContent += '          Body: |-\n';
+                                    yamlContent += `            ${skill.settings.body}\n`;
+                                }
+                                break;
+                            case 'GPT':
+                                yamlContent += `          ModelName: ${skill.settings.model || 'gpt-4o'}\n`;
+                                if (skill.settings.template) {
+                                    yamlContent += '          Template: |-\n';
+                                    const templateLines = skill.settings.template.split('\n');
+                                    templateLines.forEach(line => {
+                                        yamlContent += `            ${line}\n`;
+                                    });
+                                }
+                                break;
+                            case 'LogicApp':
+                                if (skill.settings.subscriptionId) yamlContent += `          SubscriptionId: ${skill.settings.subscriptionId}\n`;
+                                if (skill.settings.resourceGroup) yamlContent += `          ResourceGroup: ${skill.settings.resourceGroup}\n`;
+                                if (skill.settings.workflowName) yamlContent += `          WorkflowName: ${skill.settings.workflowName}\n`;
+                                if (skill.settings.triggerName) yamlContent += `          TriggerName: ${skill.settings.triggerName}\n`;
+                                break;
+                        }
+                    }
+                });
+                
+                // Add Authentication section for API format
+                if (mainSkillGroup.format === 'API' && apiAuthConfig.supportedAuthTypes !== 'None') {
+                    yamlContent += `    SupportedAuthTypes:\n`;
+                    yamlContent += `      - ${apiAuthConfig.supportedAuthTypes}\n`;
+                    
+                    if (Object.keys(apiAuthConfig.authorization).length > 0) {
+                        yamlContent += `    Authorization:\n`;
+                        Object.entries(apiAuthConfig.authorization).forEach(([key, value]) => {
+                            if (value) {
+                                // Map internal property names to correct YAML property names
+                                let yamlKey = key;
+                                switch (key) {
+                                    case 'keyName':
+                                        yamlKey = 'Key';
+                                        break;
+                                    case 'location':
+                                        yamlKey = 'Location';
+                                        break;
+                                    case 'authScheme':
+                                        yamlKey = 'AuthScheme';
+                                        break;
+                                    case 'apiKey':
+                                        yamlKey = 'ApiKey';
+                                        break;
+                                    case 'username':
+                                        yamlKey = 'Username';
+                                        break;
+                                    case 'password':
+                                        yamlKey = 'Password';
+                                        break;
+                                    case 'clientId':
+                                        yamlKey = 'ClientId';
+                                        break;
+                                    case 'clientSecret':
+                                        yamlKey = 'ClientSecret';
+                                        break;
+                                    case 'tokenUrl':
+                                        yamlKey = 'TokenUrl';
+                                        break;
+                                    case 'authorizationUrl':
+                                        yamlKey = 'AuthorizationUrl';
+                                        break;
+                                    case 'redirectUri':
+                                        yamlKey = 'RedirectUri';
+                                        break;
+                                    case 'resource':
+                                        yamlKey = 'Resource';
+                                        break;
+                                    case 'scope':
+                                        yamlKey = 'Scope';
+                                        break;
+                                    // Keep other properties as-is (like Type)
+                                    default:
+                                        yamlKey = key;
+                                        break;
+                                }
+                                yamlContent += `      ${yamlKey}: ${value}\n`;
+                            }
+                        });
+                    }
+                }
+            }
+
+            // Copy to clipboard
+            if (yamlContent.trim()) {
+                navigator.clipboard.writeText(yamlContent).then(() => {
+                    // Show feedback
+                    const copyIcon = document.getElementById('copyIcon');
+                    const copyText = document.getElementById('copyText');
+                    const originalIcon = copyIcon.textContent;
+                    const originalText = copyText.textContent;
+                    
+                    copyIcon.textContent = '✅';
+                    copyText.textContent = 'Copied!';
+                    
+                    setTimeout(() => {
+                        copyIcon.textContent = originalIcon;
+                        copyText.textContent = originalText;
+                    }, 2000);
+                }).catch(() => {
+                    // Fallback for older browsers
+                    const copyIcon = document.getElementById('copyIcon');
+                    const copyText = document.getElementById('copyText');
+                    copyIcon.textContent = '❌';
+                    copyText.textContent = 'Failed';
+                    
+                    setTimeout(() => {
+                        copyIcon.textContent = '📋';
+                        copyText.textContent = 'Copy';
+                    }, 2000);
+                });
+            } else {
+                // Show message if no content to copy
+                const copyIcon = document.getElementById('copyIcon');
+                const copyText = document.getElementById('copyText');
+                copyIcon.textContent = '⚠️';
+                copyText.textContent = 'No content';
+                
+                setTimeout(() => {
+                    copyIcon.textContent = '📋';
+                    copyText.textContent = 'Copy';
+                }, 2000);
+            }
+        }
+        
+        function toggleSkillGroups() {
+            const content = document.getElementById('skillGroupsContent');
+            const icon = document.getElementById('skillGroupsIcon');
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                icon.textContent = '▼';
+                icon.classList.add('expanded');
+            } else {
+                content.style.display = 'none';
+                icon.textContent = '▶';
+                icon.classList.remove('expanded');
+            }
+        }
+
+        // Add event listeners to update YAML preview
+        document.getElementById('name').addEventListener('input', updateYamlPreview);
+        document.getElementById('displayName').addEventListener('input', updateYamlPreview);
+        document.getElementById('description').addEventListener('input', updateYamlPreview);
+        document.getElementById('descriptionForModel').addEventListener('input', updateYamlPreview);
+
+        // Initialize
+        updateYamlPreview();
+    </script>
+</body>
+</html>
