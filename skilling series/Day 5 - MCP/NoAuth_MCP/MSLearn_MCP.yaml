@@ -1,0 +1,14 @@
+Descriptor:
+  Name: MSLearnDocumentationMCPServer
+  DisplayName: Microsoft Learn MCP Server developer reference documentation
+  Description: Microsoft Learn MCP Server developer reference documentation
+  DescriptionForModel: >
+    You have access to MCP tools called `microsoft_docs_search` and `microsoft_docs_fetch`.
+    These tools allow you to search through and fetch Microsoft's latest official documentation, and that information might be more detailed or newer than what's in your training data set.
+    If a question includes a Microsoft product, service, or technology, you should leverage these tools 
+SkillGroups:
+  - Format: MCP
+    Settings:
+      Endpoint:  https://learn.microsoft.com/api/mcp
+      TimeoutInSeconds: 120
+      AllowedTools: microsoft_docs_search, microsoft_docs_fetch
