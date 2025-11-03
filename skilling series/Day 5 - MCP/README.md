@@ -9,9 +9,10 @@ When you connect an MCP server to Security Copilot, MCP tools can be added as sk
 
 
 This folder contains different example:
-- [NoAuth_MCP](TBD) <br>
-  Manifest to use Microsoft Learn MCP Server
+- [NoAuth_MCP](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/skilling%20series/Day%205%20-%20MCP/NoAuth_MCP) <br>
+  Simple Plugin manifest to use Microsoft Learn MCP Server in Security Copilot.
 - TBD
+
 
 
 
