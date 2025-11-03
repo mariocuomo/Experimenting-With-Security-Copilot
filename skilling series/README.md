@@ -10,6 +10,8 @@ Learn how to create custom plugins that performs API calls using different authe
 Learn how to integrate GPT knowledge into Security Copilot to augment its capabilities and how to create LogicApp custom plugins.
 - [Day 4 - Automations](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/skilling%20series/Day%204%20-%20Automations) <br>
 Learn how to use Logic Apps to interact with Security Copilot and create automation workflow enhancement with Generative AI power.
+- [Day 5 - MCP Server](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/skilling%20series/Day%205%20-%20MCP) <br>
+Learn how to integrate Security Copilot with external MCP Servers - to use their tools as skills.
 
 ---
 
