@@ -15,7 +15,7 @@ The server doesn't require authentication.
 | SkillName | Description | Input Parameters
 |     :---         |     :---      |     :---      | 
 | microsoft_docs_search | Performs semantic search against Microsoft official technical documentation | _query_ : The search query for retrieval |
-| microsoft_code_sample_search	 | Search for official Microsoft/Azure code snippets and examples | _query_: Search query for Microsoft/Azure code snippets and _language _ : Programming language filter. |
+| microsoft_code_sample_search	 | Search for official Microsoft/Azure code snippets and examples | _query_: Search query for Microsoft/Azure code snippets and _language_ : Programming language filter. |
 
 
 ---
@@ -32,3 +32,4 @@ The server doesn't require authentication.
 
 
 Inspired by [Stefano Pescosolido](https://www.linkedin.com/in/stefanopescosolido/)
+
