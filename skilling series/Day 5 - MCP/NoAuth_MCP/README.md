@@ -27,9 +27,10 @@ The server doesn't require authentication.
 
 ## SCREENSHOTS
 <div align="center">
-  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/MCP_Learn.png" width="700"> </img>
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/MCP_Learn.png" width="1000"> </img>
 </div>
 
 
 Inspired by [Stefano Pescosolido](https://www.linkedin.com/in/stefanopescosolido/)
+
 
