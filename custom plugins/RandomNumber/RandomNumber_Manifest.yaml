@@ -1,0 +1,10 @@
+Descriptor:
+  Name: RandomNumber
+  DisplayName: RandomNumber
+  Description: RandomNumber
+  SupportedAuthTypes:
+    - None
+SkillGroups:
+  - Format: API
+    Settings:
+      OpenApiSpecUrl: https://raw.githubusercontent.com/mariocuomo/Experimenting-With-Security-Copilot/refs/heads/main/custom%20plugins/RandomNumber/RandomNumber_API.yaml
