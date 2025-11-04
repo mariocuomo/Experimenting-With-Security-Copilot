@@ -1,0 +1,22 @@
+openapi: 3.0.0
+info:
+  title: Random Number API
+  description: Retrieve random numbers from a specified range
+  version: "v1.0"
+servers:
+  - url: https://randomnumberapi.com/
+paths:
+  /api/v1.0/random?min=1&max=4&count=1:
+    get:
+      operationId: GetRandomNumber
+      summary: Retrieve a random number between 1 and 4
+      responses:
+        "200":
+          description: A JSON array containing one random number
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  example: 1
