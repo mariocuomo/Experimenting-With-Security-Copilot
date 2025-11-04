@@ -4,7 +4,7 @@ info:
   description: Retrieve random numbers from a specified range
   version: "v1.0"
 servers:
-  - url: https://randomnumberapi.com/
+  - url: https://www.randomnumberapi.com
 paths:
   /api/v1.0/random?min=1&max=4&count=1:
     get:
