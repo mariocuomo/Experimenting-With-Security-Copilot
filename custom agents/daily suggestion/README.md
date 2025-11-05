@@ -2,6 +2,10 @@
 
 This project showcases a simple custom Security Copilot agent designed to provide recommendations on Microsoft Security products. It is intended for demonstration and educational purposes only — not for production use.
 
+<div align="center">
+  <img src="https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/img/suggestion_agent.png" width="1000">
+</div>
+
 ## How It Works
 
 The agent performs two main tasks:
@@ -64,6 +68,9 @@ Generative AI models are not designed to produce truly random numbers. To ensure
 - Demonstrate how to configure and integrate custom skills into a Security Copilot agent
 - Provide a hands-on example of using external APIs and Microsoft Learn search capabilities
 - Serve as a starting point for building more advanced security-focused agents
+
+
+
 
 
 
