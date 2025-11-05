@@ -25,6 +25,7 @@ AgentDefinitions:
         DefaultPollPeriodSeconds: 0
         ProcessSkill: SecurityDailySuggestionMS.SecurityDailySuggestionAgentMS
         FetchSkill: ''
+        
 SkillGroups:
   - Format: Agent
     Skills:
@@ -64,4 +65,5 @@ SkillGroups:
             documentation.
         ChildSkills:
           - microsoft_docs_search
+
           - GetRandomNumber
