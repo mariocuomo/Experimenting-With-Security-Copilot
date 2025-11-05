@@ -26,7 +26,7 @@ The agent leverages two custom skills:
 | `microsoft_docs_search` | Searches Microsoft Learn for product-specific documentation        |
 
 These skills are implemented as separate plugins:
-- `RandomNumber` [link[(https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/custom%20plugins/RandomNumber)
+- `RandomNumber` [link](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/tree/main/custom%20plugins/RandomNumber)
 - `MSLearnDocumentationMCPServer` [link](https://github.com/mariocuomo/Experimenting-With-Security-Copilot/blob/main/skilling%20series/Day%205%20-%20MCP/NoAuth_MCP/MSLearn_MCP.yaml)
 
 ## Why Use a Random Number Plugin?
@@ -38,4 +38,5 @@ Generative AI models are not designed to produce truly random numbers. To ensure
 - Demonstrate how to configure and integrate custom skills into a Security Copilot agent
 - Provide a hands-on example of using external APIs and Microsoft Learn search capabilities
 - Serve as a starting point for building more advanced security-focused agents
+
 
