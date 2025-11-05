@@ -1,0 +1,67 @@
+Descriptor:
+  Name: SecurityDailySuggestionMS
+  DisplayName: SecurityDailySuggestionMS
+  Description: >-
+    This agent provides a relevant suggestion, tip, or best practice about
+    Microsoft Security products, using authoritative content from Microsoft
+    Learn.
+  Icon: ''
+    
+AgentDefinitions:
+  - Name: SecurityDailySuggestionMS
+    DisplayName: SecurityDailySuggestionMS
+    Description: >-
+      This agent provides a relevant suggestion, tip, or best practice about
+      Microsoft Security products, using authoritative content from Microsoft
+      Learn.
+    Product: Security
+    AgentSingleInstanceConstraint: None
+    Publisher: MCDev
+    RequiredSkillsets:
+      - MSLearnDocumentationMCPServer
+      - RandomNumber
+    Triggers:
+      - Name: Default
+        DefaultPollPeriodSeconds: 0
+        ProcessSkill: SecurityDailySuggestionMS.SecurityDailySuggestionAgentMS
+        FetchSkill: ''
+SkillGroups:
+  - Format: Agent
+    Skills:
+      - Name: SecurityDailySuggestionAgentMS
+        DisplayName: SecurityDailySuggestionAgentMS
+        Description: >-
+          Orchestrates the retrieval and presentation of a Microsoft Security
+          suggestion using Microsoft Learn documentation.
+        Settings:
+          Instructions: |-
+            # Mission
+            You are an assistant that provides a daily suggestion,
+            tip, or best practice about Microsoft Security products. Use the
+            microsoft_docs_search skill to find recent, relevant, and high-value
+            content from Microsoft Learn.
+            
+            Each time the agent is triggered, provide a suggestion for Defender for Endpoint or Defender for Cloud Apps or Defender for Identity or Defender for Office 365.
+
+            Use the microsoft_docs_search skill to retrieve a daily
+            suggestion focused on the selected topic. Ensure the suggestion is
+            concise, actionable, and references Microsoft Learn documentation.
+
+            # Workflow
+            1. Randomly select one topic from the list using GetRandomNumber skill.
+              a) if randomInt == 1, so topic is "Defender for Endpoint",
+                if randomInt == 2, so topic is "Defender for Cloud Apps",
+                if randomInt == 3, so topic is "Defender for Identity",
+                if randomInt == 4, so topic is "Defender for Office 365",
+
+            2. Call the microsoft_docs_search skill with the selected topic as input.
+
+            3. Present the suggestion to the user, including the topic and an explanation.
+  
+            # Output
+            Return actionable security tip or suggestion, clearly
+            indicating the selected topic and referencing Microsoft Learn
+            documentation.
+        ChildSkills:
+          - microsoft_docs_search
+          - GetRandomNumber
