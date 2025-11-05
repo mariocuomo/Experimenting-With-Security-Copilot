@@ -16,6 +16,32 @@ The agent performs two main tasks:
 2. **Documentation Search**  
    Once a topic is selected, the agent searches Microsoft Learn for relevant documentation and guidance.
 
+```mermaid
+graph TD
+    A["Security Copilot Agent"]
+
+    subgraph Skills Calls
+        B["GetRandomNumber Skill"]
+        C["microsoft_docs_search Skill"]
+    end
+
+    subgraph Flow
+        D["Random Number (1-4)"]
+        E["Selected Defender Topic"]
+        F["Microsoft Learn Documentation"]
+        G["Recommendation"]
+    end
+
+    A -- 1. Call --> B
+    B -- 2. Return --> D
+    D -- 3. Back to --> A
+    A -- 4. Select Topic --> E
+    E -- 5. Call --> C
+    C -- 6. Return --> F
+    F -- 7. Back to --> A
+    A -- 8. Generate --> G
+```
+
 ## Skills Used
 
 The agent leverages two custom skills:
@@ -38,5 +64,6 @@ Generative AI models are not designed to produce truly random numbers. To ensure
 - Demonstrate how to configure and integrate custom skills into a Security Copilot agent
 - Provide a hands-on example of using external APIs and Microsoft Learn search capabilities
 - Serve as a starting point for building more advanced security-focused agents
+
 
 
