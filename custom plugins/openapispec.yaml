@@ -1,0 +1,543 @@
+
+openapi: 3.0.3
+info:
+  title: Microsoft Sentinel - Alert Rules (List)
+ 01
+  description: >
+    Elenco di tutte le Alert Rules in un workspace di Log Analytics (Microsoft Sentinel).
+    Basato sulla documentazione ufficiale "Alert Rules - List" (API version 2025-09-01).
+
+servers:
+  - url: https://management.azure.com
+
+tags:
+  - name: AlertRules
+    description: Operazioni sulle regole di allerta di Microsoft Sentinel.
+
+security:
+  - azure_auth:
+      - user_impersonation
+
+paths:
+  /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules:
+    get:
+      operationId: AlertRules_List
+      summary: Elenca tutte le alert rules del workspace
+      tags:
+        - AlertRules
+      parameters:
+        - name: subscriptionId
+          in: path
+          required: true
+          description: ID della sottoscrizione.
+          schema:
+            type: string
+            format: uuid
+        - name: resourceGroupName
+          in: path
+          required: true
+          description: Nome del resource group.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+        - name: workspaceName
+          in: path
+          required: true
+          description: Nome del workspace di Log Analytics.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: '^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$'
+        - name: api-version
+          in: query
+          required: true
+          description: Versione dell'API.
+          schema:
+            type: string
+            enum: ["2025-09-01"]
+            default: "2025-09-01"
+      responses:
+        '200':
+          description: OK - Operazione completata correttamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertRulesList'
+              examples:
+                sample:
+                  summary: Esempio di risposta
+                  value:
+                    value:
+                      - id: "/subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.OperationalInsights/workspaces/{ws}/providers/Microsoft.SecurityInsights/alertRules/73e01a99-5cd7-4139-a149-9f2736ff2ab5"
+                        name: "73e01a99-5cd7-4139-a149-9f2736ff2ab5"
+                        type: "Microsoft.SecurityInsights/alertRules"
+                        kind: "Scheduled"
+                        etag: "\"0300bf09-0000-0000-0000-5c37296e0000\""
+                        properties:
+                          displayName: "My scheduled rule"
+                          description: "An example for a scheduled rule"
+                          severity: "High"
+                          enabled: true
+                          tactics: ["Persistence", "LateralMovement"]
+                          query: "Heartbeat"
+                          queryFrequency: "PT1H"
+                          queryPeriod: "P2DT1H30M"
+                          triggerOperator: "GreaterThan"
+                          triggerThreshold: 0
+                          suppressionDuration: "PT1H"
+                          suppressionEnabled: false
+                          lastModifiedUtc: "2021-03-01T13:17:30Z"
+                          eventGroupingSettings:
+                            aggregationKind: "AlertPerResult"
+                          customDetails:
+                            OperatingSystemName: "OSName"
+                            OperatingSystemType: "OSType"
+                          entityMappings:
+                            - entityType: "Host"
+                              fieldMappings:
+                                - identifier: "FullName"
+                                  columnName: "Computer"
+                            - entityType: "IP"
+                              fieldMappings:
+                                - identifier: "Address"
+                                  columnName: "ComputerIP"
+                          alertDetailsOverride:
+                            alertDisplayNameFormat: "Alert from {{Computer}}"
+                            alertDescriptionFormat: "Suspicious activity was made by {{ComputerIP}}"
+                          incidentConfiguration:
+                            createIncident: true
+                            groupingConfiguration:
+                              enabled: true
+                              reopenClosedIncident: false
+                              lookbackDuration: "PT5H"
+                              matchingMethod: "Selected"
+                              groupByEntities: ["Host"]
+                              groupByAlertDetails: ["DisplayName"]
+                              groupByCustomDetails: ["OperatingSystemType", "OperatingSystemName"]
+                      - id: "/subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.OperationalInsights/workspaces/{ws}/providers/Microsoft.SecurityInsights/alertRules/microsoftSecurityIncidentCreationRuleExample"
+                        name: "microsoftSecurityIncidentCreationRuleExample"
+                        type: "Microsoft.SecurityInsights/alertRules"
+                        kind: "MicrosoftSecurityIncidentCreation"
+                        etag: "\"260097e0-0000-0d00-0000-5d6fa88f0000\""
+                        properties:
+                          productFilter: "Microsoft Cloud App Security"
+                          severitiesFilter: null
+                          displayNamesFilter: null
+                          displayName: "testing displayname"
+                          enabled: true
+                          description: null
+                          alertRuleTemplateName: null
+                          lastModifiedUtc: "2019-09-04T12:05:35.7296311Z"
+                      - id: "/subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.OperationalInsights/workspaces/{ws}/providers/Microsoft.SecurityInsights/alertRules/myFirstFusionRule"
+                        name: "myFirstFusionRule"
+                        type: "Microsoft.SecurityInsights/alertRules"
+                        kind: "Fusion"
+                        etag: "\"25005c11-0000-0d00-0000-5d6cc0e20000\""
+                        properties:
+                          displayName: "Advanced Multi-Stage Attack Detection"
+                          description: "..."
+                          alertRuleTemplateName: "f71aba3d-28fb-450b-b192-4e76a83015c8"
+                          tactics: ["Persistence","LateralMovement","Exfiltration","CommandAndControl"]
+                          severity: "High"
+                          enabled: false
+                          lastModifiedUtc: "2019-09-02T07:12:34.9065092Z"
+                    nextLink: null
+        default:
+          description: Errore - Motivazione del fallimento dell'operazione
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudError'
+
+components:
+  securitySchemes:
+    azure_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+
+  schemas:
+    AlertRulesList:
+      type: object
+      properties:
+        nextLink:
+          type: string
+          description: URL per recuperare la pagina successiva di alert rules.
+        value:
+          type: array
+          description: Elenco delle alert rules.
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/ScheduledAlertRule'
+              - $ref: '#/components/schemas/FusionAlertRule'
+              - $ref: '#/components/schemas/MSIncidentCreationAlertRule'
+            discriminator:
+              propertyName: kind
+              mapping:
+                Scheduled: '#/components/schemas/ScheduledAlertRule'
+                Fusion: '#/components/schemas/FusionAlertRule'
+                MicrosoftSecurityIncidentCreation: '#/components/schemas/MSIncidentCreationAlertRule'
+
+    # --- Common Types ---
+
+    AlertSeverity:
+      type: string
+      enum: [High, Medium, Low, Informational]
+
+    AttackTactic:
+      type: string
+      enum:
+        - Reconnaissance
+        - ResourceDevelopment
+        - InitialAccess
+        - Execution
+        - Persistence
+        - PrivilegeEscalation
+        - DefenseEvasion
+        - CredentialAccess
+        - Discovery
+        - LateralMovement
+        - Collection
+        - Exfiltration
+        - CommandAndControl
+        - Impact
+        - PreAttack
+        - ImpairProcessControl
+        - InhibitResponseFunction
+
+    TriggerOperator:
+      type: string
+      enum: [GreaterThan, LessThan, Equal]
+
+    EventGroupingAggregationKind:
+      type: string
+      enum: [SingleAlert, AlertPerResult]
+
+    MatchingMethod:
+      type: string
+      enum: [AllEntities, AnyAlert, Selected]
+
+    EntityMappingType:
+      type: string
+      enum:
+        - Account
+        - Host
+        - IP
+        - Malware
+        - File
+        - Process
+        - CloudApplication
+        - DNS
+        - AzureResource
+        - FileHash
+        - RegistryKey
+        - RegistryValue
+        - SecurityGroup
+        - URL
+        - Mailbox
+        - MailCluster
+        - MailMessage
+        - SubmissionMail
+
+    AlertDetailsOverride:
+      type: object
+      properties:
+        alertDescriptionFormat:
+          type: string
+          description: Formato (con placeholder colonne) per la descrizione dell’alert.
+        alertDisplayNameFormat:
+          type: string
+          description: Formato (con placeholder colonne) per il nome dell’alert.
+        alertDynamicProperties:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertPropertyMapping'
+        alertSeverityColumnName:
+          type: string
+        alertTacticsColumnName:
+          type: string
+
+    AlertProperty:
+      type: string
+      enum:
+        - AlertLink
+        - ConfidenceLevel
+        - ConfidenceScore
+        - ExtendedLinks
+        - ProductName
+        - ProviderName
+        - ProductComponentName
+        - RemediationSteps
+        - Techniques
+
+    AlertPropertyMapping:
+      type: object
+      properties:
+        alertProperty:
+          $ref: '#/components/schemas/AlertProperty'
+        value:
+          type: string
+          description: Nome della colonna da usare per sovrascrivere la proprietà.
+
+    EventGroupingSettings:
+      type: object
+      properties:
+        aggregationKind:
+          $ref: '#/components/schemas/EventGroupingAggregationKind'
+
+    FieldMapping:
+      type: object
+      properties:
+        columnName:
+          type: string
+        identifier:
+          type: string
+          description: Identificatore v3 dell’entità.
+
+    EntityMapping:
+      type: object
+      properties:
+        entityType:
+          $ref: '#/components/schemas/EntityMappingType'
+        fieldMappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMapping'
+
+    GroupingConfiguration:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        groupByAlertDetails:
+          type: array
+          items:
+            type: string
+            description: Valori tra "DisplayName" o "Severity".
+        groupByCustomDetails:
+          type: array
+          items:
+            type: string
+        groupByEntities:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityMappingType'
+        lookbackDuration:
+          type: string
+          format: duration
+        matchingMethod:
+          $ref: '#/components/schemas/MatchingMethod'
+        reopenClosedIncident:
+          type: boolean
+
+    IncidentConfiguration:
+      type: object
+      properties:
+        createIncident:
+          type: boolean
+        groupingConfiguration:
+          $ref: '#/components/schemas/GroupingConfiguration'
+
+    SystemData:
+      type: object
+      description: Metadati ARM (createdBy, modifiedBy, ecc.).
+      properties:
+        createdBy:
+          type: string
+        createdByType:
+          type: string
+          enum: [User, Application, ManagedIdentity, Key]
+        createdAt:
+          type: string
+          format: date-time
+        lastModifiedBy:
+          type: string
+        lastModifiedByType:
+          type: string
+          enum: [User, Application, ManagedIdentity, Key]
+        lastModifiedAt:
+          type: string
+          format: date-time
+
+    CloudError:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+
+    # --- Alert Rule kinds ---
+
+    BaseAlertRule:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          example: Microsoft.SecurityInsights/alertRules
+        etag:
+          type: string
+        kind:
+          type: string
+        systemData:
+          $ref: '#/components/schemas/SystemData'
+
+    ScheduledAlertRule:
+      allOf:
+        - $ref: '#/components/schemas/BaseAlertRule'
+        - type: object
+          properties:
+            kind:
+              type: string
+              enum: [Scheduled]
+            properties:
+              type: object
+              properties:
+                alertDetailsOverride:
+                  $ref: '#/components/schemas/AlertDetailsOverride'
+                alertRuleTemplateName:
+                  type: string
+                  nullable: true
+                customDetails:
+                  type: object
+                  additionalProperties:
+                    type: string
+                description:
+                  type: string
+                  nullable: true
+                displayName:
+                  type: string
+                enabled:
+                  type: boolean
+                entityMappings:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/EntityMapping'
+                eventGroupingSettings:
+                  $ref: '#/components/schemas/EventGroupingSettings'
+                incidentConfiguration:
+                  $ref: '#/components/schemas/IncidentConfiguration'
+                lastModifiedUtc:
+                  type: string
+                  format: date-time
+                query:
+                  type: string
+                queryFrequency:
+                  type: string
+                  format: duration
+                queryPeriod:
+                  type: string
+                  format: duration
+                severity:
+                  $ref: '#/components/schemas/AlertSeverity'
+                suppressionDuration:
+                  type: string
+                  format: duration
+                suppressionEnabled:
+                  type: boolean
+                tactics:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/AttackTactic'
+                techniques:
+                  type: array
+                  items:
+                    type: string
+                templateVersion:
+                  type: string
+                triggerOperator:
+                  $ref: '#/components/schemas/TriggerOperator'
+                triggerThreshold:
+                  type: integer
+                  format: int32
+
+    FusionAlertRule:
+      allOf:
+        - $ref: '#/components/schemas/BaseAlertRule'
+        - type: object
+          properties:
+            kind:
+              type: string
+              enum: [Fusion]
+            properties:
+              type: object
+              properties:
+                alertRuleTemplateName:
+                  type: string
+                description:
+                  type: string
+                  nullable: true
+                displayName:
+                  type: string
+                enabled:
+                  type: boolean
+                lastModifiedUtc:
+                  type: string
+                  format: date-time
+                severity:
+                  $ref: '#/components/schemas/AlertSeverity'
+                tactics:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/AttackTactic'
+                techniques:
+                  type: array
+                  items:
+                    type: string
+
+    MSIncidentCreationAlertRule:
+      allOf:
+        - $ref: '#/components/schemas/BaseAlertRule'
+        - type: object
+          properties:
+            kind:
+              type: string
+              enum: [MicrosoftSecurityIncidentCreation]
+            properties:
+              type: object
+              properties:
+                alertRuleTemplateName:
+                  type: string
+                  nullable: true
+                description:
+                  type: string
+                  nullable: true
+                displayName:
+                  type: string
+                displayNamesExcludeFilter:
+                  type: array
+                  items:
+                    type: string
+                displayNamesFilter:
+                  type: array
+                  items:
+                    type: string
+                enabled:
+                  type: boolean
+                lastModifiedUtc:
+                  type: string
+                  format: date-time
+                productFilter:
+                  type: string
+                  enum:
+                    - Microsoft Cloud App Security
+                    - Azure Security Center
+                    - Azure Advanced Threat Protection
+                    - Azure Active Directory Identity Protection
+                    - Azure Security Center for IoT
+                severitiesFilter:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/AlertSeverity'
