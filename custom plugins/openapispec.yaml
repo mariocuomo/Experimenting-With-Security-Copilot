@@ -1,7 +1,6 @@
 openapi: 3.0.3
 info:
   title: Microsoft Sentinel - Alert Rules (List)
- 01
   description: >
     Elenco di tutte le Alert Rules in un workspace di Log Analytics (Microsoft Sentinel).
     Basato sulla documentazione ufficiale "Alert Rules - List" (API version 2025-09-01).
@@ -540,4 +539,5 @@ components:
                   type: array
                   items:
                     $ref: '#/components/schemas/AlertSeverity'
+
 
