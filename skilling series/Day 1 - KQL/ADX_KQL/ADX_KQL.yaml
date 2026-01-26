@@ -1,18 +1,41 @@
 Descriptor:
   Name: InteractWithADX
   DisplayName: Plugin to interact with ADX corporate
-  Description: Skills to interact with ADX corporate
+  Description: Skills to interact with Azure Data Explorer (ADX) for historical data analysis and threat hunting
+  DescriptionForModel: This plugin allows querying Azure Data Explorer (ADX) for historical security data. Use this for cold storage queries, long-term threat hunting, or analyzing archived logs.
 
 SkillGroups:
   - Format: KQL
     Skills:
      - Name: HuntIPColdData
        DisplayName: Hunting IP historical data
-       Description:  Skill to search on cold storage on Azure data explorer
+       Description: Skill to search historical sign-in data in Azure Data Explorer for a specific IP address
+       DescriptionForModel: This skill queries historical SigninLogs in ADX to investigate sign-in activity from a specific IP address. Use this when investigating suspicious IPs or performing historical threat hunting.
+       ExamplePrompt: Search historical data in ADX for sign-ins from IP 10.0.0.1
+       Inputs:
+         - Name: ipAddress
+           Description: The IP address to search for in historical sign-in logs
+           Required: true
+         - Name: lookbackDays
+           Description: Number of days to look back in historical data (default 30)
+           Required: false
+           DefaultValue: "30"
        Settings:
         Target: Kusto
-        Cluster:
-          <YOUR ADX CLUSTER ENDPOINT>
-        Database: <YOUR ADX DATATABASE NAME>
-        Template: 
+        Cluster: <YOUR_ADX_CLUSTER_ENDPOINT>
+        Database: <YOUR_ADX_DATABASE_NAME>
+        Template: |-
+          // Historical IP investigation query
+          let targetIP = '{{ipAddress}}';
+          let lookback = {{lookbackDays}}d;
           SigninLogs
+          | where TimeGenerated > ago(lookback)
+          | where IPAddress == targetIP
+          | summarize 
+              SignInCount = count(),
+              UniqueUsers = dcount(UserPrincipalName),
+              FirstSeen = min(TimeGenerated),
+              LastSeen = max(TimeGenerated),
+              Users = make_set(UserPrincipalName, 50),
+              Locations = make_set(Location, 20)
+          | extend IPAddress = targetIP

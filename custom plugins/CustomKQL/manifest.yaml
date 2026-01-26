@@ -1,16 +1,19 @@
 Descriptor:
   Name: ExecuteKQLQueryPlugin
   DisplayName: Execute KQL Query Plugin
-  Description: Plugin to execute a KQL Query
+  Description: Plugin to execute a KQL Query against Microsoft Defender
+  DescriptionForModel: This plugin allows execution of custom KQL (Kusto Query Language) queries against Microsoft Defender. Use this when you need to run ad-hoc queries or investigate security data in Defender.
 SkillGroups:
   - Format: KQL
     Skills:
       - Name: ExecuteKQLQuerySkill
         DisplayName: Execute KQL Query Skill
-        Description: Skill to execute a KQL Query
+        Description: Skill to execute a KQL Query against Microsoft Defender
+        DescriptionForModel: This skill executes a custom KQL query against Microsoft Defender. The query parameter should contain valid KQL syntax. Use this for running custom threat hunting queries, investigating alerts, or analyzing security telemetry.
+        ExamplePrompt: Run this KQL query in Defender - DeviceProcessEvents | where Timestamp > ago(1h) | take 10
         Inputs:
           - Name: query
-            Description: the query to execute
+            Description: The KQL query to execute against Microsoft Defender
             Required: true
         Settings:
           Target: Defender

@@ -2,6 +2,24 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "sentinelSubscriptionId": {
+            "type": "string",
+            "metadata": {
+                "description": "The subscription ID where Microsoft Sentinel is deployed"
+            }
+        },
+        "sentinelResourceGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "The resource group name where Microsoft Sentinel workspace is located"
+            }
+        },
+        "sentinelWorkspaceName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Microsoft Sentinel Log Analytics workspace"
+            }
+        }
     },
     "variables": {},
     "resources": [
@@ -160,7 +178,7 @@
                                         ]
                                     }
                                 },
-                                "path": "/Incidents/subscriptions/@{encodeURIComponent('4f4475d8-fd3a-4f14-94b7-861e34f0d7f4')}/resourceGroups/@{encodeURIComponent('SentinelRG')}/workspaces/@{encodeURIComponent('LAWSentinel')}"
+                                "path": "[concat('/Incidents/subscriptions/', parameters('sentinelSubscriptionId'), '/resourceGroups/', parameters('sentinelResourceGroupName'), '/workspaces/', parameters('sentinelWorkspaceName'))]"
                             }
                         },
                         "Comment_with_KQL_query_to_Execute": {

@@ -1,7 +1,8 @@
 Descriptor:
   Name: RandomNumber
-  DisplayName: RandomNumber
-  Description: RandomNumber
+  DisplayName: Random Number Generator
+  Description: Generates random numbers within a specified range for use in randomization scenarios
+  DescriptionForModel: This plugin generates random numbers between 1 and 4. Use this when you need to randomly select from a set of options, such as picking a random topic or making random selections in workflows.
   SupportedAuthTypes:
     - None
 SkillGroups:

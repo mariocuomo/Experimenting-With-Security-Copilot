@@ -16,10 +16,10 @@ SkillGroups:
             Required: true
        Settings:
               Target: Sentinel
-              TenantId: <YOUR-TENANT-ID>
-              SubscriptionId: <YOUR-SUBSCRIPTION-ID>
-              ResourceGroupName: <YOUR-RESOURCE-GROUP-NAME>
-              WorkspaceName: <YOUR-WORKSPACE-NAME>
+              TenantId: <YOUR_TENANT_ID>
+              SubscriptionId: <YOUR_SUBSCRIPTION_ID>
+              ResourceGroupName: <YOUR_RESOURCE_GROUP_NAME>
+              WorkspaceName: <YOUR_WORKSPACE_NAME>
               Template: |-
                 let severityValue = (severity: string) {
                 case(severity == "High", "1-5",
@@ -31,6 +31,7 @@ SkillGroups:
                 McasShadowItReporting
                 | where TimeGenerated > ago(7d)
                 | where AppCategory == "Generative AI"
+                | where isnotempty(AppName)
                 | where AppScore >= toint(extract(@"(\d+)", 1, severityValue(severity)))
                 | where AppScore <= toint(extract(@"-(\d+)", 1, severityValue(severity)))
                 | distinct AppName
@@ -41,14 +42,15 @@ SkillGroups:
                              It doesn't accept any parameter.
        Settings:
           Target: Sentinel
-          TenantId: <YOUR-TENANT-ID>
-          SubscriptionId: <YOUR-SUBSCRIPTION-ID>
-          ResourceGroupName: <YOUR-RESOURCE-GROUP-NAME>
-          WorkspaceName: <YOUR-WORKSPACE-NAME>
+          TenantId: <YOUR_TENANT_ID>
+          SubscriptionId: <YOUR_SUBSCRIPTION_ID>
+          ResourceGroupName: <YOUR_RESOURCE_GROUP_NAME>
+          WorkspaceName: <YOUR_WORKSPACE_NAME>
           Template: |-
             McasShadowItReporting
             | where TimeGenerated > ago(7d)
             | where AppCategory == "Generative AI"
+            | where isnotempty(AppName)
             | summarize sum(TotalBytes) by AppName
      - Name: StatisticsGenerativeAIApp
        DisplayName: Statistics regarding a Generative AI App
@@ -61,16 +63,17 @@ SkillGroups:
           Required: true
        Settings:
           Target: Sentinel
-          TenantId: <YOUR-TENANT-ID>
-          SubscriptionId: <YOUR-SUBSCRIPTION-ID>
-          ResourceGroupName: <YOUR-RESOURCE-GROUP-NAME>
-          WorkspaceName: <YOUR-WORKSPACE-NAME>
+          TenantId: <YOUR_TENANT_ID>
+          SubscriptionId: <YOUR_SUBSCRIPTION_ID>
+          ResourceGroupName: <YOUR_RESOURCE_GROUP_NAME>
+          WorkspaceName: <YOUR_WORKSPACE_NAME>
           Template: |-
             let appname = '{{appName}}';
             let temp = McasShadowItReporting
             | where TimeGenerated > ago(7d)
             | where AppCategory == "Generative AI"
-            | where AppName == AppName
-            | summarize sum(UploadedBytes), sum(DownloadedBytes), sum(TotalEvents), make_set(UserName), make_set(IpAddress);
+            | where AppName == appname
+            | where isnotempty(AppName)
+            | summarize sum(UploadedBytes), sum(DownloadedBytes), sum(TotalEvents), make_set(UserName, 100), make_set(IpAddress, 100);
             temp
             | extend AppName = appname
