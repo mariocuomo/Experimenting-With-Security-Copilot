@@ -1,0 +1,255 @@
+Descriptor:
+  Name: RiskyUserInvestigationAgent
+  DisplayName: Risky User Investigation Agent
+  Description: >-
+    Performs comprehensive analysis of users at risk by retrieving detailed
+    user risk information, suspicious activities, and behavioral patterns to
+    provide security analysts with complete user risk assessment.
+  Icon: ''
+AgentDefinitions:
+  - Name: RiskyUserInvestigationAgent
+    DisplayName: Risky User Investigation Agent
+    Description: >-
+      User risk analysis agent that investigates risky users through AAD risk
+      signals, sign-in patterns, and identity information to provide security
+      analysts with comprehensive user risk overview for investigation.
+    Publisher: MarioCuomo
+    Product: SecurityCopilot
+    RequiredSkillsets:
+      - Fusion
+      - Sentinel
+      - M365
+      - Generic
+      - ThreatIntelligence.DTI
+      - MCP.MSDocs
+      - RiskyUserInvestigationAgent
+    AgentSingleInstanceConstraint: None
+    Triggers:
+      - Name: Default
+        DefaultPollPeriodSeconds: 0
+        ProcessSkill: RiskyUserInvestigationAgent.RiskyUserInvestigationAgent
+    PromptSkill: RiskyUserInvestigationAgent.RiskyUserInvestigationAgent
+SkillGroups: 
+  - Format: Agent
+    Skills:
+      - Name: RiskyUserInvestigationAgent
+        DisplayName: Risky User Investigation Agent
+        Description: Performs comprehensive analysis of users at risk by investigating AAD risk signals, sign-in patterns, and user behavior.
+        Interfaces:
+        - InteractiveAgent
+        Inputs:
+          - Name: UserRequest
+            Description: The analyst's request for user investigation (user UPN, display name, risk level, or general user analysis query).
+            DefaultValue: ''
+            Required: true
+        SuggestedPrompts:
+        - Prompt: Investigate risky user john.doe@company.com
+          Title: User Risk Investigation
+          Personas:
+          - 3
+          IsStarterAgent: true
+        - Prompt: Analyze all high-risk users in the last 7 days
+          Title: High-Risk Users Analysis
+          Personas:
+          - 3
+          IsStarterAgent: true
+        - Prompt: Investigate suspicious sign-in patterns for specific user
+          Title: Sign-in Analysis
+          Personas:
+          - 3
+          IsStarterAgent: true
+        - Prompt: What are the current risk factors for this user?
+        - Prompt: Show me recent risky events for this user
+        - Prompt: What is the user's sign-in behavior pattern?
+        - Prompt: List all recent sign-in attempts for this user
+        - Prompt: What identity information is available for this user?
+        - Prompt: Show me failed and successful sign-ins
+        - Prompt: What risk events triggered for this user?
+        - Prompt: Analyze geographical sign-in patterns
+        - Prompt: What applications has this user accessed recently?
+        - Prompt: Show me conditional access policy impacts
+        - Prompt: Provide comprehensive user risk assessment
+        - Prompt: How do I remediate a risky user according to Microsoft documentation?
+        - Prompt: What are the best practices for investigating identity risks?
+        - Prompt: Show me Microsoft guidance on user risk levels
+        - Prompt: What does Microsoft recommend for conditional access policies?
+        
+        Settings:
+          OrchestratorSkill: DefaultAgentOrchestrator
+          Instructions: >
+            # Mission
+            You are an interactive Microsoft Azure AD identity risk analysis specialist. Your role is to 
+            engage with security analysts in a conversational manner to investigate users at risk, 
+            responding to their specific questions and requests with targeted analysis and insights.
+
+            # Interactive Approach
+            As an **Interactive Agent**, you should:
+            - **Listen and respond** to the analyst's specific questions or investigation needs
+            - **Ask clarifying questions** when the request is ambiguous or could benefit from more context
+            - **Provide targeted answers** rather than comprehensive reports unless specifically requested
+            - **Offer follow-up suggestions** based on findings to guide the conversation
+            - **Adapt your responses** based on the analyst's level of detail needed
+
+            # Available Investigation Skills
+            Use these skills based on the analyst's requests:
+            
+            **Basic User Information:**
+            - `GetRiskyUserInformation`: Current risk status and basic user details
+            - `GetUserIdentityInfo`: Identity and organizational context
+            
+            **Risk Analysis:**
+            - `GetRiskyUserEvents`: Historical risk events and patterns
+            - `GetUserFailedSignIns`: Failed authentication attempts and potential attacks
+            
+            **Behavioral Analysis:**
+            - `GetUserSignInActivity`: Recent sign-in patterns and anomalies
+            
+            **Documentation and Guidance:**
+            - `microsoft_docs_search`: Search Microsoft official documentation for best practices, remediation steps, and guidance
+
+            # Documentation Integration
+            When analysts ask for:
+            - **Best practices**: Use microsoft_docs_search to find official Microsoft guidance
+            - **Remediation steps**: Search documentation for recommended mitigation actions
+            - **Policy guidance**: Look up conditional access and identity protection recommendations
+            - **How-to questions**: Find step-by-step procedures from Microsoft documentation
+            
+            **Documentation Workflow:**
+            1. Listen to the analyst's question about procedures, best practices, or guidance
+            2. Call microsoft_docs_search with the relevant query
+            3. Review the returned documentation results
+            4. Summarize the key guidance and actionable steps
+            5. If no relevant documentation is found, state that clearly and suggest alternative approaches
+
+            # Conversation Guidelines
+            - **Start with what's asked**: Address the analyst's specific question first
+            - **Be concise initially**: Provide focused answers, offer to elaborate if needed  
+            - **Suggest next steps**: Based on findings, recommend logical follow-up questions
+            - **Handle ambiguity**: If a user identifier could match multiple users, ask for clarification
+            - **Provide context**: Explain what findings mean in security terms
+            - **Prioritize urgency**: Highlight critical findings that need immediate attention
+
+            # Response Patterns
+            - For **specific questions**: Provide direct answers with relevant data
+            - For **broad requests**: Ask what aspect they want to focus on first
+            - For **concerning findings**: Highlight risks and suggest immediate actions
+            - For **normal results**: Confirm the assessment and suggest related areas to check
+
+            # Example Interactions
+            - Analyst: "Is john.doe@company.com a risky user?" → Check risk status, provide summary
+            - Analyst: "What happened with this user last week?" → Focus on recent events and activities  
+            - Analyst: "Why is this user flagged as high risk?" → Analyze risk events and triggers
+            - Analyst: "Should I be worried about these sign-ins?" → Assess sign-in patterns and anomalies
+        ChildSkills:
+          - RiskyUserInvestigationAgent.GetRiskyUserInformation
+          - RiskyUserInvestigationAgent.GetRiskyUserEvents
+          - RiskyUserInvestigationAgent.GetUserSignInActivity
+          - RiskyUserInvestigationAgent.GetUserIdentityInfo
+          - RiskyUserInvestigationAgent.GetUserFailedSignIns
+          - microsoft_docs_search
+  - Format: KQL
+    Skills:
+      - Name: GetRiskyUserInformation
+        DisplayName: Get Risky User Information  
+        Description: Fetches detailed information about risky users from Azure AD based on user principal name or display name.
+        Inputs:
+          - Name: useridentifier
+            Description: Provide the User Principal Name (UPN) or Display Name of the user you want to investigate
+            Required: true
+        Settings:
+          Target: Sentinel
+          TenantId: xxx
+          SubscriptionId: xxx
+          ResourceGroupName: xxx
+          WorkspaceName: xxx
+          Template: |-
+            AADRiskyUsers
+            | where UserPrincipalName == '{{useridentifier}}' or UserDisplayName == '{{useridentifier}}'
+            | summarize arg_max(TimeGenerated, *) by UserPrincipalName
+            | project TimeGenerated, UserPrincipalName, UserDisplayName, RiskLevel, RiskState, 
+                      RiskLastUpdatedDateTime, RiskDetail
+      
+      - Name: GetRiskyUserEvents
+        DisplayName: Get Risky User Events
+        Description: Fetches all risk events associated with a specific user from Azure AD risky events.
+        Inputs:
+          - Name: useridentifier
+            Description: Provide the User Principal Name (UPN) of the user to fetch risk events for
+            Required: true
+        Settings:
+          Target: Sentinel
+          TenantId: xxx
+          SubscriptionId: xxx
+          ResourceGroupName: xxx
+          WorkspaceName: xxx
+          Template: |-
+            AADUserRiskEvents
+            | where UserPrincipalName == '{{useridentifier}}' or UserDisplayName == '{{useridentifier}}'
+            | where TimeGenerated >= ago(30d)
+            | order by TimeGenerated desc
+            | project TimeGenerated, UserPrincipalName, RiskEventType, RiskLevel, RiskState,
+                      DetectedDateTime, Location, AdditionalInfo
+
+      - Name: GetUserSignInActivity
+        DisplayName: Get User Sign-In Activity
+        Description: Fetches recent sign-in activity for a specific user from Azure AD sign-in logs.
+        Inputs:
+          - Name: useridentifier
+            Description: Provide the User Principal Name (UPN) of the user to fetch sign-in activity for
+            Required: true
+        Settings:
+          Target: Sentinel
+          TenantId: xxx
+          SubscriptionId: xxx
+          ResourceGroupName: xxx
+          WorkspaceName: xxx
+          Template: |-
+            SigninLogs
+            | where UserPrincipalName == '{{useridentifier}}' or UserDisplayName == '{{useridentifier}}'
+            | where TimeGenerated >= ago(30d)
+            | order by TimeGenerated desc
+            | project TimeGenerated, UserPrincipalName, ResultType, ResultDescription,
+                      Location, IPAddress, ClientAppUsed, DeviceDetail, RiskLevelDuringSignIn,
+                      RiskEventTypes_V2, ConditionalAccessStatus, AppDisplayName
+
+      - Name: GetUserIdentityInfo
+        DisplayName: Get User Identity Information
+        Description: Fetches comprehensive identity information for a specific user from IdentityInfo table.
+        Inputs:
+          - Name: useridentifier
+            Description: Provide the User Principal Name (UPN) of the user to fetch identity information for
+            Required: true
+        Settings:
+          Target: Sentinel
+          TenantId: xxx
+          SubscriptionId: xxx
+          ResourceGroupName: xxx
+          WorkspaceName: xxx
+          Template: |-
+            IdentityInfo
+            | where AccountName == '{{useridentifier}}' or AccountDisplayName == '{{useridentifier}}'
+            | summarize arg_max(TimeGenerated, *) by AccountName
+
+
+      - Name: GetUserFailedSignIns
+        DisplayName: Get User Failed Sign-Ins
+        Description: Fetches recent failed sign-in attempts for a specific user to identify potential attack patterns.
+        Inputs:
+          - Name: useridentifier
+            Description: Provide the User Principal Name (UPN) of the user to fetch failed sign-ins for
+            Required: true
+        Settings:
+          Target: Sentinel
+          TenantId: xxx
+          SubscriptionId: xxx
+          ResourceGroupName: xxx
+          WorkspaceName: xxx
+          Template: |-
+            SigninLogs
+            | where UserPrincipalName == '{{useridentifier}}' or UserDisplayName == '{{useridentifier}}'
+            | where TimeGenerated >= ago(30d)
+            | where ResultType != 0  // Failed sign-ins
+            | order by TimeGenerated desc
+            | project TimeGenerated, UserPrincipalName, ResultType, ResultDescription,
+                      Location, IPAddress, ClientAppUsed, DeviceDetail, RiskLevelDuringSignIn,
+                      AppDisplayName, FailureReason = ResultDescription
