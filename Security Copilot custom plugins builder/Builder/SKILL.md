@@ -54,7 +54,7 @@ This skill guides an AI agent through the **complete lifecycle** of generating S
 Every plugin has a **Descriptor** (identity + auth) and one or more **SkillGroups** (each with its own Format). See [YAML_FORMAT.md](references/YAML_FORMAT.md) for the complete manifest schema.
 
 ### Agent Structure
-Agents add **AgentDefinitions** (triggers, required skillsets) and use `Format: Agent` skills with **Instructions** (natural language) and **ChildSkills**. ChildSkills can include KQL, API, GPT, MCP, LogicApp, built-in skills, **and other Agent skills** — enabling agent-to-agent communication. See [AGENT_PLUGINS.md](references/AGENT_PLUGINS.md).
+Agents add **AgentDefinitions** (triggers, required skillsets) and use `Format: Agent` skills with **Instructions** (natural language) and **ChildSkills**. ChildSkills can include KQL, API, GPT, MCP, LogicApp, already available skills, **and other Agent skills** — enabling agent-to-agent communication. See [AGENT_PLUGINS.md](references/AGENT_PLUGINS.md).
 
 ### Authentication
 API plugins require authentication configuration. Supported types: None, Basic, ApiKey, AAD, AADDelegated, OAuth flows. See [AUTHENTICATION.md](references/AUTHENTICATION.md).
@@ -65,9 +65,9 @@ API plugins require authentication configuration. Supported types: None, Basic, 
 
 When asked to create a plugin or agent, follow these steps:
 
-### Step 0: Check Built-in Tools First
+### Step 0: Check Already Available Tools First
 
-> **Before building anything**, use `search_for_tools` followed by `get_evaluation` to check whether Security Copilot already has built-in skills, agents, or MCP tools that can satisfy the user's request.
+> **Before building anything**, use `search_for_tools` followed by `get_evaluation` to check whether Security Copilot already has available skills, agents, or MCP tools that can satisfy the user's request.
 
 This is a **two-step process**:
 
@@ -82,7 +82,7 @@ Call `search_for_tools` with the user's query or intent (e.g., *"Analyze Defende
 Call `get_evaluation` passing the `evaluationID`, `sessionID`, and `promptID` from the receipt returned by `search_for_tools`.
 
 `get_evaluation` returns the completed evaluation with:
-- **`result.outputComponents`**: the list of matching built-in skills (SkillName, SkillsetName, DescriptionForModel, Inputs)
+- **`result.outputComponents`**: the list of matching already available skills (SkillName, SkillsetName, DescriptionForModel, Inputs)
 - **`result.suggestedPrompts`**: additional suggested skills with their inputs and descriptions
 
 > **IMPORTANT**: Always call `get_evaluation` after `search_for_tools`. The `search_for_tools` response alone does NOT contain the discovered skills — it only confirms the evaluation was created. The actual skill discovery results are only available via `get_evaluation`.
@@ -97,11 +97,11 @@ get_evaluation(evaluationID, sessionID, promptID) → full results with discover
 
 | Scenario | Action |
 |----------|--------|
-| Built-in tools **fully cover** the need | Recommend the built-in tools to the user. Explain what they do and how to use them. **Do not create a custom plugin.** |
-| Built-in tools **partially cover** the need | Explain which parts are already covered. Create a custom plugin only for the **gap** — the functionality not available out of the box. |
-| **No relevant** built-in tools exist | Proceed to Step 1 and build a custom plugin from scratch. |
+| Already available tools **fully cover** the need | Recommend the already available tools to the user. Explain what they do and how to use them. **Do not create a custom plugin.** |
+| Already available tools **partially cover** the need | Explain which parts are already covered. Create a custom plugin only for the **gap** — the functionality not available out of the box. |
+| **No relevant** already available tools exist | Proceed to Step 1 and build a custom plugin from scratch. |
 
-> Use your judgment: if a built-in tool does 90% of what the user needs, suggest it first. Only build custom plugins when they add clear value beyond what's already available.
+> Use your judgment: if an already available tool does 90% of what the user needs, suggest it first. Only build custom plugins when they add clear value beyond what's already available.
 
 ### Step 1: Gather Requirements
 
@@ -207,7 +207,7 @@ Map the generated YAML fields to the `PLUGIN_DATA` object as follows:
 
 ## Key Rules
 
-1. **Always check built-in tools first** — before creating a custom plugin, use `search_for_tools` followed by `get_evaluation` to verify whether Security Copilot already provides skills that satisfy the user's need. `search_for_tools` submits the query asynchronously; `get_evaluation` retrieves the actual results. Both calls are required. Prefer built-in tools when they fully cover the requirement; build custom plugins only for gaps or net-new functionality
+1. **Always check already available tools first** — before creating a custom plugin, use `search_for_tools` followed by `get_evaluation` to verify whether Security Copilot already provides skills that satisfy the user's need. `search_for_tools` submits the query asynchronously; `get_evaluation` retrieves the actual results. Both calls are required. Prefer already available tools when they fully cover the requirement; build custom plugins only for gaps or net-new functionality
 2. **Never skip live schema discovery** for KQL plugins — queries built from memory fail at runtime
 3. **Never include real credentials** — use `<YOUR-TENANT-ID>`, `<YOUR-API-KEY>` placeholders
 4. **One plugin can have multiple SkillGroups** with different formats

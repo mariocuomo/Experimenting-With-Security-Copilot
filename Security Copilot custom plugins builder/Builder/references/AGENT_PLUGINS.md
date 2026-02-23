@@ -35,10 +35,10 @@ An **Agent** in Security Copilot is a skill that **orchestrates other skills —
 The `ChildSkills` field is an array of skill names that the agent can invoke. These can be:
 - **Inline skills**: defined in the same manifest under other SkillGroups (KQL, API, etc.)
 - **External skills**: defined in separate plugins. The external plugin's Descriptor `Name` must be listed in `RequiredSkillsets` of the `AgentDefinitions`.
-- **Built-in Security Copilot skills**: skills from pre-installed plugins (e.g., `ThreatIntelligence.DTI` provides `GetCvesByIdsDti`)
+- **Already available Security Copilot skills**: skills from pre-installed plugins (e.g., `ThreatIntelligence.DTI` provides `GetCvesByIdsDti`)
 - **Other Agent skills**: an agent can call another agent as a child skill, enabling **agent-to-agent communication**. The called agent's skillset must be listed in `RequiredSkillsets`. This allows building hierarchical agent architectures where a parent agent delegates subtasks to specialized child agents.
 
-> **IMPORTANT — Do NOT create GPT child skills for agents**: The agent itself is powered by a GPT model (`gpt-4o` or `gpt-4.1`). Tasks like report generation, summarization, analysis, formatting, and consolidation should be described directly in the agent's `Instructions` field — not delegated to a separate GPT skill. Creating a GPT child skill for these tasks adds unnecessary overhead and an extra model invocation. Only use KQL, API, LogicApp, MCP, or built-in skills as child skills. The agent handles all natural-language reasoning and text generation natively.
+> **IMPORTANT — Do NOT create GPT child skills for agents**: The agent itself is powered by a GPT model (`gpt-4o` or `gpt-4.1`). Tasks like report generation, summarization, analysis, formatting, and consolidation should be described directly in the agent's `Instructions` field — not delegated to a separate GPT skill. Creating a GPT child skill for these tasks adds unnecessary overhead and an extra model invocation. Only use KQL, API, LogicApp, MCP, or already available skills as child skills. The agent handles all natural-language reasoning and text generation natively.
 
 > **IMPORTANT**: For external skills, the skill is referenced by its `operationId` (for API skills) or `Name` (for KQL/GPT/Agent skills). The skillset containing the skill must be listed in `RequiredSkillsets`.
 
@@ -47,7 +47,7 @@ The `ChildSkills` field is an array of skill names that the agent can invoke. Th
 The `RequiredSkillsets` field lists **all skillsets** the agent depends on:
 - The **Descriptor `Name`** of the current manifest (so the agent can access its own inline skills)
 - Any **external plugin** Descriptor `Name` (e.g., `CVEAnalysis`, `DCA_SampleAPIPlugin`)
-- Any **built-in skillset** (e.g., `ThreatIntelligence.DTI`, `SecurityCopilot`)
+- Any **already available skillset** (e.g., `ThreatIntelligence.DTI`, `SecurityCopilot`)
 - Any **external agent plugin** whose Agent skill is used as a child skill (for agent-to-agent scenarios)
 
 ## Agent-to-Agent Communication
@@ -348,7 +348,7 @@ SuggestedPrompts:
 
 #### Step 5: Set Child Skills
 
-Child skills are tools the agent can apply. They can be KQL, API, MCP, LogicApp, built-in skills, **or other Agent skills** (for agent-to-agent communication). List all required skillsets in `RequiredSkillsets`.
+Child skills are tools the agent can apply. They can be KQL, API, MCP, LogicApp, already available skills, **or other Agent skills** (for agent-to-agent communication). List all required skillsets in `RequiredSkillsets`.
 
 #### Step 6: Upload the YAML
 
@@ -393,7 +393,7 @@ Upload the YAML as a custom plugin to enable the **Chat with agent** feature.
 
 ### Standard Agent with External Child Skills (CVE Analyser)
 
-This example shows an agent that uses a KQL skill defined in a **separate plugin** (`CVEAnalysis`) and a built-in skill from `ThreatIntelligence.DTI`. Two YAML files are needed.
+This example shows an agent that uses a KQL skill defined in a **separate plugin** (`CVEAnalysis`) and an already available skill from `ThreatIntelligence.DTI`. Two YAML files are needed.
 
 **Agent Manifest (main file):**
 ```yaml
@@ -522,11 +522,11 @@ SkillGroups:
             | summarize AffectedDevices=make_set(DeviceName) by CVE, PublishedDate, Severity, tostring(SoftwareOnDevice)
 ```
 
-> **NOTE**: The `CVEAnalyser` agent references `CVEAnalysis` (the KQL plugin) and `ThreatIntelligence.DTI` (a built-in skillset) in `RequiredSkillsets`. The child skills `IdentifyExploitableVulnerabilitiesAndImpactedDevices` (from CVEAnalysis) and `GetCvesByIdsDti` (from ThreatIntelligence.DTI) are listed in `ChildSkills`.
+> **NOTE**: The `CVEAnalyser` agent references `CVEAnalysis` (the KQL plugin) and `ThreatIntelligence.DTI` (an already available skillset) in `RequiredSkillsets`. The child skills `IdentifyExploitableVulnerabilitiesAndImpactedDevices` (from CVEAnalysis) and `GetCvesByIdsDti` (from ThreatIntelligence.DTI) are listed in `ChildSkills`.
 
 ### Agent with Multiple Tool Types (URL Geolocation)
 
-This example shows an agent with **inline GPT and KQL skills** plus **external API and built-in skills**, all in a single manifest.
+This example shows an agent with **inline GPT and KQL skills** plus **external API and already available skills**, all in a single manifest.
 
 ```yaml
 Descriptor:
@@ -625,7 +625,7 @@ AgentDefinitions:
 > **NOTE on this example**:
 > - `ExtractHostname_DCA-090925` is an inline GPT skill in the same manifest
 > - `RecentUrlClicks_DCA-090925` is an inline KQL skill used as FetchSkill
-> - `GetDnsResolutionsByIndicators` comes from the built-in `ThreatIntelligence.DTI` skillset
+> - `GetDnsResolutionsByIndicators` comes from the already available `ThreatIntelligence.DTI` skillset
 > - `lookupIpAddressGeolocation` comes from the external `DCA_SampleAPIPlugin` plugin
 > - The `FetchSkill` retrieves recently clicked URLs, then the `ProcessSkill` (the Agent) investigates each URL
 > - The trigger runs every 300 seconds (5 minutes)

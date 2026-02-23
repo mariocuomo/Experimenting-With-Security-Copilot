@@ -1,0 +1,170 @@
+Descriptor:
+  Name: EndpointPostureAgent
+  DisplayName: Endpoint Posture & Prioritization Agent
+  Description: >-
+    A Security Copilot agent for endpoint administrators. Assesses the current
+    security posture across all managed devices and produces a prioritized list
+    of devices that require attention based on vulnerability count, CVSS severity,
+    secure configuration gaps, and exposure level from Microsoft Defender.
+
+AgentDefinitions:
+  - Name: EndpointPostureAgent
+    DisplayName: Endpoint Posture & Prioritization Agent
+    Description: >-
+      Periodically assesses endpoint security posture and provides a ranked
+      list of devices to prioritize for remediation based on risk, vulnerabilities,
+      and configuration compliance.
+    Publisher: Custom
+    Product: Security
+    RequiredSkillsets:
+      - EndpointPostureAgent
+    AgentSingleInstanceConstraint: None
+    Triggers:
+      - Name: WeeklyPostureCheck
+        DefaultPollPeriodSeconds: 604800
+        FetchSkill: ''
+        ProcessSkill: EndpointPostureAgent.AssessAndPrioritize
+
+SkillGroups:
+  - Format: Agent
+    Skills:
+      - Name: AssessAndPrioritize
+        DisplayName: Assess Posture and Prioritize Devices
+        Description: >-
+          Orchestrates the endpoint posture assessment by gathering vulnerability data,
+          configuration compliance gaps, and device exposure levels, then produces a
+          prioritized remediation report.
+        Interfaces:
+          - Agent
+        Settings:
+          Model: gpt-4o
+          Instructions: |-
+            # Mission
+            You are an endpoint security posture analyst agent. Your mission is to help
+            endpoint administrators understand the current security state of their environment
+            and identify which devices their team should prioritize for remediation.
+
+            # Workflow
+            1. Call GetDeviceVulnerabilitySummary to retrieve the top devices ranked by
+               vulnerability count and severity (CVSS scores), including whether exploits
+               are publicly available.
+            2. Call GetDeviceSecureScoreGaps to identify devices with the most non-compliant
+               security configurations and highest configuration impact.
+            3. Call GetDevicePostureOverview to get the overall device health: exposure level,
+               sensor health, onboarding status, and whether devices are internet-facing.
+            4. Correlate the results across all three data sources by DeviceId and DeviceName.
+            5. Produce a prioritized device list using this ranking logic:
+               - Devices with Critical or High vulnerabilities AND public exploits → TOP priority
+               - Devices with High exposure level AND non-compliant configurations → HIGH priority
+               - Internet-facing devices with any vulnerability → ELEVATED priority
+               - Remaining devices ranked by total vulnerability count multiplied by average CVSS score
+            6. Generate a structured posture report.
+
+            # Output Format
+            Produce a report with these sections:
+
+            ## Environment Summary
+            - Total devices assessed
+            - Devices by exposure level (High / Medium / Low)
+            - Total unique CVEs found
+            - Devices with publicly exploitable vulnerabilities
+
+            ## Priority Devices (Top 10)
+            For each device provide a table with columns:
+            Device Name, OS, Exposure Level, Total Vulnerabilities, Max CVSS, Exploitable CVEs,
+            Non-Compliant Configs, Internet-Facing, Priority Level
+
+            ## Recommended Actions
+            For the top 5 priority devices, provide:
+            - Device name
+            - Key vulnerabilities to patch (CVE IDs, severity, and software affected)
+            - Configuration gaps to remediate
+            - Suggested remediation order
+
+            ## Posture Trend Indicators
+            - Highlight any devices at High exposure level
+            - Flag devices with critical configuration compliance gaps
+        ChildSkills:
+          - GetDeviceVulnerabilitySummary
+          - GetDeviceSecureScoreGaps
+          - GetDevicePostureOverview
+
+  - Format: KQL
+    Skills:
+      - Name: GetDeviceVulnerabilitySummary
+        DisplayName: Get Device Vulnerability Summary
+        Description: >-
+          Retrieves a ranked summary of devices with their vulnerability counts,
+          maximum CVSS score, severity breakdown, and exploit availability.
+          Joins DeviceTvmSoftwareVulnerabilities with DeviceTvmSoftwareVulnerabilitiesKB
+          for CVSS scores and exploit data.
+        Settings:
+          Target: Defender
+          Template: |-
+            DeviceTvmSoftwareVulnerabilities
+            | join kind=leftouter (
+                DeviceTvmSoftwareVulnerabilitiesKB
+                | project CveId, CvssScore, IsExploitAvailable
+            ) on CveId
+            | summarize
+                TotalVulnerabilities = dcount(CveId),
+                CriticalCount = countif(VulnerabilitySeverityLevel == "Critical"),
+                HighCount = countif(VulnerabilitySeverityLevel == "High"),
+                MediumCount = countif(VulnerabilitySeverityLevel == "Medium"),
+                LowCount = countif(VulnerabilitySeverityLevel == "Low"),
+                MaxCvssScore = max(CvssScore),
+                AvgCvssScore = avg(CvssScore),
+                ExploitableCount = countif(IsExploitAvailable == 1),
+                AffectedSoftware = make_set(SoftwareName)
+                by DeviceId, DeviceName, OSPlatform
+            | extend RiskScore = TotalVulnerabilities * AvgCvssScore
+            | top 50 by RiskScore desc
+
+      - Name: GetDeviceSecureScoreGaps
+        DisplayName: Get Device Secure Configuration Gaps
+        Description: >-
+          Identifies devices with the most non-compliant security configurations,
+          ranked by total configuration impact score. Shows which configuration
+          categories have the highest gaps per device.
+        Settings:
+          Target: Defender
+          Template: |-
+            DeviceTvmSecureConfigurationAssessment
+            | where Timestamp > ago(7d)
+            | where IsApplicable == 1
+            | where IsCompliant == 0
+            | summarize
+                NonCompliantConfigs = dcount(ConfigurationId),
+                TotalImpact = sum(toreal(ConfigurationImpact)),
+                Categories = make_set(ConfigurationCategory)
+                by DeviceId, DeviceName, OSPlatform
+            | top 50 by TotalImpact desc
+
+      - Name: GetDevicePostureOverview
+        DisplayName: Get Device Posture Overview
+        Description: >-
+          Provides an overview of all devices including their exposure level,
+          sensor health state, onboarding status, asset value, and whether
+          they are internet-facing. Returns the most recent state per device.
+        Settings:
+          Target: Defender
+          Template: |-
+            DeviceInfo
+            | where Timestamp > ago(7d)
+            | summarize arg_max(Timestamp, *) by DeviceId
+            | extend ExposureOrder = case(
+                ExposureLevel == "High", 1,
+                ExposureLevel == "Medium", 2,
+                ExposureLevel == "Low", 3,
+                4)
+            | top 50 by ExposureOrder asc
+            | project
+                DeviceId,
+                DeviceName,
+                OSPlatform,
+                DeviceCategory,
+                ExposureLevel,
+                SensorHealthState,
+                OnboardingStatus,
+                IsInternetFacing,
+                AssetValue

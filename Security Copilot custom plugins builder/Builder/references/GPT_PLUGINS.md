@@ -1,6 +1,6 @@
 # GPT Plugins
 
-GPT plugins interact directly with the built-in GPT model in Security Copilot. They are useful for:
+GPT plugins interact directly with the already available GPT model in Security Copilot. They are useful for:
 - **Context (Past)**: in the GPT prompt you can reference information and context from the current session
 - **Context (Future)**: the GPT response can be used by subsequent prompts
 - **Easy to integrate**: no need to create a separate Azure OpenAI instance

@@ -48,7 +48,7 @@
 ## Writable Plugins
 
 - Writable plugins are plugins that perform write actions in your environment
-- No writable plugins are built-in; they must be created as custom
+- No writable plugins are already available; they must be created as custom
 - Methods to create writable plugins: Broker architecture, OAuth authentication, Logic App plugin
 - Use cases: send emails, submit incident reports, governance actions on users/devices/applications
 
