@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security Copilot Plugin Card</title>
+  <style>
+    :root {
+      --primary: #0078D4;
+      --primary-dark: #005A9E;
+      --accent: #50E6FF;
+      --bg: #F5F5F5;
+      --card-bg: #FFFFFF;
+      --text: #323130;
+      --text-secondary: #605E5C;
+      --border: #E1DFDD;
+      --badge-kql: #0E7A0D;
+      --badge-api: #C239B3;
+      --badge-gpt: #E74C3C;
+      --badge-logicapp: #0072C6;
+      --badge-mcp: #FF8C00;
+      --badge-agent: #107C10;
+      --badge-none: #605E5C;
+      --badge-apikey: #8764B8;
+      --badge-basic: #CA5010;
+      --badge-aad: #0078D4;
+      --badge-oauth: #038387;
+      --shadow: 0 2px 8px rgba(0,0,0,0.08);
+      --shadow-lg: 0 4px 16px rgba(0,0,0,0.12);
+      --radius: 8px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 32px;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .plugin-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 32px 40px;
+      border-radius: var(--radius) var(--radius) 0 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .plugin-header::after {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 200px;
+      height: 200px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+    }
+
+    .plugin-header .type-label {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    .plugin-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .plugin-header .internal-name {
+      font-size: 13px;
+      opacity: 0.75;
+      font-family: 'Cascadia Code', 'Fira Code', monospace;
+      margin-bottom: 12px;
+    }
+
+    .plugin-header .description {
+      font-size: 15px;
+      opacity: 0.9;
+      max-width: 700px;
+    }
+
+    /* Meta bar */
+    .meta-bar {
+      background: var(--card-bg);
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .meta-item strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .meta-item .icon {
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Auth badge */
+    .auth-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: white;
+    }
+
+    .auth-none { background: var(--badge-none); }
+    .auth-apikey { background: var(--badge-apikey); }
+    .auth-basic { background: var(--badge-basic); }
+    .auth-aad, .auth-aaddelegated { background: var(--badge-aad); }
+    .auth-oauth { background: var(--badge-oauth); }
+
+    /* Content area */
+    .content {
+      background: var(--card-bg);
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      border-radius: 0 0 var(--radius) var(--radius);
+      padding: 32px 40px;
+    }
+
+    /* Section titles */
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--primary);
+    }
+
+    /* Skill Groups */
+    .skill-group {
+      margin-bottom: 28px;
+    }
+
+    .skill-group-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .format-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .format-kql { background: var(--badge-kql); }
+    .format-api { background: var(--badge-api); }
+    .format-gpt { background: var(--badge-gpt); }
+    .format-logicapp { background: var(--badge-logicapp); }
+    .format-mcp { background: var(--badge-mcp); }
+    .format-agent { background: var(--badge-agent); }
+
+    .skill-group-header .group-info {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* Skill cards */
+    .skill-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 10px;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .skill-card:hover {
+      box-shadow: var(--shadow);
+    }
+
+    .skill-card .skill-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .skill-card .skill-internal {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-family: 'Cascadia Code', 'Fira Code', monospace;
+      margin-bottom: 6px;
+    }
+
+    .skill-card .skill-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+    }
+
+    /* Inputs table */
+    .inputs-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .inputs-table th {
+      text-align: left;
+      padding: 6px 10px;
+      background: var(--card-bg);
+      border-bottom: 2px solid var(--border);
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .inputs-table td {
+      padding: 6px 10px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .inputs-table .param-name {
+      font-family: 'Cascadia Code', 'Fira Code', monospace;
+      font-weight: 600;
+      color: var(--primary-dark);
+      white-space: nowrap;
+    }
+
+    .required-marker {
+      color: #D13438;
+      font-weight: 700;
+      margin-left: 2px;
+    }
+
+    .default-value {
+      font-family: 'Cascadia Code', 'Fira Code', monospace;
+      font-size: 12px;
+      background: #E8F0FE;
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+
+    /* Agent section */
+    .agent-section {
+      margin-top: 28px;
+    }
+
+    .agent-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .agent-info-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+    }
+
+    .agent-info-item .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .agent-info-item .value {
+      font-size: 14px;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Child skills list */
+    .child-skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .child-skill-tag {
+      background: #E8F0FE;
+      color: var(--primary-dark);
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: 'Cascadia Code', 'Fira Code', monospace;
+      border: 1px solid #C7DDFB;
+    }
+
+    /* Suggested prompts */
+    .prompts-list {
+      margin-top: 12px;
+    }
+
+    .prompt-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 10px 16px;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .prompt-item.starter {
+      border-left-color: var(--primary);
+    }
+
+    .prompt-item .prompt-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 2px;
+    }
+
+    /* Footer */
+    .card-footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 8px;
+    }
+
+    .card-footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 680px) {
+      body { padding: 12px; }
+      .plugin-header, .meta-bar, .content { padding-left: 20px; padding-right: 20px; }
+      .agent-info-grid { grid-template-columns: 1fr; }
+      .meta-bar { flex-direction: column; gap: 12px; align-items: flex-start; }
+    }
+
+    /* Hidden sections */
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ============================================================
+       PLUGIN DATA — Fill this object with the generated plugin data.
+       The HTML below renders automatically from this data.
+       ============================================================ -->
+  <script>
+    const PLUGIN_DATA = {
+      // --- Descriptor ---
+      type: "Plugin",                       // "Plugin" | "Agent" | "Agent (Interactive)"
+      name: "MyPlugin",                     // Descriptor.Name
+      displayName: "My Plugin",             // Descriptor.DisplayName
+      description: "Plugin description",    // Descriptor.Description
+      auth: {
+        type: "None",                       // "None" | "ApiKey" | "Basic" | "AAD" | "AADDelegated" | "OAuthAuthorizationCodeFlow" | "OAuthClientCredentialsFlow"
+        details: ""                         // extra info (e.g. header name for ApiKey, scope for AAD)
+      },
+
+      // --- SkillGroups ---
+      skillGroups: [
+        // Example KQL skill group:
+        // {
+        //   format: "KQL",
+        //   skills: [
+        //     {
+        //       name: "GetAlerts",
+        //       displayName: "Get Alerts",
+        //       description: "Retrieves alerts from Defender",
+        //       inputs: [
+        //         { name: "TimeRange", description: "Time range for the query", required: true, defaultValue: "7d" },
+        //         { name: "Severity", description: "Alert severity filter", required: false, defaultValue: "" }
+        //       ]
+        //     }
+        //   ]
+        // }
+      ],
+
+      // --- Agent (only if type includes "Agent") ---
+      agent: {
+        name: "",                           // AgentDefinitions.Name
+        displayName: "",                    // AgentDefinitions.DisplayName
+        publisher: "",                      // AgentDefinitions.Publisher
+        model: "",                          // gpt-4o | gpt-4.1
+        constraint: "",                     // AgentSingleInstanceConstraint
+        triggerName: "",                     // Trigger name
+        pollPeriod: "",                      // DefaultPollPeriodSeconds
+        fetchSkill: "",                      // FetchSkill
+        processSkill: "",                    // ProcessSkill
+        promptSkill: "",                     // PromptSkill (interactive only)
+        childSkills: [],                     // ChildSkills array
+        requiredSkillsets: [],               // RequiredSkillsets
+        suggestedPrompts: []                 // [ { text: "...", isStarter: true/false } ]
+      }
+    };
+  </script>
+
+  <!-- Header -->
+  <div class="plugin-header" id="pluginHeader">
+    <div class="type-label" id="typeLabel"></div>
+    <h1 id="displayName"></h1>
+    <div class="internal-name" id="internalName"></div>
+    <div class="description" id="headerDesc"></div>
+  </div>
+
+  <!-- Meta bar -->
+  <div class="meta-bar" id="metaBar">
+    <div class="meta-item">
+      <span class="icon">🔧</span>
+      <span>Skills: <strong id="skillCount">0</strong></span>
+    </div>
+    <div class="meta-item">
+      <span class="icon">📦</span>
+      <span>Skill Groups: <strong id="groupCount">0</strong></span>
+    </div>
+    <div class="meta-item">
+      <span class="icon">📐</span>
+      <span>Formats: <strong id="formatsList"></strong></span>
+    </div>
+    <div class="meta-item" id="authItem">
+      <span class="icon">🔒</span>
+      <span>Auth: </span>
+      <span class="auth-badge" id="authBadge"></span>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- Skill Groups -->
+    <div id="skillGroupsSection">
+      <div class="section-title">
+        <span>⚡</span> Skills
+      </div>
+      <div id="skillGroupsContainer"></div>
+    </div>
+
+    <!-- Agent Section -->
+    <div id="agentSection" class="agent-section hidden">
+      <div class="section-title">
+        <span>🤖</span> Agent Configuration
+      </div>
+
+      <div class="agent-info-grid" id="agentInfoGrid"></div>
+
+      <!-- Child Skills -->
+      <div id="childSkillsBlock" class="hidden" style="margin-top: 16px;">
+        <h4 style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px;">Child Skills</h4>
+        <div class="child-skills-list" id="childSkillsList"></div>
+      </div>
+
+      <!-- Required Skillsets -->
+      <div id="requiredSkillsetsBlock" class="hidden" style="margin-top: 16px;">
+        <h4 style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px;">Required Skillsets</h4>
+        <div class="child-skills-list" id="requiredSkillsetsList"></div>
+      </div>
+
+      <!-- Suggested Prompts (Interactive) -->
+      <div id="suggestedPromptsBlock" class="hidden" style="margin-top: 20px;">
+        <h4 style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px;">Suggested Prompts</h4>
+        <div class="prompts-list" id="suggestedPromptsList"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="card-footer">
+    Generated by <strong>Security Copilot Custom Plugins Builder</strong>
+    &mdash; <a href="https://learn.microsoft.com/en-us/copilot/security/custom-plugins" target="_blank">Docs</a>
+  </div>
+
+</div>
+
+<!-- ============================================================
+     RENDERING LOGIC — Do not edit below this line.
+     ============================================================ -->
+<script>
+(function () {
+  const d = PLUGIN_DATA;
+
+  // Header
+  document.getElementById('typeLabel').textContent = d.type;
+  document.getElementById('displayName').textContent = d.displayName || d.name;
+  document.getElementById('internalName').textContent = d.name;
+  document.getElementById('headerDesc').textContent = d.description;
+
+  // Meta bar
+  const totalSkills = d.skillGroups.reduce((sum, g) => sum + g.skills.length, 0);
+  document.getElementById('skillCount').textContent = totalSkills;
+  document.getElementById('groupCount').textContent = d.skillGroups.length;
+
+  const formats = [...new Set(d.skillGroups.map(g => g.format))];
+  document.getElementById('formatsList').textContent = formats.join(', ');
+
+  // Auth badge
+  const authType = (d.auth.type || 'None').replace(/\s+/g, '');
+  const authBadge = document.getElementById('authBadge');
+  authBadge.textContent = d.auth.type + (d.auth.details ? ' — ' + d.auth.details : '');
+  const authClass = authType.toLowerCase().startsWith('oauth') ? 'oauth'
+    : authType.toLowerCase().replace('delegated', 'delegated');
+  authBadge.classList.add('auth-' + authType.toLowerCase().replace('delegated','delegated')
+    .replace('oauthauthorizationcodeflow','oauth').replace('oauthclientcredentialsflow','oauth'));
+
+  // Skill Groups
+  const container = document.getElementById('skillGroupsContainer');
+  d.skillGroups.forEach(group => {
+    const div = document.createElement('div');
+    div.className = 'skill-group';
+
+    // Group header
+    const header = document.createElement('div');
+    header.className = 'skill-group-header';
+    const badge = document.createElement('span');
+    badge.className = 'format-badge format-' + group.format.toLowerCase();
+    badge.textContent = group.format;
+    header.appendChild(badge);
+    const info = document.createElement('span');
+    info.className = 'group-info';
+    info.textContent = group.skills.length + ' skill' + (group.skills.length !== 1 ? 's' : '');
+    header.appendChild(info);
+    div.appendChild(header);
+
+    // Skills
+    group.skills.forEach(skill => {
+      const card = document.createElement('div');
+      card.className = 'skill-card';
+
+      card.innerHTML = `
+        <div class="skill-name">${esc(skill.displayName || skill.name)}</div>
+        <div class="skill-internal">${esc(skill.name)}</div>
+        ${skill.description ? `<div class="skill-desc">${esc(skill.description)}</div>` : ''}
+      `;
+
+      // Inputs table
+      if (skill.inputs && skill.inputs.length > 0) {
+        let table = `<table class="inputs-table">
+          <thead><tr><th>Parameter</th><th>Description</th><th>Required</th><th>Default</th></tr></thead><tbody>`;
+        skill.inputs.forEach(inp => {
+          table += `<tr>
+            <td class="param-name">${esc(inp.name)}${inp.required ? '<span class="required-marker">*</span>' : ''}</td>
+            <td>${esc(inp.description || '')}</td>
+            <td>${inp.required ? 'Yes' : 'No'}</td>
+            <td>${inp.defaultValue ? '<span class="default-value">' + esc(inp.defaultValue) + '</span>' : '—'}</td>
+          </tr>`;
+        });
+        table += '</tbody></table>';
+        card.innerHTML += table;
+      }
+
+      div.appendChild(card);
+    });
+
+    container.appendChild(div);
+  });
+
+  // Agent section
+  if (d.type.toLowerCase().includes('agent') && d.agent && d.agent.name) {
+    document.getElementById('agentSection').classList.remove('hidden');
+
+    const grid = document.getElementById('agentInfoGrid');
+    const agentFields = [
+      ['Agent Name', d.agent.displayName || d.agent.name],
+      ['Internal Name', d.agent.name],
+      ['Publisher', d.agent.publisher],
+      ['Model', d.agent.model],
+      ['Constraint', d.agent.constraint],
+      ['Trigger', d.agent.triggerName],
+      ['Poll Period', d.agent.pollPeriod ? d.agent.pollPeriod + 's' : ''],
+      ['Fetch Skill', d.agent.fetchSkill],
+      ['Process Skill', d.agent.processSkill],
+      ['Prompt Skill', d.agent.promptSkill]
+    ].filter(([, v]) => v);
+
+    agentFields.forEach(([label, value]) => {
+      const item = document.createElement('div');
+      item.className = 'agent-info-item';
+      item.innerHTML = `<div class="label">${esc(label)}</div><div class="value">${esc(value)}</div>`;
+      grid.appendChild(item);
+    });
+
+    // Child skills
+    if (d.agent.childSkills && d.agent.childSkills.length > 0) {
+      document.getElementById('childSkillsBlock').classList.remove('hidden');
+      const list = document.getElementById('childSkillsList');
+      d.agent.childSkills.forEach(cs => {
+        const tag = document.createElement('span');
+        tag.className = 'child-skill-tag';
+        tag.textContent = cs;
+        list.appendChild(tag);
+      });
+    }
+
+    // Required skillsets
+    if (d.agent.requiredSkillsets && d.agent.requiredSkillsets.length > 0) {
+      document.getElementById('requiredSkillsetsBlock').classList.remove('hidden');
+      const list = document.getElementById('requiredSkillsetsList');
+      d.agent.requiredSkillsets.forEach(rs => {
+        const tag = document.createElement('span');
+        tag.className = 'child-skill-tag';
+        tag.textContent = rs;
+        list.appendChild(tag);
+      });
+    }
+
+    // Suggested prompts
+    if (d.agent.suggestedPrompts && d.agent.suggestedPrompts.length > 0) {
+      document.getElementById('suggestedPromptsBlock').classList.remove('hidden');
+      const list = document.getElementById('suggestedPromptsList');
+      d.agent.suggestedPrompts.forEach(sp => {
+        const item = document.createElement('div');
+        item.className = 'prompt-item' + (sp.isStarter ? ' starter' : '');
+        item.innerHTML = (sp.isStarter ? '<div class="prompt-label">Starter Prompt</div>' : '<div class="prompt-label">Follow-up</div>')
+          + esc(sp.text);
+        list.appendChild(item);
+      });
+    }
+  }
+
+  function esc(str) {
+    const el = document.createElement('span');
+    el.textContent = str || '';
+    return el.innerHTML;
+  }
+})();
+</script>
+
+</body>
+</html>
