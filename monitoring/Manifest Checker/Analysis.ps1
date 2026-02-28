@@ -1,6 +1,24 @@
+#Requires -Version 5.1
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
+
 param (
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
     [string]$script
 )
+
+# Validate file exists
+if (-not (Test-Path -Path $script -PathType Leaf)) {
+    Write-Error "File not found: $script"
+    exit 1
+}
+
+# Validate file extension
+if (-not ($script -match '\.ya?ml$')) {
+    Write-Error "Invalid file type. Expected .yaml or .yml file: $script"
+    exit 1
+}
 
 # Function to read the YAML file
 function Read-YamlFile {

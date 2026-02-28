@@ -18,38 +18,38 @@ paths:
           description: The MD5 hash to look up
       responses:
         "200":
-        description: Information about the hash, whether found or not.
-        content:
-          application/json:
-          schema:
-            type: object
-            properties:
-            result:
-              type: object
-              properties:
-              credit:
+          description: Information about the hash, whether found or not.
+          content:
+            application/json:
+              schema:
                 type: object
                 properties:
-                link:
-                  type: string
-                name:
-                  type: string
-              found:
-                type: boolean
-                description: Tells whether the hash value was found in the database or not
-              hash:
-                type: string
-                description: The original MD5 hash
-              hexpass:
-                type: string
-                description: The hex value of the corresponding clear-text
-              hits:
-                type: integer
-                description: How many requests for this MD5 hash were made
-              pass:
-                type: string
-                description: The clear-text value for the provided MD5 hash
-              sysmsg:
-                type: array
-                items:
-                  type: string
+                  result:
+                    type: object
+                    properties:
+                      credit:
+                        type: object
+                        properties:
+                          link:
+                            type: string
+                          name:
+                            type: string
+                      found:
+                        type: boolean
+                        description: Tells whether the hash value was found in the database or not
+                      hash:
+                        type: string
+                        description: The original MD5 hash
+                      hexpass:
+                        type: string
+                        description: The hex value of the corresponding clear-text
+                      hits:
+                        type: integer
+                        description: How many requests for this MD5 hash were made
+                      pass:
+                        type: string
+                        description: The clear-text value for the provided MD5 hash
+                      sysmsg:
+                        type: array
+                        items:
+                          type: string

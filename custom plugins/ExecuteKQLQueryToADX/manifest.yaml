@@ -16,8 +16,7 @@ SkillGroups:
             Required: true
        Settings:
         Target: Kusto
-        Cluster:
-          <YOUR ADX CLUSTER ENDPOINT>
-        Database: <YOUR ADX DATATABASE NAME>
-        Template: 
-          '{{kqlquery}}'
+        Cluster: <YOUR_ADX_CLUSTER_ENDPOINT>
+        Database: <YOUR_ADX_DATABASE_NAME>
+        Template: |-
+          {{kqlquery}}

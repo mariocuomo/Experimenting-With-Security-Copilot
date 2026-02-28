@@ -17,10 +17,10 @@ SkillGroups:
             Required: true
         Settings:
           Target: Sentinel
-          TenantId: <YOUR-TENANT-ID>
-          SubscriptionId: <YOUR-SUBSCRIPTION-ID>
-          ResourceGroupName: <YOUR-RESOURCE-GROUP-NAME>
-          WorkspaceName: <YOUR-WORKSPACE-NAME>
+          TenantId: <YOUR_TENANT_ID>
+          SubscriptionId: <YOUR_SUBSCRIPTION_ID>
+          ResourceGroupName: <YOUR_RESOURCE_GROUP_NAME>
+          WorkspaceName: <YOUR_WORKSPACE_NAME>
           Template: |-
             let fromDateTime=todatetime('{{fromDateTime}}');
             let toDateTime=todatetime('{{toDateTime}}');

@@ -10,18 +10,21 @@ SkillGroups:
         Description: Fetches all the Sentinel Cost details for each table in the last 7 days from Sentinel.
         Settings:
           Target: Sentinel
-          TenantId: <YOUR-TENANT-ID>
-          SubscriptionId: <YOUR-SUBSCRIPTION-ID>
-          ResourceGroupName: <YOUR-RESOURCE-GROUP-NAME>
-          WorkspaceName: <YOUR-WORKSPACE-NAME>
+          TenantId: <YOUR_TENANT_ID>
+          SubscriptionId: <YOUR_SUBSCRIPTION_ID>
+          ResourceGroupName: <YOUR_RESOURCE_GROUP_NAME>
+          WorkspaceName: <YOUR_WORKSPACE_NAME>
           Template: |-
+            // Query to estimate Sentinel costs by table
+            // Cost rate: $4.30/GB - Azure Sentinel Pay-As-You-Go pricing (verify current rates at https://azure.microsoft.com/pricing/details/microsoft-sentinel/)
             let fromDateTime=ago(7d);
             let toDateTime=now();
+            let costPerGB = 4.3; // USD per GB - update this value based on your pricing tier
             Usage
             | where IsBillable == true 
             | where TimeGenerated between ( fromDateTime .. toDateTime )
             | where DataType <> "AzureDiagnostics"
             | summarize size = sum(Quantity)/1024, sizeOther = sumif(Quantity,(DataType !contains "_CL" and TimeGenerated between ( fromDateTime .. toDateTime )))/1024 by DataType
-            | project ['Table Name'] = DataType, ['Table Size'] = size, ['Estimated cost'] = size*4.3
+            | project ['Table Name'] = DataType, ['Table Size'] = size, ['Estimated cost'] = size * costPerGB
             | order by ['Estimated cost'] desc
             | take 20
